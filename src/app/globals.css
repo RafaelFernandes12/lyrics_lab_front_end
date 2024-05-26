@@ -6,8 +6,16 @@
     body {
         @apply mx-12 my-6;
     }
-
     section {
         @apply mb-10;
+    }
+    span, p, h1, h2, h3{
+        @apply text-black dark:text-white
+    }
+    button {
+        @apply dark:bg-white
+    }
+    button span{
+        @apply dark:text-black
     }
 }

@@ -1,11 +1,11 @@
 import logo from '@/assets/logo.svg';
-import { Album } from '@/components/SongCard/Album';
 import CreatedAt from '@/components/SongCard/CreatedAt';
 import SongCard from '@/components/SongCard/SongCard';
 import { Tom } from '@/components/SongCard/Tom';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import Image from 'next/image';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 export default function Playlist(){
   return(
@@ -29,6 +29,16 @@ export default function Playlist(){
         </div>
       </section>
       <section className='flex flex-col gap-4'>
+        <ul className="mx-2 flex items-center justify-between font-semibold">
+          <li className="w-1/2"><span>Titulo</span></li>
+          <div className="mr-10 flex w-1/2 justify-between">
+            <li className="w-full"><span>Tom</span></li>
+            <li className="-mr-5 flex text-center">
+              <span>Adicionado</span>
+              <ArrowDropDownIcon className='dark:text-white'/>
+            </li>
+          </div>
+        </ul>
         <SongCard>
           <Tom />
           <CreatedAt />

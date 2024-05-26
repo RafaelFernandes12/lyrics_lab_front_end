@@ -10,20 +10,20 @@ export default function Songs() {
       <section className="flex items-center justify-between">
         <h1 className="text-4xl font-semibold">Músicas</h1>
         <button className="flex items-center gap-2 rounded-xl bg-darkBlue p-3 text-white ">
-          <AddIcon />
+          <AddIcon className='dark:text-black'/>
           <span>Adicionar música</span>
         </button>
       </section>
 
       <section className="flex flex-col gap-4">
         <ul className="mx-2 flex items-center justify-between font-semibold">
-          <li className="w-1/2">Titulo</li>
+          <li className="w-1/2"><span>Titulo</span></li>
           <div className="mr-10 flex w-1/2 justify-between">
-            <li className="w-full">Álbum</li>
-            <li className="w-full">Tom</li>
+            <li className="w-full"><span>Álbum</span></li>
+            <li className="w-full"><span>Tom</span></li>
             <li className="-mr-5 flex text-center">
               <span>Adicionado</span>
-              <ArrowDropDownIcon />
+              <ArrowDropDownIcon className='dark:text-white'/>
             </li>
           </div>
         </ul>
