@@ -1,5 +1,5 @@
-import logo from '@/assets/logo.svg'
-import Image from 'next/image'
+import logo from '@/assets/logo.svg';
+import Image from 'next/image';
 export function PlaylistCard() {
   return (
     <div className="flex w-64 flex-col">
@@ -14,5 +14,5 @@ export function PlaylistCard() {
         <span>, Vida Bandidaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</span>
       </p>
     </div>
-  )
+  );
 }

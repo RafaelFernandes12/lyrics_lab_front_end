@@ -1,4 +1,4 @@
-import MoreVertIcon from '@mui/icons-material/MoreVert'
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 interface SongCardProps {
   children: React.ReactNode
@@ -15,5 +15,5 @@ export default function SongCard({ children }: SongCardProps) {
         <MoreVertIcon />
       </div>
     </div>
-  )
+  );
 }
