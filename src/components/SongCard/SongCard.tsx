@@ -1,13 +1,17 @@
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-export default function SongCard() {
+interface SongCardProps {
+  children: React.ReactNode
+}
+
+export default function SongCard({ children }: SongCardProps) {
   return (
-    <div className="flex max-w-96 items-center justify-between rounded-2xl border-2 border-black p-6">
-      <span>Boate Azul</span>
-      <div className="flex items-center gap-2">
-        <span>
-          Tom: <span className="font-semibold text-blue-700">CM7</span>
-        </span>
+    <div className="flex w-full items-center justify-between rounded-2xl border-2 border-black px-3 py-6">
+      <div className="w-1/2">
+        <span>Boate Azul</span>
+      </div>
+      <div className="flex w-1/2 items-center justify-between">{children}</div>
+      <div className="ml-4">
         <MoreVertIcon />
       </div>
     </div>

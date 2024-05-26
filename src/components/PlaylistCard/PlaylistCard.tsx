@@ -2,7 +2,7 @@ import logo from '@/assets/logo.svg';
 import Image from 'next/image';
 export function PlaylistCard() {
   return (
-    <div className="flex max-w-64 flex-col">
+    <div className="flex w-64 flex-col">
       <Image
         src={logo}
         alt="example"

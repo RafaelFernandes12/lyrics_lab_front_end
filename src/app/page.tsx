@@ -1,6 +1,7 @@
-import { PlaylistCard } from '@/components/PlaylistCard/PlaylistCard';
-import SongCard from '@/components/SongCard/SongCard';
-import Link from 'next/link';
+import { PlaylistCard } from '@/components/PlaylistCard/PlaylistCard'
+import SongCard from '@/components/SongCard/SongCard'
+import { Tom } from '@/components/SongCard/Tom'
+import Link from 'next/link'
 
 export default function Home() {
   return (
@@ -14,13 +15,21 @@ export default function Home() {
         </div>
 
         <div className="grid w-full grid-cols-4 gap-4">
-          <SongCard />
-          <SongCard />
-          <SongCard />
-          <SongCard />
-          <SongCard />
-          <SongCard />
-          <SongCard />
+          <SongCard>
+            <Tom />
+          </SongCard>
+          <SongCard>
+            <Tom />
+          </SongCard>
+          <SongCard>
+            <Tom />
+          </SongCard>
+          <SongCard>
+            <Tom />
+          </SongCard>
+          <SongCard>
+            <Tom />
+          </SongCard>
         </div>
       </section>
       <section>
@@ -30,7 +39,7 @@ export default function Home() {
             <Link href="/">Ver todas</Link>
           </h3>
         </div>
-        <div className="grid w-full grid-cols-4 gap-4">
+        <div className="grid w-full grid-cols-5 gap-4">
           <PlaylistCard />
           <PlaylistCard />
           <PlaylistCard />
@@ -41,5 +50,5 @@ export default function Home() {
         </div>
       </section>
     </main>
-  );
+  )
 }
