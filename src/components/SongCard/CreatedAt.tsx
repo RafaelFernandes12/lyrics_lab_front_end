@@ -1,3 +1,3 @@
 export default function CreatedAt() {
-  return <p>notjing</p>
+  return <span className="text-semibold">25/19/2004</span>
 }
