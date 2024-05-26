@@ -5,9 +5,9 @@ export default function Playlists() {
   return (
     <>
       <section className="flex items-center justify-between">
-        <h1 className="text-3xl font-semibold">Playlists</h1>
+        <h1 className="text-4xl font-semibold">Playlists</h1>
         <button className="flex items-center gap-2 rounded-xl bg-black p-3 text-white ">
-          <AddIcon />
+          <AddIcon className='dark:text-black'/>
           <span>Adicionar playlist</span>
         </button>
       </section>
