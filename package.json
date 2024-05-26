@@ -14,7 +14,6 @@
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.18",
     "@mui/material": "^5.15.18",
-    "@rocketseat/eslint-config": "^2.2.2",
     "D": "^1.0.0",
     "next": "14.2.3",
     "react": "^18",
