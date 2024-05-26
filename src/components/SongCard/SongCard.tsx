@@ -1,4 +1,4 @@
-import MoreVertIcon from '@mui/icons-material/MoreVert'
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 export default function SongCard() {
   return (
@@ -11,5 +11,5 @@ export default function SongCard() {
         <MoreVertIcon />
       </div>
     </div>
-  )
+  );
 }
