@@ -2,14 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base{
-    body{
-        @apply mx-12 my-6; 
+@layer base {
+    body {
+        @apply mx-12 my-6;
     }
-    main{
-        @apply my-20;
-    }
-    section{
+
+    section {
         @apply my-10;
     }
 }
