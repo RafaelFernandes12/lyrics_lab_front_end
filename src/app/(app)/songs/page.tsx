@@ -6,7 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 export default function Songs() {
   return (
-    <main>
+    <>
       <section className="flex items-center justify-between">
         <h1 className="text-4xl font-semibold">Músicas</h1>
         <button className="flex items-center gap-2 rounded-xl bg-darkBlue p-3 text-white ">
@@ -53,6 +53,6 @@ export default function Songs() {
           <CreatedAt />
         </SongCard>
       </section>
-    </main>
+    </>
   );
 }

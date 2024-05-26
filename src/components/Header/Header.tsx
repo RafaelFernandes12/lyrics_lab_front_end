@@ -1,7 +1,7 @@
-import logo from '@/assets/logo.svg'
-import PersonIcon from '@mui/icons-material/Person'
-import Image from 'next/image'
-import Link from 'next/link'
+import logo from '@/assets/logo.svg';
+import PersonIcon from '@mui/icons-material/Person';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export function Header() {
   return (
@@ -19,5 +19,5 @@ export function Header() {
       </ul>
       <PersonIcon sx={{ width: 125, height: 95 }} />
     </header>
-  )
+  );
 }
