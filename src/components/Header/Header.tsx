@@ -1,33 +1,6 @@
-'use client';
-import PersonIcon from '@mui/icons-material/Person';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import WbSunnyIcon from '@mui/icons-material/WbSunny';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
+import { SwitchTheme } from './SwitchTheme';
 export function Header() {
-
-  const [theme, setTheme] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('theme') || 'light';
-    }
-    return 'light';
-  });
-
-  useEffect(() => {
-    if(theme === 'dark'){
-      localStorage.setItem('theme', 'dark');
-      document.documentElement.classList.add('dark');
-    }
-    else{
-      localStorage.setItem('theme', 'light');
-      document.documentElement.classList.remove('dark');
-    }
-  },[theme]);
-
-
-  function handleThemeSwitch(){
-    setTheme(theme === 'dark' ? 'light' : 'dark');
-  }
 
   return (
     <header className="flex items-center justify-between">
@@ -46,11 +19,7 @@ export function Header() {
           <Link href="/playlists"><span>Playlists</span></Link>
         </li>
       </ul>
-      <div>
-        <WbSunnyIcon onClick={handleThemeSwitch}  className={`cursor-pointer text-white ${theme === 'light' ? 'hidden' : ''}`} />
-        <DarkModeIcon onClick={handleThemeSwitch} className={`cursor-pointer ${theme === 'light' ? '' : 'hidden'}`} />
-        <PersonIcon sx={{ width: 125, height: 95 }} className='dark:text-white'/>
-      </div>
+      <SwitchTheme />
     </header>
   );
 }
