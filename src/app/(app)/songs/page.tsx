@@ -11,7 +11,7 @@ export default function Songs() {
         <h1 className="text-4xl font-semibold">Músicas</h1>
         <button className="flex items-center gap-2 rounded-xl bg-black p-3 text-white ">
           <AddIcon className='dark:text-black'/>
-          <span className='text-white'>Adicionar música</span>
+          <span>Adicionar música</span>
         </button>
       </section>
 

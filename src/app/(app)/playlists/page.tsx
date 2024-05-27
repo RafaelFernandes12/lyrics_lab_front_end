@@ -8,7 +8,7 @@ export default function Playlists() {
         <h1 className="text-4xl font-semibold">Playlists</h1>
         <button className="flex items-center gap-2 rounded-xl bg-black p-3 text-white ">
           <AddIcon className='dark:text-black'/>
-          <span className='text-white'>Adicionar playlist</span>
+          <span>Adicionar playlist</span>
         </button>
       </section>
       <section>
