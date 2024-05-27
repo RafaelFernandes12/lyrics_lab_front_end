@@ -16,7 +16,7 @@ export default async function Song({ params }: IdProps) {
     <section>
       <div className="flex items-center justify-between mb-5">
         <h2 className="text-3xl font-semibold">Nome da música</h2>
-        <button className='bg-black text-white p-2 rounded-md'>Baixar PDF <PictureAsPdfIcon /></button> 
+        <button className='bg-black text-white p-2 rounded-md'><span>Baixar PDF</span> <PictureAsPdfIcon className='dark:text-black'/></button> 
       </div>
       <div className="flex items-center justify-between">
         <div className="flex items-center justify-between gap-10">
@@ -25,7 +25,7 @@ export default async function Song({ params }: IdProps) {
         </div>
         <div className="flex items-center justify-between gap-10">
           <p>Modo</p>
-          <button><DeleteIcon /></button>
+          <button className='dark:bg-transparent'><DeleteIcon className='dark:text-white'/></button>
         </div>
       </div>
 

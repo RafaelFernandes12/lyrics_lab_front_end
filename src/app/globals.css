@@ -16,6 +16,6 @@
         @apply dark:bg-white
     }
     button span{
-        @apply dark:text-black
+        @apply text-white dark:text-black
     }
 }
