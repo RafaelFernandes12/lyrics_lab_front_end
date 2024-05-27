@@ -9,9 +9,9 @@ export default function Songs() {
     <>
       <section className="flex items-center justify-between">
         <h1 className="text-4xl font-semibold">Músicas</h1>
-        <button className="flex items-center gap-2 rounded-xl bg-darkBlue p-3 text-white ">
+        <button className="flex items-center gap-2 rounded-xl bg-black p-3 text-white ">
           <AddIcon className='dark:text-black'/>
-          <span>Adicionar música</span>
+          <span className='text-white'>Adicionar música</span>
         </button>
       </section>
 
