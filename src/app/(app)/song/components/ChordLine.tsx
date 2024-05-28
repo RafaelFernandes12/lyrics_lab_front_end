@@ -24,7 +24,7 @@ export default function ChordLine() {
         <Droppable droppableId="chordBoxes" direction="horizontal">
           {(provided) => (
             <div
-              className="flex gap-1  p-1 w-2/5 bg-slate-300"
+              className="flex gap-1 p-1 w-[280px] bg-slate-300"
               ref={provided.innerRef}
               {...provided.droppableProps}
             >

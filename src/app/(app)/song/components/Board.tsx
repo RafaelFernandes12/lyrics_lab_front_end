@@ -6,8 +6,8 @@ import TextLine from './TextLine';
 export default function Board() {
   return(
     <div>
-      <TextLine />
       <ChordLine />
+      <TextLine />
     </div>
   );
 }

@@ -13,9 +13,9 @@ export default function ChordBox({id, index}: props) {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
-          className="flex items-center w-min h-min bg-red-300"
+          className="flex items-center min-w-6 h-min bg-red-300 text-xs"
         >
-          Cm7
+          {index}
         </div>
       )}
     </Draggable>
