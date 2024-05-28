@@ -1,5 +1,13 @@
+'use client';
+
+import ChordLine from './ChordLine';
+import TextLine from './TextLine';
+
 export default function Board() {
   return(
-    <p className="font-black">Board</p>
+    <div>
+      <ChordLine />
+      <TextLine />
+    </div>
   );
 }

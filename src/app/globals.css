@@ -4,7 +4,7 @@
 
 @layer base {
     body {
-        @apply mx-12 my-6;
+        @apply mx-12 my-6 max-sm:m-0 max-sm:p-4;
     }
     section {
         @apply mb-10;
