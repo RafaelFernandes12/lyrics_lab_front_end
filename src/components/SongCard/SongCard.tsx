@@ -10,7 +10,7 @@ export default function SongCard({ children }: SongCardProps) {
       <div className="w-1/2">
         <span>Boate Azul</span>
       </div>
-      <div className="flex w-1/2 items-center justify-between">{children}</div>
+      <div className="flex w-1/2 items-center justify-between max-sm:justify-end">{children}</div>
       <div className="ml-4">
         <MoreVertIcon className='dark:text-white'/>
       </div>

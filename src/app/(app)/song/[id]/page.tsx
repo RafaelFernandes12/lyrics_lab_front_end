@@ -15,15 +15,15 @@ export default async function Song({ params }: IdProps) {
   return (
     <section>
       <div className="flex items-center justify-between mb-5">
-        <h2 className="text-3xl font-semibold">Nome da música</h2>
-        <button className='bg-black text-white p-2 rounded-md'><span>Baixar PDF</span> <PictureAsPdfIcon className='dark:text-black'/></button> 
+        <h1 className="text-3xl font-semibold">Nome da música</h1>
+        <button className='bg-black text-white p-2 rounded-md'><span className='max-sm:hidden'>Baixar PDF</span> <PictureAsPdfIcon className='dark:text-black'/></button> 
       </div>
-      <div className="flex items-center justify-between">
-        <div className="flex items-center justify-between gap-10">
+      <div className="flex items-center justify-between max-sm:flex-col">
+        <div className="flex items-center justify-between gap-10 max-sm:flex-col max-sm:gap-3">
           <h3 className="text-lg">Tom: Cm7</h3>
           <p>Cifra</p>
         </div>
-        <div className="flex items-center justify-between gap-10">
+        <div className="flex items-center justify-between gap-10 max-sm:flex-col max-sm:gap-3">
           <p>Modo</p>
           <button className='dark:bg-transparent'><DeleteIcon className='dark:text-white'/></button>
         </div>

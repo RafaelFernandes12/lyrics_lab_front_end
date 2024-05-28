@@ -12,6 +12,15 @@
     span, p, h1, h2, h3{
         @apply text-black dark:text-white
     }
+    h1 {
+        @apply text-4xl max-md:text-2xl font-semibold
+    }
+    h2 {
+        @apply text-3xl max-md:text-xl
+    }
+    h3 {
+        @apply text-2xl max-md:text-base
+    }
     button {
         @apply dark:bg-white
     }

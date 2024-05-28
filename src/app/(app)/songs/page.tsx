@@ -8,20 +8,20 @@ export default function Songs() {
   return (
     <>
       <section className="flex items-center justify-between">
-        <h1 className="text-4xl font-semibold">Músicas</h1>
+        <h1>Músicas</h1>
         <button className="flex items-center gap-2 rounded-xl bg-black p-3 text-white ">
           <AddIcon className='dark:text-black'/>
-          <span>Adicionar música</span>
+          <span className='max-sm:hidden'>Adicionar música</span>
         </button>
       </section>
 
       <section className="flex flex-col gap-4">
-        <ul className="mx-2 flex items-center justify-between font-semibold">
-          <li className="w-1/2"><span>Titulo</span></li>
-          <div className="mr-10 flex w-1/2 justify-between">
+        <ul className="mx-2 flex font-semibold max-sm:justify-between">
+          <li className="w-1/2 max-sm:w-fit"><span>Titulo</span></li>
+          <div className="mr-10 flex w-1/2 justify-between max-sm:w-fit">
             <li className="w-full"><span>Álbum</span></li>
-            <li className="w-full"><span>Tom</span></li>
-            <li className="-mr-5 flex text-center">
+            <li className="w-full max-sm:hidden"><span>Tom</span></li>
+            <li className="-mr-5 flex text-center max-sm:hidden">
               <span>Adicionado</span>
               <ArrowDropDownIcon className='dark:text-white'/>
             </li>

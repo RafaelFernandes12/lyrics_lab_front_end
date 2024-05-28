@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 export function Tom() {
   const pathname = usePathname();
   return (
-    <span>
+    <span className={`${pathname.includes('songs') ? 'max-sm:hidden' : ''}`}>
       <span className={`${pathname.includes('songs') || pathname.includes('playlist') ? 'hidden' : ''}`}>
         Tom:
       </span>{' '}

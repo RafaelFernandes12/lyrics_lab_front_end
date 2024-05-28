@@ -8,13 +8,13 @@ export default function Home() {
     <>
       <section>
         <div className="mb-6 flex items-center justify-between font-semibold">
-          <h2 className="text-3xl">Vistas recentemente</h2>
-          <h3 className="text-2xl">
+          <h2>Vistas recentemente</h2>
+          <h3>
             <Link href="/songs">Ver todas</Link>
           </h3>
         </div>
 
-        <div className="grid w-full grid-cols-4 gap-4">
+        <div className="grid w-full grid-cols-4 gap-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1">
           <SongCard>
             <Tom />
           </SongCard>
@@ -34,12 +34,12 @@ export default function Home() {
       </section>
       <section>
         <div className="mb-6 flex items-center justify-between font-semibold">
-          <h2 className="text-3xl">Playlists</h2>
-          <h3 className="text-2xl">
+          <h2>Playlists</h2>
+          <h3>
             <Link href="/playlists">Ver todas</Link>
           </h3>
         </div>
-        <div className="grid w-full grid-cols-5 gap-4">
+        <div className="grid w-full grid-cols-5 gap-4 max-2xl:grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:flex max-sm:flex-col max-sm:items-center">
           <PlaylistCard />
           <PlaylistCard />
           <PlaylistCard />
