@@ -4,7 +4,7 @@
 
 @layer base {
     body {
-        @apply mx-12 my-6;
+        @apply mx-12 my-6 max-sm:mx-2;
     }
     section {
         @apply mb-10;
@@ -26,5 +26,8 @@
     }
     button span{
         @apply text-white dark:text-black
+    }
+    button {
+        @apply rounded-xl p-3;
     }
 }

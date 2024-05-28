@@ -1,9 +1,11 @@
-import Link from 'next/link'
-import { SwitchTheme } from './SwitchTheme'
-export function Header() {
+import '../globals.css'
+
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <header className="flex items-center justify-between">
-      <Link href="/">
+    <body>
+      <header className="flex items-center justify-center">
         <svg
           width="125"
           height="65"
@@ -24,20 +26,9 @@ export function Header() {
             className="fill-black dark:fill-white"
           />
         </svg>
-      </Link>
-      <ul className="flex items-center gap-16 text-2xl font-semibold max-md:hidden">
-        <li>
-          <Link href="/songs">
-            <span>Músicas</span>
-          </Link>
-        </li>
-        <li>
-          <Link href="/playlists">
-            <span>Playlists</span>
-          </Link>
-        </li>
-      </ul>
-      <SwitchTheme />
-    </header>
+        <h1>Lyrics Lab</h1>
+      </header>
+      <main>{children}</main>
+    </body>
   )
 }

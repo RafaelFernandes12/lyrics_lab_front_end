@@ -1,14 +1,6 @@
 {
-  "extends": "next/core-web-vitals",
-  "rules": {
-    "quotes": [
-      "error",
-      "single"
-    ],
-    "semi": "error",
-    "indent": [
-      "error",
-      2
-    ]
-  }
+  "extends": [
+    "@rocketseat/eslint-config/next",
+    "next/core-web-vitals"
+  ]
 }
