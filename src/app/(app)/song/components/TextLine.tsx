@@ -9,8 +9,9 @@ export default function TextLine() {
 
   return(
     <input 
-      className="bg-transparent p-1 w-[280px] mb-3 outline-none bg-lime-200 text-sm" 
+      className="bg-lime-200 w-[280px] mb-3 outline-none text-sm font-mono" 
       type="text" 
+      maxLength={35}
       value={line} 
       onChange={handleChange}
       placeholder="Linha de texto"

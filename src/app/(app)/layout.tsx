@@ -8,7 +8,7 @@ export default function RootLayout({
     <html lang="pt-br" className="dark">
       <body className="dark:bg-black">
         <Header />
-        <main className="my-10 rounded-md bg-slate-50 p-8 dark:bg-[#141414]">
+        <main className="my-10 rounded-md bg-slate-50 p-8 max-sm:p-2 dark:bg-[#141414]">
           {children}
         </main>
       </body>

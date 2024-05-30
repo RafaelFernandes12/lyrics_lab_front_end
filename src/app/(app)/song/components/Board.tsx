@@ -1,12 +1,16 @@
 'use client';
 
-import ChordLine from './ChordLine';
+import Chord from './Chord';
 import TextLine from './TextLine';
 
 export default function Board() {
   return(
     <div>
-      <ChordLine />
+      <div className="w-[280px] flex justify-between">
+        {[...Array(10)].map((item, index) => (
+          <Chord />
+        ))}
+      </div>
       <TextLine />
     </div>
   );

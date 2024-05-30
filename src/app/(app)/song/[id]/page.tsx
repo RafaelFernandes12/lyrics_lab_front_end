@@ -8,7 +8,6 @@ interface IdProps {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default async function Song({ params }: IdProps) {
   // const response = await api.get(`/songs/${params.id}`);
   // const song: songProps = response.data;
@@ -27,14 +26,10 @@ export default async function Song({ params }: IdProps) {
           <h3 className="text-lg">Tom: Cm7</h3>
           <p>Cifra</p>
         </div>
-        <div className="flex items-center justify-between gap-10 max-sm:flex-col max-sm:gap-3">
-          <p>Modo</p>
           <button className="dark:bg-transparent">
             <DeleteIcon className="dark:text-white" />
           </button>
-        </div>
       </div>
-
       <div className="mt-16">
         <Board />
       </div>
