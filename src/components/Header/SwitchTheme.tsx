@@ -3,6 +3,7 @@ import DarkModeIcon from '@mui/icons-material/DarkMode'
 import MenuIcon from '@mui/icons-material/Menu'
 import PersonIcon from '@mui/icons-material/Person'
 import WbSunnyIcon from '@mui/icons-material/WbSunny'
+import Link from 'next/link'
 
 import { useEffect, useState } from 'react'
 export function SwitchTheme() {
@@ -36,10 +37,12 @@ export function SwitchTheme() {
         onClick={handleThemeSwitch}
         className=" cursor-pointer dark:hidden max-md:hidden"
       />
-      <PersonIcon
-        sx={{ width: 125, height: 95 }}
-        className=" dark:text-white max-md:hidden"
-      />
+      <Link href={'/user'}>
+        <PersonIcon
+          sx={{ width: 125, height: 95 }}
+          className=" dark:text-white max-md:hidden"
+        />
+      </Link>
       <button className="dark:bg-transparent dark:text-white md:hidden">
         <MenuIcon sx={{ width: 40, height: 40 }} />
       </button>
