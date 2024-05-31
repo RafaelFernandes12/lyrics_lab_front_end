@@ -9,9 +9,9 @@ export default function ChordLine() {
 
   return(
     <input 
-      className="bg-transparent w-[280px] font-semibold text-cyan-500 mb-3 outline-none text-xs font-mono" 
+      className="bg-transparent w-[290px] font-semibold text-cyan-500 outline-none text-sm font-mono" 
       type="text" 
-      maxLength={35}
+      maxLength={36}
       value={line} 
       onChange={handleChange}
       placeholder="Linha de cifra"
