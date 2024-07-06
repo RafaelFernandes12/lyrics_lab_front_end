@@ -1,40 +1,40 @@
 'use client'
 
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import MenuIcon from '@mui/icons-material/Menu';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import RemoveIcon from '@mui/icons-material/Remove';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import { useState } from 'react';
-import Board from './Board';
+import AddIcon from '@mui/icons-material/Add'
+import DeleteIcon from '@mui/icons-material/Delete'
+import MenuIcon from '@mui/icons-material/Menu'
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
+import RemoveIcon from '@mui/icons-material/Remove'
+import Divider from '@mui/material/Divider'
+import Drawer from '@mui/material/Drawer'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+import { useState } from 'react'
+import Board from './Board'
 
-const drawerWidth = 200;
+const drawerWidth = 200
 
 export default function ResponsiveDrawer() {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [isClosing, setIsClosing] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const [isClosing, setIsClosing] = useState(false)
 
   const handleDrawerClose = () => {
-    setIsClosing(true);
-    setMobileOpen(false);
-  };
+    setIsClosing(true)
+    setMobileOpen(false)
+  }
 
   const handleDrawerTransitionEnd = () => {
-    setIsClosing(false);
-  };
+    setIsClosing(false)
+  }
 
   const handleDrawerToggle = () => {
     if (!isClosing) {
-      setMobileOpen(!mobileOpen);
+      setMobileOpen(!mobileOpen)
     }
-  };
+  }
 
   const drawer = (
     <div>
@@ -52,11 +52,11 @@ export default function ResponsiveDrawer() {
       </List>
       <Divider />
       <List>
-        {['Linha de texto', 'Linha de cifra'].map((text, index) => (
+        {['Linha de texto', 'Linha de cifra'].map((text) => (
           <ListItem key={text} disablePadding>
             <ListItemButton>
               <ListItemIcon>
-                <AddIcon /> 
+                <AddIcon />
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItemButton>
@@ -77,16 +77,22 @@ export default function ResponsiveDrawer() {
         ))}
       </List>
     </div>
-  );
+  )
 
   return (
     <div>
       <div className="flex gap-10">
         <Drawer
           variant="permanent"
-          className='max-sm:hidden'
+          className="max-sm:hidden"
           sx={{
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, position: 'relative', border: 'none', borderRadius:'12px' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: drawerWidth,
+              position: 'relative',
+              border: 'none',
+              borderRadius: '12px',
+            },
           }}
           open
         >
@@ -94,27 +100,27 @@ export default function ResponsiveDrawer() {
         </Drawer>
         <div>
           <h1 className="text-2xl font-semibold">Nome da música</h1>
-            <h3 className="text-lg">Tom: Cm7</h3>
+          <h3 className="text-lg">Tom: Cm7</h3>
           <button
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerToggle}
-            className='sm:hidden p-0'
+            className="p-0 sm:hidden"
           >
             <MenuIcon />
           </button>
-          <div className='max-sm:hidden mt-10'>
+          <div className="max-sm:hidden">
             <Board />
           </div>
         </div>
       </div>
-      <div className='sm:hidden mt-10'>
-        <Board /> 
+      <div className="sm:hidden">
+        <Board />
       </div>
       <Drawer
-        anchor='bottom'
+        anchor="bottom"
         variant="temporary"
-        className='sm:hidden'
+        className="sm:hidden"
         open={mobileOpen}
         onTransitionEnd={handleDrawerTransitionEnd}
         onClose={handleDrawerClose}
@@ -128,5 +134,5 @@ export default function ResponsiveDrawer() {
         {drawer}
       </Drawer>
     </div>
-  );
+  )
 }
