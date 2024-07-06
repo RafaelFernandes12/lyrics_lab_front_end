@@ -1,4 +1,4 @@
-import ResponsiveDrawer from "../components/ResponsiveDrawer"
+import Board from '../components/Board'
 
 interface IdProps {
   params: {
@@ -10,7 +10,5 @@ export default async function Song({ params }: IdProps) {
   // const response = await api.get(`/songs/${params.id}`);
   // const song: songProps = response.data;
 
-  return (
-    <ResponsiveDrawer/>
-  )
+  return <Board />
 }
