@@ -15,6 +15,7 @@
     "@hello-pangea/dnd": "^16.6.0",
     "@mui/icons-material": "^5.15.18",
     "@mui/material": "^5.15.18",
+    "axios": "^1.7.2",
     "D": "^1.0.0",
     "formik": "^2.4.6",
     "next": "14.2.3",
