@@ -10,17 +10,19 @@
   },
   "dependencies": {
     "-": "^0.0.1",
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5",
+    "@emotion/react": "^11.13.0",
+    "@emotion/styled": "^11.13.0",
     "@hello-pangea/dnd": "^16.6.0",
     "@mui/icons-material": "^5.15.18",
-    "@mui/material": "^5.15.18",
+    "@mui/material": "^5.16.4",
     "axios": "^1.7.2",
     "D": "^1.0.0",
+    "dayjs": "^1.11.12",
     "formik": "^2.4.6",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
+    "react-toastify": "^10.0.5",
     "yup": "^1.4.0"
   },
   "devDependencies": {

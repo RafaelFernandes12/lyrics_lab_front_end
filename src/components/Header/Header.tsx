@@ -1,8 +1,13 @@
+'use client'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { SwitchTheme } from './SwitchTheme'
 export function Header() {
+  const pathname = usePathname()
   return (
-    <header className="flex items-center justify-between">
+    <header
+      className={`flex items-center justify-between ${pathname === '/login' || pathname === '/register' ? 'hidden' : ''}`}
+    >
       <Link href="/">
         <svg
           width="125"
