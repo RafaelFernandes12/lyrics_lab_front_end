@@ -4,7 +4,6 @@ import MenuIcon from '@mui/icons-material/Menu'
 import PersonIcon from '@mui/icons-material/Person'
 import WbSunnyIcon from '@mui/icons-material/WbSunny'
 import Link from 'next/link'
-
 import { useEffect, useState } from 'react'
 export function SwitchTheme() {
   const [theme, setTheme] = useState(() => {
@@ -31,16 +30,16 @@ export function SwitchTheme() {
     <div>
       <WbSunnyIcon
         onClick={handleThemeSwitch}
-        className=" cursor-pointer text-white max-md:hidden"
+        className="cursor-pointer text-white max-md:hidden"
       />
       <DarkModeIcon
         onClick={handleThemeSwitch}
         className=" cursor-pointer dark:hidden max-md:hidden"
       />
-      <Link href={'/user'}>
+      <Link href="/user">
         <PersonIcon
           sx={{ width: 125, height: 95 }}
-          className=" dark:text-white max-md:hidden"
+          className="dark:text-white max-md:hidden"
         />
       </Link>
       <button className="dark:bg-transparent dark:text-white md:hidden">
