@@ -11,13 +11,21 @@ import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
 import { useState } from 'react'
-import TextEditor from './TextEditor'
 
 const drawerWidth = 200
 
-export default function Board() {
+interface drawerComponentProps {
+  tomUp: () => void
+  tomDown: () => void
+  children: React.ReactNode
+}
+
+export function DrawerComponent({
+  children,
+  tomUp,
+  tomDown,
+}: drawerComponentProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [isClosing, setIsClosing] = useState(false)
 
@@ -37,38 +45,51 @@ export default function Board() {
   }
 
   const drawer = (
-    <div>
+    <div className="m-0 p-0 dark:text-black">
       <List>
-        {['Baixar PDF', 'Excluir'].map((text, index) => (
-          <ListItem key={index} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <PictureAsPdfIcon /> : <DeleteIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        <ListItem sx={{ padding: 0 }}>
+          <ListItemButton>
+            <ListItemIcon sx={{ width: 10, height: 10 }}>
+              <PictureAsPdfIcon />
+            </ListItemIcon>
+            <span className="p-0 text-sm dark:text-black">Baixar PDF</span>
+          </ListItemButton>
+        </ListItem>
+        <ListItem sx={{ padding: 0 }}>
+          <ListItemButton>
+            <ListItemIcon sx={{ width: 10, height: 10 }}>
+              <DeleteIcon />
+            </ListItemIcon>
+            <span className="p-0 text-sm dark:text-black">Excluir</span>
+          </ListItemButton>
+        </ListItem>
       </List>
       <Divider />
       <List>
-        {['1/2 Tom', '1/2 Tom'].map((text, index) => (
-          <ListItem key={index} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <AddIcon /> : <RemoveIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        <ListItem sx={{ padding: 0 }}>
+          <ListItemButton onClick={tomUp}>
+            <ListItemIcon sx={{ width: 10, height: 10 }}>
+              <AddIcon />
+            </ListItemIcon>
+            <span className="p-0 text-sm dark:text-black">Subir 1/2 tom</span>
+          </ListItemButton>
+        </ListItem>
+        <ListItem sx={{ padding: 0 }}>
+          <ListItemButton onClick={tomDown}>
+            <ListItemIcon sx={{ width: 10, height: 10 }}>
+              <RemoveIcon />
+            </ListItemIcon>
+            <span className="p-0 text-sm dark:text-black">
+              Diminuir 1/2 tom
+            </span>
+          </ListItemButton>
+        </ListItem>
       </List>
     </div>
   )
-
   return (
     <div>
-      <div className="flex gap-10">
+      <div className="flex h-screen w-screen gap-10 dark:text-black">
         <Drawer
           variant="permanent"
           className="max-sm:hidden"
@@ -76,6 +97,7 @@ export default function Board() {
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: drawerWidth,
+              height: drawerWidth,
               position: 'relative',
               border: 'none',
               borderRadius: '12px',
@@ -86,24 +108,18 @@ export default function Board() {
           {drawer}
         </Drawer>
         <div>
-          <h1 className="text-2xl font-semibold">Nome da música</h1>
-          <h3 className="text-base">Tom: Cm7</h3>
           <button
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerToggle}
-            className="p-0 sm:hidden"
+            className="p-0 dark:text-white sm:hidden"
           >
             <MenuIcon />
           </button>
-          <div className="max-sm:hidden">
-            <TextEditor />
-          </div>
+          <div className="h-full w-full">{children}</div>
         </div>
       </div>
-      <div className="sm:hidden">
-        <TextEditor />
-      </div>
+      <div className="h-full w-full sm:hidden">{children}</div>
       <Drawer
         anchor="bottom"
         variant="temporary"

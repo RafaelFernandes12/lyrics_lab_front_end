@@ -16,7 +16,6 @@ dayjs.locale('pt-br')
 export default async function Songs() {
   const songs = (await getSongs()) || []
   const playlists = (await getPlaylists()) || []
-
   return (
     <>
       <section className="flex items-center justify-between">
