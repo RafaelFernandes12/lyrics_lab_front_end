@@ -16,15 +16,15 @@ import { useState } from 'react'
 const drawerWidth = 200
 
 interface drawerComponentProps {
-  tomUp: () => void
-  tomDown: () => void
-  children: React.ReactNode
+  toneUp: () => void
+  toneDown: () => void
+  pdfGenerator: () => void
 }
 
 export function DrawerComponent({
-  children,
-  tomUp,
-  tomDown,
+  toneUp,
+  toneDown,
+  pdfGenerator,
 }: drawerComponentProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [isClosing, setIsClosing] = useState(false)
@@ -48,8 +48,8 @@ export function DrawerComponent({
     <div className="m-0 p-0 dark:text-black">
       <List>
         <ListItem sx={{ padding: 0 }}>
-          <ListItemButton>
-            <ListItemIcon sx={{ width: 10, height: 10 }}>
+          <ListItemButton onClick={pdfGenerator}>
+            <ListItemIcon>
               <PictureAsPdfIcon />
             </ListItemIcon>
             <span className="p-0 text-sm dark:text-black">Baixar PDF</span>
@@ -57,7 +57,7 @@ export function DrawerComponent({
         </ListItem>
         <ListItem sx={{ padding: 0 }}>
           <ListItemButton>
-            <ListItemIcon sx={{ width: 10, height: 10 }}>
+            <ListItemIcon>
               <DeleteIcon />
             </ListItemIcon>
             <span className="p-0 text-sm dark:text-black">Excluir</span>
@@ -67,16 +67,16 @@ export function DrawerComponent({
       <Divider />
       <List>
         <ListItem sx={{ padding: 0 }}>
-          <ListItemButton onClick={tomUp}>
-            <ListItemIcon sx={{ width: 10, height: 10 }}>
+          <ListItemButton onClick={toneUp}>
+            <ListItemIcon>
               <AddIcon />
             </ListItemIcon>
             <span className="p-0 text-sm dark:text-black">Subir 1/2 tom</span>
           </ListItemButton>
         </ListItem>
         <ListItem sx={{ padding: 0 }}>
-          <ListItemButton onClick={tomDown}>
-            <ListItemIcon sx={{ width: 10, height: 10 }}>
+          <ListItemButton onClick={toneDown}>
+            <ListItemIcon>
               <RemoveIcon />
             </ListItemIcon>
             <span className="p-0 text-sm dark:text-black">
@@ -88,11 +88,11 @@ export function DrawerComponent({
     </div>
   )
   return (
-    <div>
-      <div className="flex h-screen w-screen gap-10 dark:text-black">
+    <>
+      <div className="dark:text-black">
         <Drawer
           variant="permanent"
-          className="max-sm:hidden"
+          className="max-md:hidden"
           sx={{
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
@@ -112,14 +112,12 @@ export function DrawerComponent({
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerToggle}
-            className="p-0 dark:text-white sm:hidden"
+            className="p-0 dark:text-white md:hidden"
           >
             <MenuIcon />
           </button>
-          <div className="h-full w-full">{children}</div>
         </div>
       </div>
-      <div className="h-full w-full sm:hidden">{children}</div>
       <Drawer
         anchor="bottom"
         variant="temporary"
@@ -136,6 +134,6 @@ export function DrawerComponent({
       >
         {drawer}
       </Drawer>
-    </div>
+    </>
   )
 }

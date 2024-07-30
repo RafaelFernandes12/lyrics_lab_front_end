@@ -13,7 +13,7 @@ export default function RootLayout({
     <html lang="pt-br" className="dark">
       <body className="bg-white dark:bg-black">
         <Header />
-        <main className="my-10 rounded-md bg-slate-50 p-8 dark:bg-[#141414]">
+        <main className="my-10 h-fit rounded-md bg-slate-50 p-8 dark:bg-[#141414] max-sm:p-4">
           {children}
         </main>
         <ToastContainer
