@@ -1,14 +1,17 @@
-import { Header } from '@/components/Header/Header'
 import { PlaylistCard } from '@/components/PlaylistCard/PlaylistCard'
 import SongCard from '@/components/SongCard/SongCard'
 import { Tom } from '@/components/SongCard/Tom'
+import { getPlaylists } from '@/operations/playlistRoutes/getPlaylists'
+import { getSongs } from '@/operations/songRoutes/getSongs'
 import Link from 'next/link'
 
-export default function Home() {
+export default async function Home() {
+  const playlists = (await getPlaylists()) || []
+  const songs = (await getSongs()) || []
+
   return (
     <>
-      <Header />
-      <main className="my-10 rounded-md bg-slate-50 p-8 dark:bg-[#141414]">
+      <main>
         <section>
           <div className="mb-6 flex items-center justify-between font-semibold">
             <h2>Vistas recentemente</h2>
@@ -18,21 +21,13 @@ export default function Home() {
           </div>
 
           <div className="grid w-full grid-cols-4 gap-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1">
-            <SongCard>
-              <Tom />
-            </SongCard>
-            <SongCard>
-              <Tom />
-            </SongCard>
-            <SongCard>
-              <Tom />
-            </SongCard>
-            <SongCard>
-              <Tom />
-            </SongCard>
-            <SongCard>
-              <Tom />
-            </SongCard>
+            {songs.map((song) => {
+              return (
+                <SongCard key={song.id} id={song.id} name={song.name}>
+                  <Tom />
+                </SongCard>
+              )
+            })}
           </div>
         </section>
         <section>
@@ -43,13 +38,19 @@ export default function Home() {
             </h3>
           </div>
           <div className="grid w-full grid-cols-5 gap-4 max-2xl:grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:flex max-sm:flex-col max-sm:items-center">
-            <PlaylistCard />
-            <PlaylistCard />
-            <PlaylistCard />
-            <PlaylistCard />
-            <PlaylistCard />
-            <PlaylistCard />
-            <PlaylistCard />
+            {playlists.map((playlist) => {
+              const songsNames = playlist.songs.flatMap((song) => {
+                return song.name
+              })
+              return (
+                <PlaylistCard
+                  id={playlist.id}
+                  key={playlist.id}
+                  name={playlist.name}
+                  songs={songsNames}
+                />
+              )
+            })}
           </div>
         </section>
       </main>

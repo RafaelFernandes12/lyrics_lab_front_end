@@ -22,12 +22,6 @@
         @apply text-2xl max-md:text-base
     }
     button {
-        @apply dark:bg-white
-    }
-    button span{
-        @apply text-white dark:text-black
-    }
-    button {
         @apply rounded-xl p-3;
     }
 }
