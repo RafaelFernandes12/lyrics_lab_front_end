@@ -4,11 +4,11 @@ import SongCard from '@/components/SongCard/SongCard'
 import { Tom } from '@/components/SongCard/Tom'
 import { getPlaylists } from '@/operations/playlistRoutes/getPlaylists'
 import { getSongs } from '@/operations/songRoutes/getSongs'
-import AddIcon from '@mui/icons-material/Add'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { CreateSongDialog } from './components/CreateSongDialog'
 
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
@@ -20,10 +20,7 @@ export default async function Songs() {
     <>
       <section className="flex items-center justify-between">
         <h1>Músicas</h1>
-        <button className="flex items-center gap-2 bg-blue-800 p-3">
-          <AddIcon className="text-white" />
-          <span className="text-white max-sm:hidden">Adicionar música</span>
-        </button>
+        <CreateSongDialog />
       </section>
 
       <section className="flex flex-col gap-4">

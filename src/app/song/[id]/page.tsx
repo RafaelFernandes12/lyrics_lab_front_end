@@ -3,7 +3,7 @@ import { fetcher } from '@/lib/fetcher'
 import { urlIdProps } from '@/models/urlIdProps'
 import { editSong } from '@/operations/songRoutes/editSong'
 import { FormControlLabel, FormGroup, Switch } from '@mui/material'
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react'
 import useSWR from 'swr'
 import { DrawerComponent } from '../components/DrawerComponent'
 // eslint-disable-next-line prettier/prettier
@@ -12,12 +12,13 @@ import { useReactToPrint } from 'react-to-print'
 // eslint-disable-next-line prettier/prettier
 import {
   chordRegex,
-  letterWithSharp,
   lyrics,
+  matchAorERegex,
   noChordRegex,
   tabLineRegex,
   tomUpAndDownRegex,
 } from '../components/regex'
+import { renderText } from '../components/renderText'
 interface textEditorProps {
   name?: string
   lyric: string
@@ -40,13 +41,14 @@ export default function Song({ params }: urlIdProps) {
     }
   }, [song])
 
-  const handleToggle = () => {
-    setIsChecked(!isChecked)
-    editSong(6, name, text)
+  const handleToggle = useCallback(() => {
+    setIsChecked((prev) => !prev)
+    editSong(params.id, name, text)
     setTimeout(() => {
       mutate({ name, lyric: text })
     }, 500)
-  }
+  }, [name, text, params.id, mutate])
+
   const componentRef = useRef(null)
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -54,12 +56,15 @@ export default function Song({ params }: urlIdProps) {
 
   function handleTomUp() {
     const newLines = lines.map((line) => {
-      const isThereAnAorAnEinTheLine =
-        /(?!\/#)\b[AE]\b(?!#)(?!\/)/g.test(line) && noChordRegex.test(line)
+      // const words = line.split(' ')
+      // const isThereAnAOrAnE = words.some((word) => word === 'A' || word === 'E')
+
       return line.replace(chordRegex, (chord) => {
+        const matchAorE = matchAorERegex.test(line)
+        const matchNoChord = noChordRegex.test(line)
+        const isThereAnAorAnEinTheLine = !!(matchAorE && matchNoChord)
         let updatedChord = chord
         const baseChord = chord.match(tomUpAndDownRegex)
-
         if (baseChord && !isThereAnAorAnEinTheLine) {
           baseChord.forEach((cipher) => {
             const index = lyrics.indexOf(cipher)
@@ -106,40 +111,6 @@ export default function Song({ params }: urlIdProps) {
     }, 100)
   }
 
-  const renderText = () => {
-    return lines.map((line, index) => {
-      const words = line.split(' ')
-      const isLineATibeLine = words.some((word) => word.match(tabLineRegex))
-
-      const isThereAnAorAnEinTheLine =
-        /(?!\/#)\b[AE]\b(?!#)(?!\/)/g.test(line) &&
-        noChordRegex.test(line) &&
-        letterWithSharp.test(line)
-
-      return (
-        <p
-          key={index}
-          className="whitespace-pre-wrap font-mono text-sm font-bold outline-none max-sm:text-xs"
-        >
-          {words.map((word, index) => {
-            if (
-              word.match(chordRegex) &&
-              !isLineATibeLine &&
-              !isThereAnAorAnEinTheLine
-            ) {
-              return (
-                <b key={index} className=" text-blue-500 dark:text-blue-500">
-                  {word}{' '}
-                </b>
-              )
-            }
-            return <>{word} </>
-          })}
-        </p>
-      )
-    })
-  }
-
   return (
     <div className="flex gap-[5%] max-md:flex-col">
       <DrawerComponent
@@ -182,7 +153,13 @@ export default function Song({ params }: urlIdProps) {
           </>
         ) : (
           <div className="pdfChord mt-10" ref={componentRef}>
-            {renderText()}
+            {renderText({
+              lines,
+              chordRegex,
+              noChordRegex,
+              tabLineRegex,
+              matchAorERegex,
+            })}
           </div>
         )}
       </div>

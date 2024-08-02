@@ -1,5 +1,5 @@
+import { CreatePlaylistDialog } from '@/app/playlists/components/CreatePlaylistDialog'
 import { PlaylistCard } from '@/components/PlaylistCard/PlaylistCard'
-import { CreateSongDialog } from '@/components/createSongDialog/CreateSongDialog'
 import { getPlaylists } from '@/operations/playlistRoutes/getPlaylists'
 
 export default async function Playlists() {
@@ -8,7 +8,7 @@ export default async function Playlists() {
     <>
       <section className="flex items-center justify-between">
         <h1>Playlists</h1>
-        <CreateSongDialog />
+        <CreatePlaylistDialog />
       </section>
       <section>
         <ul className="grid grid-cols-5 items-center gap-8 max-2xl:grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:flex max-sm:flex-col max-sm:items-center">
