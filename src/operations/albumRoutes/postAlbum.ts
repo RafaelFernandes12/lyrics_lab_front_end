@@ -1,9 +1,9 @@
 import { SuccessHandler } from '@/helpers/SuccessHandler'
 import axios from '@/lib/reqInterceptor'
 
-export async function postPlaylist(name: string, description: string) {
+export async function postAlbum(name: string, description: string) {
   try {
-    await axios.post('playlist', { name, description }).then(() => {
+    await axios.post('album', { name, description }).then(() => {
       SuccessHandler()
     })
   } catch (error) {

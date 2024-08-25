@@ -1,7 +1,6 @@
 'use client'
 import { AuthHeader } from '@/components/Header/AuthHeader'
 import { login } from '@/operations/auth/login'
-import { getPlaylists } from '@/operations/playlistRoutes/getPlaylists'
 import Link from 'next/link'
 import { useState } from 'react'
 
@@ -12,15 +11,11 @@ export default function SignUp() {
     e.preventDefault()
     login(email, password)
   }
-  function handleGetPlaylists() {
-    getPlaylists()
-  }
   return (
     <>
       <AuthHeader />
       <h1 className="my-20 w-full text-center">Acesse sua conta</h1>
       <section className="m-auto w-[600px] rounded-2xl border-2 border-black p-6 dark:border-white max-sm:w-full">
-        <button onClick={handleGetPlaylists}>get User</button>
         <form className="flex flex-col gap-4" onSubmit={handleLogin}>
           <div className="flex w-full flex-col gap-2">
             <label>

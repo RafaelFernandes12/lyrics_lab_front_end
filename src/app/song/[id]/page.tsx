@@ -1,33 +1,31 @@
 'use client'
 import { fetcher } from '@/lib/fetcher'
 import { urlIdProps } from '@/models/urlIdProps'
+import { editLyric } from '@/operations/songRoutes/editLyric'
 import { editSong } from '@/operations/songRoutes/editSong'
 import { FormControlLabel, FormGroup, Switch } from '@mui/material'
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react'
-import useSWR from 'swr'
-import { DrawerComponent } from '../components/DrawerComponent'
-// eslint-disable-next-line prettier/prettier
-import { editLyric } from '@/operations/songRoutes/editLyric'
 import { useReactToPrint } from 'react-to-print'
-// eslint-disable-next-line prettier/prettier
-import {
-  chordRegex,
-  lyrics,
-  matchAorERegex,
-  noChordRegex,
-  tabLineRegex,
-  tomUpAndDownRegex,
-} from '../components/regex'
-import { renderText } from '../components/renderText'
+import useSWR from 'swr'
+import { analyzeLine } from '../../../utils/lineUtils'
+import { regex } from '../../../utils/regex'
+import { DrawerComponent } from '../components/DrawerComponent'
+import { RenderText } from '../components/RenderText'
+
 interface textEditorProps {
   name?: string
-  lyric: string
+  lyric?: string
+  tone?: string
 }
-
 export default function Song({ params }: urlIdProps) {
   const [isChecked, setIsChecked] = useState(true)
   const [name, setName] = useState('')
   const [text, setText] = useState('')
+  const [textSize, setTextSize] = useState('')
+  const preRef = useRef<HTMLPreElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [containerWidth, setContainerWidth] = useState<number>(0)
+
   const { data: song, mutate } = useSWR<textEditorProps>(
     `/song/${params.id}`,
     fetcher,
@@ -37,65 +35,52 @@ export default function Song({ params }: urlIdProps) {
   useEffect(() => {
     if (song) {
       setName(song.name || '')
-      setText(song.lyric)
+      setText(song.lyric || '')
     }
   }, [song])
 
-  const handleToggle = useCallback(() => {
+  useEffect(() => {
+    if (containerRef.current) {
+      const observer = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          setContainerWidth(entry.contentRect.width)
+        }
+      })
+      observer.observe(containerRef.current)
+
+      return () => {
+        observer.disconnect()
+      }
+    }
+  }, [])
+  const handleToggle = useCallback(async () => {
     setIsChecked((prev) => !prev)
-    editSong(params.id, name, text)
-    setTimeout(() => {
-      mutate({ name, lyric: text })
-    }, 500)
+    await editSong(params.id, name, text)
+    await mutate({ name, lyric: text })
   }, [name, text, params.id, mutate])
 
-  const componentRef = useRef(null)
   const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
+    content: () => preRef.current,
   })
 
-  function handleTomUp() {
+  async function handleTomChange(direction: 'up' | 'down') {
     const newLines = lines.map((line) => {
-      // const words = line.split(' ')
-      // const isThereAnAOrAnE = words.some((word) => word === 'A' || word === 'E')
-
-      return line.replace(chordRegex, (chord) => {
-        const matchAorE = matchAorERegex.test(line)
-        const matchNoChord = noChordRegex.test(line)
-        const isThereAnAorAnEinTheLine = !!(matchAorE && matchNoChord)
+      return line.replace(regex.chordRegex, (chord) => {
         let updatedChord = chord
-        const baseChord = chord.match(tomUpAndDownRegex)
-        if (baseChord && !isThereAnAorAnEinTheLine) {
-          baseChord.forEach((cipher) => {
-            const index = lyrics.indexOf(cipher)
-            if (index !== -1) {
-              const newChord = lyrics[(index + 1) % lyrics.length]
-              updatedChord = updatedChord.replace(cipher, newChord)
-            }
-          })
-        }
-        return updatedChord
-      })
-    })
 
-    const newLyrics = newLines.join('\n')
-    editLyric(params.id, newLyrics)
-    setTimeout(() => {
-      mutate({ name, lyric: newLyrics })
-    }, 100)
-  }
-  function handleTomDown() {
-    const newLines = lines.map((line) => {
-      return line.replace(chordRegex, (chord) => {
-        let updatedChord = chord
-        const baseChord = chord.match(tomUpAndDownRegex)
+        const { isLineATabLine, isThereAnAorAnEinTheLine } = analyzeLine(line)
 
-        if (baseChord) {
+        const baseChord = chord.match(regex.tomUpAndDownRegex)
+
+        if (baseChord && !isThereAnAorAnEinTheLine && !isLineATabLine) {
           baseChord.forEach((cipher) => {
-            const index = lyrics.indexOf(cipher)
+            const index = regex.lyrics.indexOf(cipher)
             if (index !== -1) {
+              const shift = direction === 'up' ? 1 : -1
               const newChord =
-                lyrics[(index - 1 + lyrics.length) % lyrics.length]
+                regex.lyrics[
+                  (index + shift + regex.lyrics.length) % regex.lyrics.length
+                ]
               updatedChord = updatedChord.replace(cipher, newChord)
             }
           })
@@ -105,32 +90,39 @@ export default function Song({ params }: urlIdProps) {
     })
 
     const newLyrics = newLines.join('\n')
-    editLyric(params.id, newLyrics)
-    setTimeout(() => {
-      mutate({ name, lyric: newLyrics })
-    }, 100)
+    await editLyric(params.id, newLyrics)
+    await mutate({ name, lyric: newLyrics })
+  }
+
+  function handleTextChange(direction: 'up' | 'down') {
+    const index = regex.textSizes.indexOf(textSize)
+    const shift = direction === 'up' ? 1 : -1
+    const newIndex =
+      (index + shift + regex.textSizes.length) % regex.textSizes.length
+    setTextSize(regex.textSizes[newIndex])
   }
 
   return (
     <div className="flex gap-[5%] max-md:flex-col">
       <DrawerComponent
-        toneUp={handleTomUp}
-        toneDown={handleTomDown}
+        toneUp={() => handleTomChange('up')}
+        toneDown={() => handleTomChange('down')}
         pdfGenerator={handlePrint}
-      />{' '}
-      <div className="w-full">
+        textUp={() => handleTextChange('up')}
+        textDown={() => handleTextChange('down')}
+      />
+      <div ref={containerRef} className="max-w-[200px]">
         {isChecked ? (
           <input
-            className="text-2xl font-semibold"
             value={name}
             onChange={(e) => {
               setName(e.target.value)
             }}
           />
         ) : (
-          <h1 className="text-2xl font-semibold">{song?.name}</h1>
+          <h1>{song?.name}</h1>
         )}
-        <h3 className="text-base">Tom: Cm7</h3>
+        <h3 className="text-base">Tom: {song?.tone}</h3>
         <FormGroup>
           <FormControlLabel
             onClick={handleToggle}
@@ -139,6 +131,7 @@ export default function Song({ params }: urlIdProps) {
           />
         </FormGroup>
 
+        <p>{containerWidth}px</p>
         {isChecked ? (
           <>
             <textarea
@@ -152,15 +145,9 @@ export default function Song({ params }: urlIdProps) {
             />
           </>
         ) : (
-          <div className="pdfChord mt-10" ref={componentRef}>
-            {renderText({
-              lines,
-              chordRegex,
-              noChordRegex,
-              tabLineRegex,
-              matchAorERegex,
-            })}
-          </div>
+          <pre className="mt-10" ref={preRef}>
+            <RenderText lines={text} fontSize={textSize} maxWidth={containerWidth} />
+          </pre>
         )}
       </div>
     </div>

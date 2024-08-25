@@ -1,9 +1,9 @@
 import { SuccessHandler } from '@/helpers/SuccessHandler'
 import axios from '@/lib/reqInterceptor'
 
-export async function deletePlaylist(id: number) {
+export async function deleteAlbum(id: number) {
   try {
-    await axios.delete(`/playlist/${id}`).then(() => {
+    await axios.delete(`/album/${id}`).then(() => {
       SuccessHandler()
     })
   } catch (error) {

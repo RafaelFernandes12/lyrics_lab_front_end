@@ -5,19 +5,16 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import MenuIcon from '@mui/icons-material/Menu'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
 import RemoveIcon from '@mui/icons-material/Remove'
+import TextDecreaseIcon from '@mui/icons-material/TextDecrease'
+import TextIncreaseIcon from '@mui/icons-material/TextIncrease'
 import Divider from '@mui/material/Divider'
 import Drawer from '@mui/material/Drawer'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import ListItemButton from '@mui/material/ListItemButton'
-import ListItemIcon from '@mui/material/ListItemIcon'
 import { useState } from 'react'
-
-const drawerWidth = 200
-
 interface drawerComponentProps {
   toneUp: () => void
   toneDown: () => void
+  textUp: () => void
+  textDown: () => void
   pdfGenerator: () => void
 }
 
@@ -25,6 +22,8 @@ export function DrawerComponent({
   toneUp,
   toneDown,
   pdfGenerator,
+  textUp,
+  textDown,
 }: drawerComponentProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [isClosing, setIsClosing] = useState(false)
@@ -45,46 +44,42 @@ export function DrawerComponent({
   }
 
   const drawer = (
-    <div className="m-0 p-0 dark:text-black">
-      <List>
-        <ListItem sx={{ padding: 0 }}>
-          <ListItemButton onClick={pdfGenerator}>
-            <ListItemIcon>
-              <PictureAsPdfIcon />
-            </ListItemIcon>
+    <div className="p-4 dark:text-black">
+      <ul className="flex w-full flex-col gap-2">
+        <li>
+          <button onClick={pdfGenerator} className="flex w-full gap-4">
+            <PictureAsPdfIcon />
             <span className="p-0 text-sm dark:text-black">Baixar PDF</span>
-          </ListItemButton>
-        </ListItem>
-        <ListItem sx={{ padding: 0 }}>
-          <ListItemButton>
-            <ListItemIcon>
-              <DeleteIcon />
-            </ListItemIcon>
+          </button>
+        </li>
+        <li>
+          <button onClick={pdfGenerator} className="flex w-full gap-4">
+            <DeleteIcon />
             <span className="p-0 text-sm dark:text-black">Excluir</span>
-          </ListItemButton>
-        </ListItem>
-      </List>
+          </button>
+        </li>
+      </ul>
       <Divider />
-      <List>
-        <ListItem sx={{ padding: 0 }}>
-          <ListItemButton onClick={toneUp}>
-            <ListItemIcon>
-              <AddIcon />
-            </ListItemIcon>
-            <span className="p-0 text-sm dark:text-black">Subir 1/2 tom</span>
-          </ListItemButton>
-        </ListItem>
-        <ListItem sx={{ padding: 0 }}>
-          <ListItemButton onClick={toneDown}>
-            <ListItemIcon>
-              <RemoveIcon />
-            </ListItemIcon>
-            <span className="p-0 text-sm dark:text-black">
-              Diminuir 1/2 tom
-            </span>
-          </ListItemButton>
-        </ListItem>
-      </List>
+      <ul className="flex w-full flex-col">
+        <li className="flex items-center justify-center gap-2">
+          <button onClick={toneDown}>
+            <RemoveIcon />
+          </button>
+          <span className="p-0 text-sm dark:text-black">Tom</span>
+          <button onClick={toneUp}>
+            <AddIcon />
+          </button>
+        </li>
+        <li className="flex items-center justify-center gap-2">
+          <button onClick={textDown}>
+            <TextDecreaseIcon />
+          </button>
+          <span className="p-0 text-sm dark:text-black">Texto</span>
+          <button onClick={textUp}>
+            <TextIncreaseIcon />
+          </button>
+        </li>
+      </ul>
     </div>
   )
   return (
@@ -96,8 +91,6 @@ export function DrawerComponent({
           sx={{
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
-              width: drawerWidth,
-              height: drawerWidth,
               position: 'relative',
               border: 'none',
               borderRadius: '12px',

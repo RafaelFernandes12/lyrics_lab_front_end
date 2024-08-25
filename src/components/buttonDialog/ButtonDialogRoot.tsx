@@ -1,9 +1,9 @@
 'use client'
 import AddIcon from '@mui/icons-material/Add'
+import CloseIcon from '@mui/icons-material/Close'
 import { DialogContent } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
 import { useState } from 'react'
-import CloseIcon from '@mui/icons-material/Close'
 interface rootProps {
   text: string
   action: () => void
@@ -21,7 +21,9 @@ export function ButtonDialogRoot({ action, text, children }: rootProps) {
         className="flex items-center gap-2 bg-blue-800 p-3"
         onClick={handleClick}
       >
-        <AddIcon className="text-white" />
+        <div className="h-fit w-fit">
+          <AddIcon className="text-white" />
+        </div>
         <span className="text-white max-sm:hidden">{text}</span>
       </button>
       <Dialog open={open} onClose={handleClick} maxWidth="lg">
