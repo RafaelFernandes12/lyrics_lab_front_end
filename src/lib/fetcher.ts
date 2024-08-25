@@ -1,3 +1,11 @@
-import axios from './reqInterceptor'
+import api from '@/lib/axios'
 
-export const fetcher = (url: string) => axios.get(url).then((r) => r.data)
+export const fetcher = (url: string, token?: string) => {
+  return api
+    .get(url, {
+      headers: {
+        Authorization: token ? `${token}` : undefined,
+      },
+    })
+    .then((r) => r.data)
+}

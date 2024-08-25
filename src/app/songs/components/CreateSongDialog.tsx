@@ -1,17 +1,27 @@
 'use client'
-import { postSong } from '@/operations/songRoutes/postSong'
-import { useState } from 'react'
-import { ButtonDialog } from '../../../components/buttonDialog/index'
-import useSWR from 'swr'
 import { fetcher } from '@/lib/fetcher'
+import { postSong } from '@/operations/songRoutes/postSong'
+import { parseCookies } from 'nookies'
+import { useState } from 'react'
+import useSWR from 'swr'
+import { ButtonDialog } from '../../../components/buttonDialog/index'
+
 export function CreateSongDialog() {
   const [name, setName] = useState('')
   const [tone, setTone] = useState('')
   const [playlistId, setPlaylistId] = useState<number>(3)
-  const { data: playlists } = useSWR('/Playlist', fetcher)
+
+  const cookies = parseCookies()
+  const token = cookies.lltoken
+
+  const { data: playlists } = useSWR(['/album', token], ([url, token]) =>
+    fetcher(url, token),
+  )
+
   function handleCreateSong() {
-    postSong(name, tone, playlistId)
+    postSong(name, tone, playlistId, token)
   }
+
   return (
     <ButtonDialog.Root text="Adicionar Música" action={handleCreateSong}>
       <ButtonDialog.Input

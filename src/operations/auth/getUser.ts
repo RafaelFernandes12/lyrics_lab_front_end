@@ -1,9 +1,15 @@
-import axios from '@/lib/reqInterceptor'
+import api from '@/lib/axios'
+import { userProps } from '@/models/userProps'
 
-export async function getUser() {
+export async function getUser(token?: string) {
   try {
-    const data = await axios.get('auth/user')
-    return data
+    const response = await api.get('auth/user', {
+      headers: {
+        Authorization: token ? `${token}` : undefined,
+      },
+    })
+    const user: userProps = response.data
+    return user
   } catch (error) {
     console.log(error)
   }

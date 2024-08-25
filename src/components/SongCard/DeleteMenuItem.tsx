@@ -3,15 +3,21 @@ import { idProps } from '@/models/idProps'
 import { deleteSong } from '@/operations/songRoutes/deleteSong'
 import { DialogContent, MenuItem } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
+import { parseCookies } from 'nookies'
 import { useState } from 'react'
 
 export function DeleteMenuItem({ id }: idProps) {
   const [open, setOpen] = useState(false)
+
+  const cookies = parseCookies()
+  const token = cookies.lltoken
+
   function handleClick() {
     setOpen(!open)
   }
+
   function handleDeleteSong() {
-    deleteSong(id)
+    deleteSong(id, token)
     location.reload()
   }
 

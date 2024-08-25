@@ -4,17 +4,23 @@ import { editPlaylist } from '@/operations/playlistRoutes/editPlaylist'
 import EditIcon from '@mui/icons-material/Edit'
 import { DialogContent } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
+import { parseCookies } from 'nookies'
 import { useState } from 'react'
 
 export function EditIconDialog({ id }: idProps) {
   const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
+
+  const cookies = parseCookies()
+  const token = cookies.lltoken
+
   function handleClick() {
     setOpen(!open)
   }
+
   function handleEditPlaylist() {
-    editPlaylist(id, name, description)
+    editPlaylist(id, name, description, token)
   }
   return (
     <>
