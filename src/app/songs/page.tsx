@@ -47,7 +47,9 @@ export default async function Songs() {
             <SongCard name={song.name} key={song.id} id={song.id}>
               <Album
                 album={playlists.map((playlist) => {
-                  if (playlist.id === song.playlistId) return playlist.name
+                  console.log(playlist.id)
+                  console.log(`song.playlistId: ${song.albumId}`)
+                  if (playlist.id === song.albumId) return playlist.name
                   return ''
                 })}
               />
