@@ -5,6 +5,7 @@ import PersonIcon from '@mui/icons-material/Person'
 import WbSunnyIcon from '@mui/icons-material/WbSunny'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+
 export function SwitchTheme() {
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -26,6 +27,7 @@ export function SwitchTheme() {
   function handleThemeSwitch() {
     setTheme(theme === 'dark' ? 'light' : 'dark')
   }
+
   return (
     <div>
       <WbSunnyIcon

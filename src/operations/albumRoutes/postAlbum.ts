@@ -1,11 +1,25 @@
 import { SuccessHandler } from '@/helpers/SuccessHandler'
-import axios from '@/lib/reqInterceptor'
+import api from '@/lib/axios'
 
-export async function postAlbum(name: string, description: string) {
+export async function postAlbum(
+  name: string,
+  description: string,
+  token?: string,
+) {
   try {
-    await axios.post('album', { name, description }).then(() => {
-      SuccessHandler()
-    })
+    await api
+      .post(
+        'album',
+        { name, description },
+        {
+          headers: {
+            Authorization: token ? `${token}` : undefined,
+          },
+        },
+      )
+      .then(() => {
+        SuccessHandler()
+      })
   } catch (error) {
     console.log(error)
   }

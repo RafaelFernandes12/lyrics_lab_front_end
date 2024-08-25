@@ -1,15 +1,10 @@
-import axios from 'axios'
-import Cookies from 'js-cookie'
+import api from '@/lib/axios'
 
 export async function login(email: string, password: string) {
   try {
-    await axios.post('auth/login', { email, password }).then((res) => {
-      Cookies.set('auth_token', res.data.jwt, {
-        sameSite: 'None',
-        secure: true,
-      })
-      return res
-    })
+    const response = await api.post('auth/login', { email, password })
+    const jwt = response.data
+    return jwt
   } catch (error) {
     console.log(error)
   }

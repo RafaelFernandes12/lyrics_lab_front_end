@@ -1,11 +1,17 @@
 import { SuccessHandler } from '@/helpers/SuccessHandler'
-import axios from '@/lib/reqInterceptor'
+import api from '@/lib/axios'
 
-export async function deleteAlbum(id: number) {
+export async function deleteAlbum(id: number, token?: string) {
   try {
-    await axios.delete(`/album/${id}`).then(() => {
-      SuccessHandler()
-    })
+    await api
+      .delete(`/album/${id}`, {
+        headers: {
+          Authorization: token ? `${token}` : undefined,
+        },
+      })
+      .then(() => {
+        SuccessHandler()
+      })
   } catch (error) {
     console.log(error)
   }

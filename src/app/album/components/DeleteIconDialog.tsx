@@ -5,17 +5,23 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { DialogContent } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
 import { useRouter } from 'next/navigation'
+import { parseCookies } from 'nookies'
 import { useState } from 'react'
 
 export function DeleteIconDialog({ id }: idProps) {
   const [open, setOpen] = useState(false)
   const router = useRouter()
+
+  const cookies = parseCookies()
+  const token = cookies.lltoken
+
   function handleClick() {
     setOpen(!open)
   }
+
   function handleDeleteAlbum() {
-    deleteAlbum(id).then(() => {
-      router.push('/Albums')
+    deleteAlbum(id, token).then(() => {
+      router.push('/albuns')
     })
   }
 

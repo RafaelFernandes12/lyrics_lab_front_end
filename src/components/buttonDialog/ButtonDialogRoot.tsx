@@ -4,6 +4,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import { DialogContent } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
 import { useState } from 'react'
+
 interface rootProps {
   text: string
   action: () => void
@@ -15,6 +16,7 @@ export function ButtonDialogRoot({ action, text, children }: rootProps) {
   function handleClick() {
     setOpen(!open)
   }
+
   return (
     <>
       <button

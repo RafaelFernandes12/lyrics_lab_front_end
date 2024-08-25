@@ -1,14 +1,21 @@
 'use client'
 import { postAlbum } from '@/operations/albumRoutes/postAlbum'
+import { parseCookies } from 'nookies'
 import { useState } from 'react'
 import { ButtonDialog } from '../../../components/buttonDialog/index'
 
-export function CreateAlbumDialog() {
+export function CreatePlaylistDialog() {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
+
+  const cookies = parseCookies()
+  const token = cookies.lltoken
+
   function handleCreateAlbum() {
-    postAlbum(name, description)
+    window.alert(`token: ${token}`)
+    postAlbum(name, description, token)
   }
+
   return (
     <ButtonDialog.Root text="Adicionar Album" action={handleCreateAlbum}>
       <ButtonDialog.Input
