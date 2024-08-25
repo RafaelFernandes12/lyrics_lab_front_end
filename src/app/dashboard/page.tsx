@@ -1,12 +1,12 @@
-import { PlaylistCard } from '@/components/PlaylistCard/PlaylistCard'
+import { AlbumCard } from '@/components/albumCard/AlbumCard'
 import SongCard from '@/components/SongCard/SongCard'
 import { Tom } from '@/components/SongCard/Tom'
-import { getPlaylists } from '@/operations/playlistRoutes/getPlaylists'
+import { getAlbums } from '@/operations/albumRoutes/getAlbums'
 import { getSongs } from '@/operations/songRoutes/getSongs'
 import Link from 'next/link'
 
 export default async function Home() {
-  const playlists = (await getPlaylists()) || []
+  const playlists = (await getAlbums()) || []
   const songs = (await getSongs()) || []
 
   return (
@@ -34,7 +34,7 @@ export default async function Home() {
           <div className="mb-6 flex items-center justify-between font-semibold">
             <h2>Playlists</h2>
             <h3>
-              <Link href="/playlists">Ver todas</Link>
+              <Link href="/albums">Ver todas</Link>
             </h3>
           </div>
           <div className="grid w-full grid-cols-5 gap-4 max-2xl:grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:flex max-sm:flex-col max-sm:items-center">
@@ -43,7 +43,7 @@ export default async function Home() {
                 return song.name
               })
               return (
-                <PlaylistCard
+                <AlbumCard
                   id={playlist.id}
                   key={playlist.id}
                   name={playlist.name}
