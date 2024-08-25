@@ -9,17 +9,17 @@ import { ButtonDialog } from '../../../components/buttonDialog/index'
 export function CreateSongDialog() {
   const [name, setName] = useState('')
   const [tone, setTone] = useState('')
-  const [playlistId, setPlaylistId] = useState<number>(3)
+  const [albumId, setAlbumId] = useState<number>(3)
 
   const cookies = parseCookies()
   const token = cookies.lltoken
 
-  const { data: playlists } = useSWR(['/album', token], ([url, token]) =>
+  const { data: albums } = useSWR(['/album', token], ([url, token]) =>
     fetcher(url, token),
   )
 
   function handleCreateSong() {
-    postSong(name, tone, playlistId, token)
+    postSong(name, tone, albumId, token)
   }
 
   return (
@@ -33,9 +33,9 @@ export function CreateSongDialog() {
         state={(e) => setTone(e.target.value)}
       />
       <ButtonDialog.Select
-        playlistId={playlistId}
-        setPlaylistId={(e) => setPlaylistId(Number(e.target.value))}
-        playlists={playlists}
+        albumId={albumId}
+        setAlbumId={(e) => setAlbumId(Number(e.target.value))}
+        albums={albums}
       />
     </ButtonDialog.Root>
   )

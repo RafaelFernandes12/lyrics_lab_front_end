@@ -1,7 +1,7 @@
 import { SuccessHandler } from '@/helpers/SuccessHandler'
 import api from '@/lib/axios'
 
-export async function editPlaylist(
+export async function editAlbum(
   id: number,
   name: string,
   description: string,

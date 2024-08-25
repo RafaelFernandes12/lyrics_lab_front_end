@@ -1,6 +1,6 @@
 'use client'
 import { idProps } from '@/models/idProps'
-import { editPlaylist } from '@/operations/playlistRoutes/editPlaylist'
+import { editAlbum } from '@/operations/albumRoutes/editAlbum'
 import EditIcon from '@mui/icons-material/Edit'
 import { DialogContent } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
@@ -19,8 +19,8 @@ export function EditIconDialog({ id }: idProps) {
     setOpen(!open)
   }
 
-  function handleEditPlaylist() {
-    editPlaylist(id, name, description, token)
+  function handleEditAlbum() {
+    editAlbum(id, name, description, token)
   }
   return (
     <>
@@ -29,7 +29,7 @@ export function EditIconDialog({ id }: idProps) {
       </button>
       <Dialog open={open} onClose={handleClick} maxWidth="lg">
         <DialogContent className="flex flex-col items-center justify-center gap-4">
-          <h2 className="dark:text-black">Criar playlist</h2>
+          <h2 className="dark:text-black">Criar Album</h2>
           <div className="flex flex-col gap-4 ">
             <input
               placeholder="Nome"
@@ -44,7 +44,7 @@ export function EditIconDialog({ id }: idProps) {
           </div>
         </DialogContent>
         <div className="flex w-full items-center justify-center gap-2">
-          <button onClick={handleEditPlaylist}>Editar</button>
+          <button onClick={handleEditAlbum}>Editar</button>
           <button onClick={handleClick}>Cancelar</button>
         </div>
       </Dialog>

@@ -3,7 +3,7 @@ import CreatedAt from '@/components/SongCard/CreatedAt'
 import SongCard from '@/components/SongCard/SongCard'
 import { Tom } from '@/components/SongCard/Tom'
 import { urlIdProps } from '@/models/urlIdProps'
-import { getPlaylist } from '@/operations/playlistRoutes/getPlaylist'
+import { getAlbum } from '@/operations/albumRoutes/getAlbum'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
@@ -14,9 +14,9 @@ import { IconsAction } from '../components/IconsActions'
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
 
-export default async function Playlist({ params }: urlIdProps) {
-  const playlist = await getPlaylist(params.id)
-
+export default async function Album({ params }: urlIdProps) {
+  const album = await getAlbum(params.id)
+  console.log(album)
   return (
     <>
       <section className="flex w-full items-center gap-7 max-sm:flex-col max-sm:text-center">
@@ -27,11 +27,11 @@ export default async function Playlist({ params }: urlIdProps) {
         />
         <div className="w-full max-sm:flex max-sm:flex-col max-sm:items-center">
           <div className="flex items-center gap-4 text-center">
-            <h1>{playlist?.name}</h1>
+            <h1>{album?.name}</h1>
             <IconsAction id={params.id} />
           </div>
-          <span>{playlist?.songs.length} músicas</span>
-          <p className="mt-6 w-10/12">{playlist?.description}</p>
+          <span>{album?.songs.length} músicas</span>
+          <p className="mt-6 w-10/12">{album?.description}</p>
         </div>
       </section>
       <section className="flex flex-col gap-4">
@@ -49,7 +49,7 @@ export default async function Playlist({ params }: urlIdProps) {
             </li>
           </div>
         </ul>
-        {playlist?.songs.map((song) => {
+        {album?.songs.map((song) => {
           return (
             <SongCard id={song.id} name={song.name} key={song.id}>
               <Tom />

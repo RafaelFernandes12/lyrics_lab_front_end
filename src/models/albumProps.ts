@@ -1,6 +1,6 @@
 import { songProps } from './songProps'
 
-export interface playlistProps {
+export interface albumProps {
   id: number
   name: string
   description: string

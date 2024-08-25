@@ -1,6 +1,6 @@
 'use client'
 import { idProps } from '@/models/idProps'
-import { editPlaylist } from '@/operations/playlistRoutes/editPlaylist'
+import { editAlbum } from '@/operations/albumRoutes/editAlbum'
 import { DialogContent, MenuItem } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
 import { parseCookies } from 'nookies'
@@ -18,8 +18,8 @@ export function EditMenuItem({ id }: idProps) {
     setOpen(!open)
   }
 
-  function handleEditPlaylist() {
-    editPlaylist(id, name, description, token)
+  function handleEditAlbum() {
+    editAlbum(id, name, description, token)
   }
 
   return (
@@ -42,7 +42,7 @@ export function EditMenuItem({ id }: idProps) {
           </div>
           <div className="flex w-full items-center justify-center gap-2">
             <button
-              onClick={handleEditPlaylist}
+              onClick={handleEditAlbum}
               className="bg-blue-800 p-2 text-white"
             >
               Editar

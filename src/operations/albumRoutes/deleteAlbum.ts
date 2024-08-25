@@ -1,7 +1,7 @@
 import { SuccessHandler } from '@/helpers/SuccessHandler'
 import api from '@/lib/axios'
 
-export async function deletePlaylist(id: number, token?: string) {
+export async function deleteAlbum(id: number, token?: string) {
   try {
     await api
       .delete(`/album/${id}`, {

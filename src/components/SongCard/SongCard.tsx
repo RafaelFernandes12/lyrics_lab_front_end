@@ -10,7 +10,7 @@ export default function SongCard(props: SongCardProps) {
   return (
     <div className="flex w-full items-center justify-between rounded-2xl border-2 border-black px-3 py-6 dark:border-none dark:bg-gradient-to-b dark:from-zinc-700/70 dark:to-zinc-700/20">
       <Link
-        href={`song/${props.id}`}
+        href={`/song/${props.id}`}
         className="flex w-full items-center justify-center"
       >
         <div className="w-1/2 truncate">

@@ -1,7 +1,7 @@
 import { SuccessHandler } from '@/helpers/SuccessHandler'
 import api from '@/lib/axios'
 
-export async function postPlaylist(
+export async function postAlbum(
   name: string,
   description: string,
   token?: string,

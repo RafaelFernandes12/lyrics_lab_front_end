@@ -2,7 +2,7 @@ import { Album } from '@/components/SongCard/Album'
 import CreatedAt from '@/components/SongCard/CreatedAt'
 import SongCard from '@/components/SongCard/SongCard'
 import { Tom } from '@/components/SongCard/Tom'
-import { getPlaylists } from '@/operations/playlistRoutes/getPlaylists'
+import { getAlbums } from '@/operations/albumRoutes/getAlbums'
 import { getSongs } from '@/operations/songRoutes/getSongs'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import dayjs from 'dayjs'
@@ -15,8 +15,7 @@ dayjs.locale('pt-br')
 
 export default async function Songs() {
   const songs = (await getSongs()) || []
-  const playlists = (await getPlaylists()) || []
-
+  const albums = (await getAlbums()) || []
   return (
     <>
       <section className="flex items-center justify-between">
@@ -46,10 +45,8 @@ export default async function Songs() {
           return (
             <SongCard name={song.name} key={song.id} id={song.id}>
               <Album
-                album={playlists.map((playlist) => {
-                  console.log(playlist.id)
-                  console.log(`song.playlistId: ${song.albumId}`)
-                  if (playlist.id === song.albumId) return playlist.name
+                album={albums.map((album) => {
+                  if (album.id === song.albumId) return album.name
                   return ''
                 })}
               />

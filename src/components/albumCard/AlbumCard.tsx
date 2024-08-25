@@ -3,16 +3,16 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ThreeDots } from './ThreeDots'
 
-interface playlistCardProps {
+interface albumCardProps {
   id: number
   name: string
   songs: string[]
 }
 
-export function PlaylistCard(props: playlistCardProps) {
+export function AlbumCard(props: albumCardProps) {
   return (
     <div className="flex w-64 flex-col">
-      <Link href={`/playlist/${props.id}`}>
+      <Link href={`/album/${props.id}`}>
         <Image
           src={logo}
           alt="example"
