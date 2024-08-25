@@ -1,6 +1,6 @@
 'use client'
 import { idProps } from '@/models/idProps'
-import { deletePlaylist } from '@/operations/playlistRoutes/deletePlaylist'
+import { deleteAlbum } from '@/operations/albumRoutes/deleteAlbum'
 import { DialogContent, MenuItem } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
 import { useState } from 'react'
@@ -10,8 +10,8 @@ export function DeleteMenuItem({ id }: idProps) {
   function handleClick() {
     setOpen(!open)
   }
-  function handleDeletePlaylist() {
-    deletePlaylist(id)
+  function handleDeleteAlbum() {
+    deleteAlbum(id)
     location.reload()
   }
 
@@ -29,7 +29,7 @@ export function DeleteMenuItem({ id }: idProps) {
           </p>
           <div className="flex gap-2">
             <button
-              onClick={handleDeletePlaylist}
+              onClick={handleDeleteAlbum}
               className="bg-blue-800 p-2 text-white"
             >
               Deletar

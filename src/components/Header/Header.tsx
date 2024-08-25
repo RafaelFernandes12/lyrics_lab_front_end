@@ -37,8 +37,8 @@ export function Header() {
           </Link>
         </li>
         <li>
-          <Link href="/playlists">
-            <span>Playlists</span>
+          <Link href="/albums">
+            <span>Albums</span>
           </Link>
         </li>
       </ul>

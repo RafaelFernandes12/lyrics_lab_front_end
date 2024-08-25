@@ -15,8 +15,9 @@ export default function SignUp() {
   function handleRegister(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     register(name, email, password)
-      .then(() => {
-        router.push('/signIn')
+      .then((res) => {
+        console.log(res)
+        router.push('/login')
       })
       .catch((error) => {
         console.log(error)

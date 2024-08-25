@@ -1,7 +1,8 @@
 export interface songProps {
   id: number
   name: string
+  tone: string
   lyric: string
-  playlistId: number
+  albumId: number
   createdAt: string
 }

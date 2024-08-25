@@ -1,13 +1,9 @@
 import { SuccessHandler } from '@/helpers/SuccessHandler'
 import axios from '@/lib/reqInterceptor'
 
-export async function editPlaylist(
-  id: number,
-  name: string,
-  description: string,
-) {
+export async function editAlbum(id: number, name: string, description: string) {
   try {
-    await axios.put(`playlist/${id}`, { name, description }).then(() => {
+    await axios.put(`album/${id}`, { name, description }).then(() => {
       SuccessHandler()
     })
   } catch (error) {

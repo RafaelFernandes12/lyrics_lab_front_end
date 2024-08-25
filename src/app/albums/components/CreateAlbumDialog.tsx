@@ -1,15 +1,16 @@
 'use client'
-import { postPlaylist } from '@/operations/playlistRoutes/postPlaylist'
+import { postAlbum } from '@/operations/albumRoutes/postAlbum'
 import { useState } from 'react'
 import { ButtonDialog } from '../../../components/buttonDialog/index'
-export function CreatePlaylistDialog() {
+
+export function CreateAlbumDialog() {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
-  function handleCreatePlaylist() {
-    postPlaylist(name, description)
+  function handleCreateAlbum() {
+    postAlbum(name, description)
   }
   return (
-    <ButtonDialog.Root text="Adicionar playlist" action={handleCreatePlaylist}>
+    <ButtonDialog.Root text="Adicionar Album" action={handleCreateAlbum}>
       <ButtonDialog.Input
         placeholder="Nome"
         state={(e) => setName(e.target.value)}

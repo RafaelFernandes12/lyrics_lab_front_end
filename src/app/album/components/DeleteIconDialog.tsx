@@ -1,6 +1,6 @@
 'use client'
 import { idProps } from '@/models/idProps'
-import { deletePlaylist } from '@/operations/playlistRoutes/deletePlaylist'
+import { deleteAlbum } from '@/operations/albumRoutes/deleteAlbum'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { DialogContent } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
@@ -13,9 +13,9 @@ export function DeleteIconDialog({ id }: idProps) {
   function handleClick() {
     setOpen(!open)
   }
-  function handleDeletePlaylist() {
-    deletePlaylist(id).then(() => {
-      router.push('/playlists')
+  function handleDeleteAlbum() {
+    deleteAlbum(id).then(() => {
+      router.push('/Albums')
     })
   }
 
@@ -26,14 +26,14 @@ export function DeleteIconDialog({ id }: idProps) {
       </button>
       <Dialog open={open} onClose={handleClick} maxWidth="lg">
         <DialogContent className="flex flex-col items-center justify-center gap-4">
-          <h2 className="dark:text-black">Deletar playlist</h2>
+          <h2 className="dark:text-black">Deletar Album</h2>
           <p className="dark:text-black">
-            Tem certeza que deseja deletar a playlist? Esta ação não pode ser
+            Tem certeza que deseja deletar a Album? Esta ação não pode ser
             desfeita
           </p>
           <div className="flex gap-2">
             <button
-              onClick={handleDeletePlaylist}
+              onClick={handleDeleteAlbum}
               className="bg-blue-800 p-2 text-white"
             >
               Deletar
