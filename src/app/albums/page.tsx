@@ -1,6 +1,6 @@
-import { CreateAlbumDialog } from '@/app/albums/components/CreateAlbumDialog'
 import { AlbumCard } from '@/components/albumCard/AlbumCard'
 import { getAlbums } from '@/operations/albumRoutes/getAlbums'
+import { CreateAlbumDialog } from './components/CreateAlbumDialog'
 
 export default async function Algums() {
   const albums = (await getAlbums()) || []

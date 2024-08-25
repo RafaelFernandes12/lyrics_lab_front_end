@@ -4,7 +4,7 @@ import { parseCookies } from 'nookies'
 import { useState } from 'react'
 import { ButtonDialog } from '../../../components/buttonDialog/index'
 
-export function CreatePlaylistDialog() {
+export function CreateAlbumDialog() {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
 
@@ -12,7 +12,6 @@ export function CreatePlaylistDialog() {
   const token = cookies.lltoken
 
   function handleCreateAlbum() {
-    window.alert(`token: ${token}`)
     postAlbum(name, description, token)
   }
 

@@ -37,6 +37,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       setCookie(null, 'lltoken', token, {
         maxAge: 24 * 60 * 60,
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
       })
 
       const user = (await getUser(token)) || null

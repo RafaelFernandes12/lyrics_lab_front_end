@@ -4,6 +4,7 @@ import { urlIdProps } from '@/models/urlIdProps'
 import { editLyric } from '@/operations/songRoutes/editLyric'
 import { editSong } from '@/operations/songRoutes/editSong'
 import { FormControlLabel, FormGroup, Switch } from '@mui/material'
+import { parseCookies } from 'nookies'
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react'
 import { useReactToPrint } from 'react-to-print'
 import useSWR from 'swr'
@@ -17,6 +18,7 @@ interface textEditorProps {
   lyric?: string
   tone?: string
 }
+
 export default function Song({ params }: urlIdProps) {
   const [isChecked, setIsChecked] = useState(true)
   const [name, setName] = useState('')
@@ -26,12 +28,17 @@ export default function Song({ params }: urlIdProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerWidth, setContainerWidth] = useState<number>(0)
 
+  const cookies = parseCookies()
+  const token = cookies.lltoken
+
   const { data: song, mutate } = useSWR<textEditorProps>(
     `/song/${params.id}`,
     fetcher,
   )
+
   const songLyric = song?.lyric || ''
   const lines = songLyric.split('\n')
+
   useEffect(() => {
     if (song) {
       setName(song.name || '')
@@ -53,11 +60,12 @@ export default function Song({ params }: urlIdProps) {
       }
     }
   }, [])
+
   const handleToggle = useCallback(async () => {
     setIsChecked((prev) => !prev)
-    await editSong(params.id, name, text)
+    await editSong(params.id, name, text, token)
     await mutate({ name, lyric: text })
-  }, [name, text, params.id, mutate])
+  }, [params.id, name, text, token, mutate])
 
   const handlePrint = useReactToPrint({
     content: () => preRef.current,
@@ -90,7 +98,7 @@ export default function Song({ params }: urlIdProps) {
     })
 
     const newLyrics = newLines.join('\n')
-    await editLyric(params.id, newLyrics)
+    await editLyric(params.id, newLyrics, token)
     await mutate({ name, lyric: newLyrics })
   }
 
@@ -146,7 +154,11 @@ export default function Song({ params }: urlIdProps) {
           </>
         ) : (
           <pre className="mt-10" ref={preRef}>
-            <RenderText lines={text} fontSize={textSize} maxWidth={containerWidth} />
+            <RenderText
+              lines={text}
+              fontSize={textSize}
+              maxWidth={containerWidth}
+            />
           </pre>
         )}
       </div>

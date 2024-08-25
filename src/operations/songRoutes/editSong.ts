@@ -1,11 +1,12 @@
 import api from '@/lib/axios'
-import { cookies } from 'next/headers'
 
-export async function editSong(id: number, name: string, lyric: string) {
+export async function editSong(
+  id: number,
+  name: string,
+  lyric: string,
+  token?: string,
+) {
   try {
-    const cookieStore = cookies()
-    const token = cookieStore.get('jwt')?.value
-
     await api.put(
       `song/${id}`,
       { name, lyric },
