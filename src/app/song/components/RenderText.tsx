@@ -1,8 +1,8 @@
 // RenderText.tsx
 'use client'
 import { regex } from '@/utils/regex'
-import { analyzeLine } from '../../../utils/lineUtils'
 import { useRef } from 'react'
+import { analyzeLine } from '../../../utils/lineUtils'
 
 interface renderTextProps {
   lines: string

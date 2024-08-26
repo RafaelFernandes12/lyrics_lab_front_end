@@ -10,7 +10,7 @@ export async function postSong(
   try {
     await api
       .post(
-        'Song',
+        'song',
         { name, tone, playlistId },
         {
           headers: {
