@@ -8,22 +8,16 @@ import { parseCookies } from 'nookies'
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react'
 import { useReactToPrint } from 'react-to-print'
 import useSWR from 'swr'
-import { analyzeLine } from '../../../utils/lineUtils'
-import { regex } from '../../../utils/regex'
 import { DrawerComponent } from '../components/DrawerComponent'
 import { RenderText } from '../components/RenderText'
-
-interface textEditorProps {
-  name?: string
-  lyric?: string
-  tone?: string
-}
+import { analyzeLine } from '../utils/lineUtils'
+import { regex } from '../utils/regex'
 
 export default function Song({ params }: urlIdProps) {
   const [isChecked, setIsChecked] = useState(true)
   const [name, setName] = useState('')
   const [text, setText] = useState('')
-  const [textSize, setTextSize] = useState('')
+  const [textSize, setTextSize] = useState(16)
   const preRef = useRef<HTMLPreElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerWidth, setContainerWidth] = useState<number>(0)
@@ -31,12 +25,12 @@ export default function Song({ params }: urlIdProps) {
   const cookies = parseCookies()
   const token = cookies.lltoken
 
-  const { data: song, mutate } = useSWR<textEditorProps>(
-    `/song/${params.id}`,
-    fetcher,
+  const { data: song, mutate } = useSWR(
+    [`/song/${params.id}`, token],
+    ([url, token]) => fetcher(url, token),
   )
 
-  const songLyric = song?.lyric || ''
+  const songLyric: string = song?.lyric || ''
   const lines = songLyric.split('\n')
 
   useEffect(() => {
@@ -119,7 +113,7 @@ export default function Song({ params }: urlIdProps) {
         textUp={() => handleTextChange('up')}
         textDown={() => handleTextChange('down')}
       />
-      <div ref={containerRef} className="max-w-[200px]">
+      <div ref={containerRef} className="max-w-[800px]">
         {isChecked ? (
           <input
             value={name}

@@ -2,7 +2,7 @@
 export const lyrics = [
   "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#",
 ];
-export const textSizes = ['0.8rem', '0.9rem', '1rem', '1.1rem', '1.2rem', '1.3rem']
+export const textSizes = [8, 9, 10, 12, 14, 16, 18, 20, 22, 24, 26]
 export const chordRegex =
   /(?![áéíóúÁÉÍÓÚãẽĩõũÃẼĨÕŨâêîôûÂÊÎÔÛ.,\-+=:;])\b[A-G](b)?(maj|min|dim|aug|sus|m|M|add)?(\d+)?(\/[A-G](b)?)?\b[#+]?(?![áéíóúÁÉÍÓÚãẽĩõũÃẼĨÕŨâêîôûÂÊÎÔÛ.,\-+=:;])/g
 export const noChordRegex = /\b(?![A-G])\w+\b/g;

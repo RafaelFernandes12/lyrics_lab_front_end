@@ -1,17 +1,14 @@
-// RenderText.tsx
 'use client'
-import { regex } from '@/utils/regex'
-import { analyzeLine } from '../../../utils/lineUtils'
-import { useRef } from 'react'
+import { regex } from '@/app/song/utils/regex'
+import { analyzeLine } from '../utils/lineUtils'
 
 interface renderTextProps {
   lines: string
-  fontSize: string
+  fontSize: number
   maxWidth: number
 }
 
 export function RenderText({ lines, fontSize, maxWidth }: renderTextProps) {
-  const textSize = useRef<HTMLParagraphElement>(null)
   function breakTextIntoLines(text: string, maxCharsPerLine: number) {
     const lines = []
     let start = 0
@@ -42,13 +39,10 @@ export function RenderText({ lines, fontSize, maxWidth }: renderTextProps) {
 
     return lines
   }
-  const font = parseInt(window.getComputedStyle(textSize.current!).fontSize)
-
   function getTextWithinWidth(text: string, maxWidth: number) {
     const lines = text.split('\n')
     const fittingText: string[] = []
-    const maxCharsPerLine = Math.floor(maxWidth / (font * 0.6))
-
+    const maxCharsPerLine = Math.floor(maxWidth / (fontSize * 0.6))
     for (let i = 0; i < lines.length; i++) {
       const {
         isLineAChordLine: ILine1,
@@ -100,14 +94,9 @@ export function RenderText({ lines, fontSize, maxWidth }: renderTextProps) {
       {fittingParagraphs.map((line, index) => {
         const { words, isLineATabLine, isThereAnAorAnEinTheLine } =
           analyzeLine(line)
-        const isLineEmpty = line ? line.trim() === '' : false
-        if (isLineEmpty) {
-          return <p key={index}>&nbsp;</p>
-        }
         return (
           <p
             key={index}
-            ref={textSize}
             className="whitespace-pre-wrap font-mono"
             style={{ fontSize }}
           >
