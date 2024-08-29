@@ -2,7 +2,7 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
 export function middleware(request: NextRequest) {
-  const token = request.cookies.get('lltoken')?.value || null
+  const token = request.cookies.get('jwt')?.value || null
   const url = request.nextUrl.clone()
 
   if (token && (url.pathname === '/' || url.pathname === '/register')) {

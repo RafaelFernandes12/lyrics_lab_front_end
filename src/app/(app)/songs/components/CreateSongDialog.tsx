@@ -1,25 +1,15 @@
 'use client'
-import { fetcher } from '@/lib/fetcher'
-import { postSong } from '@/operations/songRoutes/postSong'
-import { parseCookies } from 'nookies'
+import { ButtonDialog } from '@/components/buttonDialog'
+import { clientCreateSong } from '@/operations/songs/client-side/post'
 import { useState } from 'react'
-import useSWR from 'swr'
-import { ButtonDialog } from '@/components/buttonDialog/index'
 
 export function CreateSongDialog() {
   const [name, setName] = useState('')
   const [tone, setTone] = useState('')
   const [albumId, setAlbumId] = useState<number>(3)
 
-  const cookies = parseCookies()
-  const token = cookies.lltoken
-
-  const { data: albums } = useSWR(['/album', token], ([url, token]) =>
-    fetcher(url, token),
-  )
-
   function handleCreateSong() {
-    postSong(name, tone, albumId, token)
+    clientCreateSong({ name, tone, albumId })
   }
 
   return (
@@ -35,7 +25,6 @@ export function CreateSongDialog() {
       <ButtonDialog.Select
         albumId={albumId}
         setAlbumId={(e) => setAlbumId(Number(e.target.value))}
-        albums={albums}
       />
     </ButtonDialog.Root>
   )

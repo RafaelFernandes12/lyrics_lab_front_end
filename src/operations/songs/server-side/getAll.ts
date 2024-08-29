@@ -2,19 +2,23 @@ import api from '@/lib/axios'
 import { songProps } from '@/models/songProps'
 import { cookies } from 'next/headers'
 
-export async function getSong(id: number) {
+export async function serverGetAllSongs(): Promise<songProps[]> {
   try {
     const cookieStore = cookies()
     const token = cookieStore.get('jwt')?.value
 
-    const response = await api.get(`/song/${id}`, {
+    const response = await api.get('/song', {
       headers: {
         Authorization: token ? `${token}` : undefined,
       },
     })
-    const song: songProps = response.data
-    return song
+
+    return response.data as songProps[]
   } catch (error) {
-    console.log(error)
+    console.error(
+      'Failed to get all songs:',
+      error instanceof Error ? error.message : 'Unknown error',
+    )
+    return []
   }
 }
