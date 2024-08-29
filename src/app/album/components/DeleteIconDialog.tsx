@@ -1,28 +1,16 @@
 'use client'
 import { idProps } from '@/models/idProps'
-import { deleteAlbum } from '@/operations/albumRoutes/deleteAlbum'
+import { clientDeleteAlbum } from '@/operations/albums/client-side/delete'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { DialogContent } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
-import { useRouter } from 'next/navigation'
-import { parseCookies } from 'nookies'
 import { useState } from 'react'
 
 export function DeleteIconDialog({ id }: idProps) {
   const [open, setOpen] = useState(false)
-  const router = useRouter()
-
-  const cookies = parseCookies()
-  const token = cookies.lltoken
 
   function handleClick() {
     setOpen(!open)
-  }
-
-  function handleDeleteAlbum() {
-    deleteAlbum(id, token).then(() => {
-      router.push('/albuns')
-    })
   }
 
   return (
@@ -39,7 +27,7 @@ export function DeleteIconDialog({ id }: idProps) {
           </p>
           <div className="flex gap-2">
             <button
-              onClick={handleDeleteAlbum}
+              onClick={() => clientDeleteAlbum(id)}
               className="bg-blue-800 p-2 text-white"
             >
               Deletar

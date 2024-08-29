@@ -1,6 +1,5 @@
 'use client'
-import { postAlbum } from '@/operations/albumRoutes/postAlbum'
-import { parseCookies } from 'nookies'
+import { clientCreateAlbum } from '@/operations/albums/client-side/post'
 import { useState } from 'react'
 import { ButtonDialog } from '../../../components/buttonDialog/index'
 
@@ -8,11 +7,8 @@ export function CreateAlbumDialog() {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
 
-  const cookies = parseCookies()
-  const token = cookies.lltoken
-
   function handleCreateAlbum() {
-    postAlbum(name, description, token)
+    clientCreateAlbum({ name, description })
   }
 
   return (

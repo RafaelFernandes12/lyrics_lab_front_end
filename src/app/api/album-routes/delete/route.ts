@@ -3,13 +3,14 @@ import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
 export async function DELETE(req: Request) {
-  const { id } = await req.json()
+  const url = new URL(req.url)
+  const id = url.searchParams.get('id')
 
   try {
     const cookieStore = cookies()
     const token = cookieStore.get('jwt')?.value
 
-    await api.delete(`/song/${id}`, {
+    await api.delete(`/album/${id}`, {
       headers: {
         Authorization: token ? `${token}` : undefined,
       },

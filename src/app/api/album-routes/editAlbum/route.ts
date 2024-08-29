@@ -2,16 +2,25 @@ import api from '@/lib/axios'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
-export async function POST(req: Request) {
-  const { name, tone, playlistId } = await req.json()
+interface EditAlbumParams {
+  id: number
+  name: string
+  description: string
+}
 
+export async function PUT(req: Request) {
   try {
+    const { id, name, description }: EditAlbumParams = await req.json()
+
     const cookieStore = cookies()
     const token = cookieStore.get('jwt')?.value
 
-    await api.post(
-      'song',
-      { name, tone, playlistId },
+    await api.put(
+      `/album/${id}`,
+      {
+        name,
+        description,
+      },
       {
         headers: {
           Authorization: token ? `${token}` : undefined,

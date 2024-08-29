@@ -1,10 +1,9 @@
 'use client'
 import { fetcher } from '@/lib/fetcher'
 import { urlIdProps } from '@/models/urlIdProps'
-import { editLyric } from '@/operations/songRoutes/editLyric'
-import { editSong } from '@/operations/songRoutes/editSong'
+import { clientEditLyric } from '@/operations/songs/client-side/editLyric'
+import { clientEditSong } from '@/operations/songs/client-side/editSong'
 import { FormControlLabel, FormGroup, Switch } from '@mui/material'
-import { parseCookies } from 'nookies'
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react'
 import { useReactToPrint } from 'react-to-print'
 import useSWR from 'swr'
@@ -27,9 +26,6 @@ export default function Song({ params }: urlIdProps) {
   const preRef = useRef<HTMLPreElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerWidth, setContainerWidth] = useState<number>(0)
-
-  const cookies = parseCookies()
-  const token = cookies.lltoken
 
   const { data: song, mutate } = useSWR<textEditorProps>(
     `/song/${params.id}`,
@@ -63,9 +59,9 @@ export default function Song({ params }: urlIdProps) {
 
   const handleToggle = useCallback(async () => {
     setIsChecked((prev) => !prev)
-    await editSong(params.id, name, text, token)
+    await clientEditSong({ id: params.id, name, lyric: text })
     await mutate({ name, lyric: text })
-  }, [params.id, name, text, token, mutate])
+  }, [params.id, name, text, mutate])
 
   const handlePrint = useReactToPrint({
     content: () => preRef.current,
@@ -98,7 +94,7 @@ export default function Song({ params }: urlIdProps) {
     })
 
     const newLyrics = newLines.join('\n')
-    await editLyric(params.id, newLyrics, token)
+    await clientEditLyric({ id: params.id, lyric: newLyrics })
     await mutate({ name, lyric: newLyrics })
   }
 

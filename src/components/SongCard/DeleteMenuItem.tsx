@@ -1,6 +1,6 @@
 'use client'
 import { idProps } from '@/models/idProps'
-import { deleteSong } from '@/operations/songRoutes/deleteSong'
+import { clientDeleteSong } from '@/operations/songs/client-side/delete'
 import { DialogContent, MenuItem } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
 import { useState } from 'react'
@@ -26,7 +26,7 @@ export function DeleteMenuItem({ id }: idProps) {
           </p>
           <div className="flex gap-2">
             <button
-              onClick={() => deleteSong(id)}
+              onClick={() => clientDeleteSong(id)}
               className="bg-blue-800 p-2 text-white"
             >
               Deletar
