@@ -1,17 +1,14 @@
-// RenderText.tsx
 'use client'
-import { regex } from '@/utils/regex'
-import { useRef } from 'react'
-import { analyzeLine } from '../../../utils/lineUtils'
+import { analyzeLine } from '../utils/lineUtils'
+import { Paragraph, Words } from './Text'
 
 interface renderTextProps {
   lines: string
-  fontSize: string
+  fontSize: number
   maxWidth: number
 }
 
 export function RenderText({ lines, fontSize, maxWidth }: renderTextProps) {
-  const textSize = useRef<HTMLParagraphElement>(null)
   function breakTextIntoLines(text: string, maxCharsPerLine: number) {
     const lines = []
     let start = 0
@@ -19,7 +16,6 @@ export function RenderText({ lines, fontSize, maxWidth }: renderTextProps) {
     while (start < text.length) {
       let end = start + maxCharsPerLine
 
-      // Ensure end does not exceed text length
       if (end >= text.length) {
         lines.push(text.slice(start))
         break
@@ -42,13 +38,10 @@ export function RenderText({ lines, fontSize, maxWidth }: renderTextProps) {
 
     return lines
   }
-  const font = parseInt(window.getComputedStyle(textSize.current!).fontSize)
-
   function getTextWithinWidth(text: string, maxWidth: number) {
     const lines = text.split('\n')
     const fittingText: string[] = []
-    const maxCharsPerLine = Math.floor(maxWidth / (font * 0.6))
-
+    const maxCharsPerLine = Math.floor(maxWidth / (fontSize * 0.6))
     for (let i = 0; i < lines.length; i++) {
       const {
         isLineAChordLine: ILine1,
@@ -95,39 +88,52 @@ export function RenderText({ lines, fontSize, maxWidth }: renderTextProps) {
   }
   const fittingParagraphs =
     maxWidth > 0 ? getTextWithinWidth(lines, maxWidth) : []
-  return (
-    <>
-      {fittingParagraphs.map((line, index) => {
-        const { words, isLineATabLine, isThereAnAorAnEinTheLine } =
-          analyzeLine(line)
-        const isLineEmpty = line ? line.trim() === '' : false
-        if (isLineEmpty) {
-          return <p key={index}>&nbsp;</p>
-        }
-        return (
-          <p
-            key={index}
-            ref={textSize}
-            className="whitespace-pre-wrap font-mono"
-            style={{ fontSize }}
+
+  const template: JSX.Element[] = []
+  for (let i = 0; i < fittingParagraphs.length; i++) {
+    const { isLineInsideSymbols, wordInsideSymbols } = analyzeLine(
+      fittingParagraphs[i],
+    )
+    if (isLineInsideSymbols) {
+      let div: JSX.Element = <div></div>
+      const groupedParagraphs: string[] = []
+      while (fittingParagraphs[i] !== ' ') {
+        groupedParagraphs.push(fittingParagraphs[i])
+        i++
+      }
+      const noTitleGroup = groupedParagraphs.filter(
+        (p) => p !== groupedParagraphs[0],
+      )
+      div = (
+        <div className="rounded-xl bg-white/10">
+          <Paragraph
+            fontSize={fontSize}
+            key={i}
+            className="rounded-t-xl bg-slate-600 py-1 text-center"
           >
-            {words.map((word, index) => {
-              const isChord =
-                word.match(regex.chordRegex) &&
-                !isLineATabLine &&
-                !isThereAnAorAnEinTheLine
+            <Words line={wordInsideSymbols} />
+          </Paragraph>
+          <pre className="p-3">
+            {noTitleGroup.map((line, i) => {
               return (
-                <span
-                  key={index}
-                  className={`${isChord ? 'font-semibold text-blue-500 dark:text-blue-500' : ''}`}
-                >
-                  {word}{' '}
-                </span>
+                <Paragraph fontSize={fontSize} key={i} className="text-black">
+                  <Words line={line} />
+                </Paragraph>
               )
             })}
-          </p>
-        )
-      })}
-    </>
-  )
+          </pre>
+        </div>
+      )
+      template.push(div)
+      template.push(<p> </p>)
+    } else {
+      const p = (
+        <Paragraph fontSize={fontSize}>
+          <Words line={fittingParagraphs[i]} />
+        </Paragraph>
+      )
+      template.push(p)
+    }
+  }
+  return <>{template.map((a) => a)}</>
 }

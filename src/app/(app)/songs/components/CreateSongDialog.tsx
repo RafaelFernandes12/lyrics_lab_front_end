@@ -1,7 +1,7 @@
 'use client'
+import { ButtonDialog } from '@/components/buttonDialog'
 import { clientCreateSong } from '@/operations/songs/client-side/post'
 import { useState } from 'react'
-import { ButtonDialog } from '../../../components/buttonDialog/index'
 
 export function CreateSongDialog() {
   const [name, setName] = useState('')

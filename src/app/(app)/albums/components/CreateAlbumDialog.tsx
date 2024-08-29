@@ -1,7 +1,7 @@
 'use client'
 import { clientCreateAlbum } from '@/operations/albums/client-side/post'
 import { useState } from 'react'
-import { ButtonDialog } from '../../../components/buttonDialog/index'
+import { ButtonDialog } from '@/components/buttonDialog/index'
 
 export function CreateAlbumDialog() {
   const [name, setName] = useState('')
