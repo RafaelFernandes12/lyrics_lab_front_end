@@ -1,9 +1,9 @@
 import { AlbumCard } from '@/components/albumCard/AlbumCard'
-import { getAlbums } from '@/operations/albumRoutes/getAlbums'
+import { serverGetAllAlbums } from '@/operations/albums/server-side/getAll'
 import { CreateAlbumDialog } from './components/CreateAlbumDialog'
 
 export default async function Algums() {
-  const albums = (await getAlbums()) || []
+  const albums = (await serverGetAllAlbums()) || []
   return (
     <>
       <section className="flex items-center justify-between">

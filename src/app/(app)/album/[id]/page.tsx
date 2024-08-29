@@ -3,7 +3,7 @@ import CreatedAt from '@/components/SongCard/CreatedAt'
 import SongCard from '@/components/SongCard/SongCard'
 import { Tom } from '@/components/SongCard/Tom'
 import { urlIdProps } from '@/models/urlIdProps'
-import { getAlbum } from '@/operations/albumRoutes/getAlbum'
+import { serverGetAlbum } from '@/operations/albums/server-side/getOne'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
@@ -15,8 +15,8 @@ dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
 
 export default async function Album({ params }: urlIdProps) {
-  const album = await getAlbum(params.id)
-  console.log(album)
+  const album = await serverGetAlbum(params.id)
+
   return (
     <>
       <section className="flex w-full items-center gap-7 max-sm:flex-col max-sm:text-center">
@@ -52,7 +52,7 @@ export default async function Album({ params }: urlIdProps) {
         {album?.songs.map((song) => {
           return (
             <SongCard id={song.id} name={song.name} key={song.id}>
-              <Tom />
+              <Tom tom={song.tone} />
               <CreatedAt createdAt={dayjs().to(song.createdAt)} />
             </SongCard>
           )

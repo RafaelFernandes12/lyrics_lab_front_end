@@ -2,7 +2,7 @@ import api from '@/lib/axios'
 import { albumProps } from '@/models/albumProps'
 import { cookies } from 'next/headers'
 
-export async function getAlbums() {
+export async function serverGetAllAlbums(): Promise<albumProps[]> {
   try {
     const cookieStore = cookies()
     const token = cookieStore.get('jwt')?.value
@@ -12,9 +12,13 @@ export async function getAlbums() {
         Authorization: token ? `${token}` : undefined,
       },
     })
-    const playlists: albumProps[] = response.data
-    return playlists
+
+    return response.data as albumProps[]
   } catch (error) {
-    console.log(error)
+    console.error(
+      'Failed to get all albums:',
+      error instanceof Error ? error.message : 'Unknown error',
+    )
+    return []
   }
 }

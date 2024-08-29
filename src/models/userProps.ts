@@ -1,7 +1,5 @@
-import { playlistProps } from './playlistProps'
-
 export type userProps = {
+  id: string
   name: string
   email: string
-  albums: playlistProps[]
 }

@@ -8,7 +8,7 @@ export async function getUser(token?: string) {
         Authorization: token ? `${token}` : undefined,
       },
     })
-    const user: userProps = response.data
+    const user: userProps = response.data.user
     return user
   } catch (error) {
     console.log(error)

@@ -3,7 +3,6 @@
 import { userProps } from '@/models/userProps'
 import { getUser } from '@/operations/auth/getUser'
 import { login } from '@/operations/auth/login'
-import { setCookie } from 'nookies'
 import { createContext, ReactNode, useState } from 'react'
 
 interface AuthProviderProps {
@@ -34,13 +33,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
         alert('Erro ao fazer login.')
         return
       }
-
-      setCookie(null, 'lltoken', token, {
-        maxAge: 24 * 60 * 60,
-        path: '/',
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-      })
 
       const user = (await getUser(token)) || null
       setUser(user)

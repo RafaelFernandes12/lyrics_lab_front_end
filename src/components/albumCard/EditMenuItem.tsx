@@ -1,9 +1,8 @@
 'use client'
 import { idProps } from '@/models/idProps'
-import { editAlbum } from '@/operations/albumRoutes/editAlbum'
+import { clientEditAlbum } from '@/operations/albums/client-side/editAlbum'
 import { DialogContent, MenuItem } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
-import { parseCookies } from 'nookies'
 import { useState } from 'react'
 
 export function EditMenuItem({ id }: idProps) {
@@ -11,15 +10,12 @@ export function EditMenuItem({ id }: idProps) {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
 
-  const cookies = parseCookies()
-  const token = cookies.lltoken
-
   function handleClick() {
     setOpen(!open)
   }
 
   function handleEditAlbum() {
-    editAlbum(id, name, description, token)
+    clientEditAlbum({ id, name, description })
   }
 
   return (
