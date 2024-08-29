@@ -4,7 +4,7 @@ import { urlIdProps } from '@/models/urlIdProps'
 import { editLyric } from '@/operations/songRoutes/editLyric'
 import { editSong } from '@/operations/songRoutes/editSong'
 import { FormControlLabel, FormGroup, Switch } from '@mui/material'
-import { parseCookies } from 'nookies'
+import nookies, { parseCookies } from 'nookies'
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react'
 import { useReactToPrint } from 'react-to-print'
 import useSWR from 'swr'
@@ -24,7 +24,6 @@ export default function Song({ params }: urlIdProps) {
 
   const cookies = parseCookies()
   const token = cookies.lltoken
-
   const { data: song, mutate } = useSWR(
     [`/song/${params.id}`, token],
     ([url, token]) => fetcher(url, token),
@@ -65,7 +64,9 @@ export default function Song({ params }: urlIdProps) {
     content: () => preRef.current,
   })
 
-  async function handleTomChange(direction: 'up' | 'down') {
+  async function handleToneChange(direction: 'up' | 'down') {
+    const chordType = nookies.get(null, 'chordType')
+    console.log(chordType)
     const newLines = lines.map((line) => {
       return line.replace(regex.chordRegex, (chord) => {
         let updatedChord = chord
@@ -76,12 +77,13 @@ export default function Song({ params }: urlIdProps) {
 
         if (baseChord && !isThereAnAorAnEinTheLine && !isLineATabLine) {
           baseChord.forEach((cipher) => {
-            const index = regex.lyrics.indexOf(cipher)
+            const index = regex.chordSets.sharpChords.indexOf(cipher)
             if (index !== -1) {
               const shift = direction === 'up' ? 1 : -1
               const newChord =
-                regex.lyrics[
-                  (index + shift + regex.lyrics.length) % regex.lyrics.length
+                regex.chordSets.sharpChords[
+                  (index + shift + regex.chordSets.sharpChords.length) %
+                    regex.chordSets.sharpChords.length
                 ]
               updatedChord = updatedChord.replace(cipher, newChord)
             }
@@ -103,19 +105,55 @@ export default function Song({ params }: urlIdProps) {
       (index + shift + regex.textSizes.length) % regex.textSizes.length
     setTextSize(regex.textSizes[newIndex])
   }
+  async function handleChangeChord(chordType: 'flatChords' | 'sharpChords') {
+    nookies.set(null, 'chordType', chordType)
+    let oppositeChordType = chordType
+    if (chordType === 'sharpChords') oppositeChordType = 'flatChords'
+    if (chordType === 'flatChords') oppositeChordType = 'sharpChords'
+    const newLines = lines.map((line) => {
+      return line.replace(regex.chordRegex, (chord) => {
+        let updatedChord = chord
+
+        const { isLineATabLine, isThereAnAorAnEinTheLine } = analyzeLine(line)
+        const baseChord = chord.match(regex.tomUpAndDownRegex)
+
+        if (baseChord && !isThereAnAorAnEinTheLine && !isLineATabLine) {
+          baseChord.forEach((cipher) => {
+            const index = regex.chordSets[chordType].indexOf(cipher)
+            console.log(cipher + index)
+            if (index !== -1) {
+              const newChord = regex.chordSets[oppositeChordType][index]
+              updatedChord = updatedChord.replace(cipher, newChord)
+            }
+          })
+        }
+        return updatedChord
+      })
+    })
+
+    const newLyrics = newLines.join('\n')
+    await editLyric(params.id, newLyrics, token)
+    await mutate({ name, lyric: newLyrics })
+  }
 
   return (
-    <div className="flex gap-[5%] max-md:flex-col">
+    <div>
       <DrawerComponent
-        toneUp={() => handleTomChange('up')}
-        toneDown={() => handleTomChange('down')}
+        toneUp={() => handleToneChange('up')}
+        toneDown={() => handleToneChange('down')}
         pdfGenerator={handlePrint}
         textUp={() => handleTextChange('up')}
         textDown={() => handleTextChange('down')}
+        flatChord={() => handleChangeChord('flatChords')}
+        sharpChord={() => handleChangeChord('sharpChords')}
       />
-      <div ref={containerRef} className="max-w-[800px]">
+      <div
+        ref={containerRef}
+        className="m-auto w-1/2 bg-white p-6 dark:bg-black xl:min-w-[800px]"
+      >
         {isChecked ? (
           <input
+            className="bg-slate-100 p-2 text-3xl"
             value={name}
             onChange={(e) => {
               setName(e.target.value)
@@ -141,7 +179,7 @@ export default function Song({ params }: urlIdProps) {
                 setText(e.target.value)
               }}
               value={text}
-              className="mt-10 h-[1200px] w-[600px] resize-none rounded-sm bg-slate-100 p-1 font-mono text-sm outline-none max-sm:w-full"
+              className="mt-10 h-[1200px] w-full resize-none rounded-sm bg-slate-100 p-1 font-mono text-sm outline-none max-sm:w-full"
               placeholder="Comece aqui"
               spellCheck={false}
             />
