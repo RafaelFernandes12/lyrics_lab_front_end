@@ -1,21 +1,37 @@
 'use client'
 
 import AddIcon from '@mui/icons-material/Add'
-import DeleteIcon from '@mui/icons-material/Delete'
 import MenuIcon from '@mui/icons-material/Menu'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
 import RemoveIcon from '@mui/icons-material/Remove'
 import TextDecreaseIcon from '@mui/icons-material/TextDecrease'
 import TextIncreaseIcon from '@mui/icons-material/TextIncrease'
-import Divider from '@mui/material/Divider'
+import { Divider } from '@mui/material'
 import Drawer from '@mui/material/Drawer'
 import { useState } from 'react'
+
 interface drawerComponentProps {
   toneUp: () => void
   toneDown: () => void
   textUp: () => void
   textDown: () => void
   pdfGenerator: () => void
+  sharpChord: () => void
+  flatChord: () => void
+}
+interface listProps {
+  action: () => void
+  icon?: React.ReactNode
+  text?: string
+}
+
+function ListItem({ action, icon, text }: listProps) {
+  return (
+    <button onClick={action} className="flex w-full gap-4">
+      {icon}
+      <span className="p-0 text-sm">{text}</span>
+    </button>
+  )
 }
 
 export function DrawerComponent({
@@ -24,6 +40,8 @@ export function DrawerComponent({
   pdfGenerator,
   textUp,
   textDown,
+  sharpChord,
+  flatChord,
 }: drawerComponentProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [isClosing, setIsClosing] = useState(false)
@@ -44,47 +62,41 @@ export function DrawerComponent({
   }
 
   const drawer = (
-    <div className="p-4 dark:text-black">
+    <div className="p-4 dark:bg-black dark:text-white">
       <ul className="flex w-full flex-col gap-2">
         <li>
-          <button onClick={pdfGenerator} className="flex w-full gap-4">
-            <PictureAsPdfIcon />
-            <span className="p-0 text-sm dark:text-black">Baixar PDF</span>
-          </button>
-        </li>
-        <li>
-          <button onClick={pdfGenerator} className="flex w-full gap-4">
-            <DeleteIcon />
-            <span className="p-0 text-sm dark:text-black">Excluir</span>
-          </button>
+          <ListItem
+            action={pdfGenerator}
+            icon={<PictureAsPdfIcon />}
+            text="Gerar PDF"
+          />
         </li>
       </ul>
-      <Divider />
+      <Divider className="h-2 w-full border-black dark:border-white dark:text-white" />
       <ul className="flex w-full flex-col">
         <li className="flex items-center justify-center gap-2">
-          <button onClick={toneDown}>
-            <RemoveIcon />
-          </button>
-          <span className="p-0 text-sm dark:text-black">Tom</span>
-          <button onClick={toneUp}>
-            <AddIcon />
-          </button>
+          <ListItem action={toneDown} icon={<RemoveIcon />} />
+          <span className="p-0 text-sm">Tom</span>
+          <ListItem action={toneUp} icon={<AddIcon />} />
         </li>
         <li className="flex items-center justify-center gap-2">
-          <button onClick={textDown}>
-            <TextDecreaseIcon />
-          </button>
-          <span className="p-0 text-sm dark:text-black">Texto</span>
-          <button onClick={textUp}>
-            <TextIncreaseIcon />
-          </button>
+          <ListItem action={textDown} icon={<TextDecreaseIcon />} />
+          <span className="p-0 text-sm">Texto</span>
+          <ListItem action={textUp} icon={<TextIncreaseIcon />} />
+        </li>
+      </ul>
+      <Divider className="h-2 w-full border-black dark:border-white dark:text-white" />
+      <ul className="flex w-full flex-col">
+        <li className="flex items-center justify-between">
+          <ListItem action={flatChord} text="A#" />
+          <ListItem action={sharpChord} text="Ab" />
         </li>
       </ul>
     </div>
   )
   return (
     <>
-      <div className="dark:text-black">
+      <div className="fixed dark:text-black">
         <Drawer
           variant="permanent"
           className="max-md:hidden"
@@ -93,7 +105,6 @@ export function DrawerComponent({
               boxSizing: 'border-box',
               position: 'relative',
               border: 'none',
-              borderRadius: '12px',
             },
           }}
           open

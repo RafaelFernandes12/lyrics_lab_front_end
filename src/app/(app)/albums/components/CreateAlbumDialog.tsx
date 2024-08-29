@@ -2,7 +2,7 @@
 import { postAlbum } from '@/operations/albumRoutes/postAlbum'
 import { parseCookies } from 'nookies'
 import { useState } from 'react'
-import { ButtonDialog } from '../../../components/buttonDialog/index'
+import { ButtonDialog } from '@/components/buttonDialog/index'
 
 export function CreateAlbumDialog() {
   const [name, setName] = useState('')

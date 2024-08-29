@@ -30,6 +30,7 @@
     "react-to-print": "^2.15.1",
     "react-toastify": "^10.0.5",
     "swr": "^2.2.5",
+    "tailwind-merge": "^2.5.2",
     "yup": "^1.4.0"
   },
   "devDependencies": {

@@ -4,7 +4,7 @@ import { postSong } from '@/operations/songRoutes/postSong'
 import { parseCookies } from 'nookies'
 import { useState } from 'react'
 import useSWR from 'swr'
-import { ButtonDialog } from '../../../components/buttonDialog/index'
+import { ButtonDialog } from '@/components/buttonDialog/index'
 
 export function CreateSongDialog() {
   const [name, setName] = useState('')

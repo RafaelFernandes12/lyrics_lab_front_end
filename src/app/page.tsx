@@ -16,7 +16,7 @@ export default function SignUp() {
   }
 
   return (
-    <>
+    <body>
       <AuthHeader />
       <h1 className="my-20 w-full text-center">Acesse sua conta</h1>
       <section className="m-auto w-[600px] rounded-2xl border-2 border-black p-6 dark:border-white max-sm:w-full">
@@ -53,6 +53,6 @@ export default function SignUp() {
           </Link>
         </p>
       </section>
-    </>
+    </body>
   )
 }

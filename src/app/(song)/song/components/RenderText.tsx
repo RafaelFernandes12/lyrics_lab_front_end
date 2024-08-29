@@ -1,6 +1,6 @@
 'use client'
-import { regex } from '@/app/song/utils/regex'
 import { analyzeLine } from '../utils/lineUtils'
+import { Paragraph, Words } from './Text'
 
 interface renderTextProps {
   lines: string
@@ -16,7 +16,6 @@ export function RenderText({ lines, fontSize, maxWidth }: renderTextProps) {
     while (start < text.length) {
       let end = start + maxCharsPerLine
 
-      // Ensure end does not exceed text length
       if (end >= text.length) {
         lines.push(text.slice(start))
         break
@@ -89,34 +88,52 @@ export function RenderText({ lines, fontSize, maxWidth }: renderTextProps) {
   }
   const fittingParagraphs =
     maxWidth > 0 ? getTextWithinWidth(lines, maxWidth) : []
-  return (
-    <>
-      {fittingParagraphs.map((line, index) => {
-        const { words, isLineATabLine, isThereAnAorAnEinTheLine } =
-          analyzeLine(line)
-        return (
-          <p
-            key={index}
-            className="whitespace-pre-wrap font-mono"
-            style={{ fontSize }}
+
+  const template: JSX.Element[] = []
+  for (let i = 0; i < fittingParagraphs.length; i++) {
+    const { isLineInsideSymbols, wordInsideSymbols } = analyzeLine(
+      fittingParagraphs[i],
+    )
+    if (isLineInsideSymbols) {
+      let div: JSX.Element = <div></div>
+      const groupedParagraphs: string[] = []
+      while (fittingParagraphs[i] !== ' ') {
+        groupedParagraphs.push(fittingParagraphs[i])
+        i++
+      }
+      const noTitleGroup = groupedParagraphs.filter(
+        (p) => p !== groupedParagraphs[0],
+      )
+      div = (
+        <div className="rounded-xl bg-white/10">
+          <Paragraph
+            fontSize={fontSize}
+            key={i}
+            className="rounded-t-xl bg-slate-600 py-1 text-center"
           >
-            {words.map((word, index) => {
-              const isChord =
-                word.match(regex.chordRegex) &&
-                !isLineATabLine &&
-                !isThereAnAorAnEinTheLine
+            <Words line={wordInsideSymbols} />
+          </Paragraph>
+          <pre className="p-3">
+            {noTitleGroup.map((line, i) => {
               return (
-                <span
-                  key={index}
-                  className={`${isChord ? 'font-semibold text-blue-500 dark:text-blue-500' : ''}`}
-                >
-                  {word}{' '}
-                </span>
+                <Paragraph fontSize={fontSize} key={i} className="text-black">
+                  <Words line={line} />
+                </Paragraph>
               )
             })}
-          </p>
-        )
-      })}
-    </>
-  )
+          </pre>
+        </div>
+      )
+      template.push(div)
+      template.push(<p> </p>)
+    } else {
+      const p = (
+        <Paragraph fontSize={fontSize}>
+          <Words line={fittingParagraphs[i]} />
+        </Paragraph>
+      )
+      template.push(p)
+    }
+  }
+  return <>{template.map((a) => a)}</>
 }
