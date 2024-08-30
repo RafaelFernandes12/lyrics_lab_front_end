@@ -1,19 +1,17 @@
+import api from '@/lib/axios'
+import { getToken } from '@/operations/auth/getToken'
+
 export async function clientDeleteSong(id: number): Promise<boolean> {
   try {
-    const response = await fetch(`/api/song-routes/delete?id=${id}`, {
-      method: 'DELETE',
+    const token = await getToken()
+
+    const response = await api.delete(`/song/${id}`, {
       headers: {
-        'Content-Type': 'application/json',
+        Authorization: token ? `${token}` : undefined,
       },
     })
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`)
-    }
-
-    const result = await response.json()
-
-    return result.success
+    return response.status === 200
   } catch (error) {
     console.error(
       'Failed to delete song:',
