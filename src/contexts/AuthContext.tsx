@@ -1,9 +1,8 @@
 'use client'
 
 import { userProps } from '@/models/userProps'
-import { getUser } from '@/operations/auth/getUser'
 import { login } from '@/operations/auth/login'
-import { createContext, ReactNode, useState } from 'react'
+import { createContext, ReactNode, useEffect, useState } from 'react'
 
 interface AuthProviderProps {
   children: ReactNode
@@ -24,18 +23,20 @@ export const AuthContext = createContext({} as AuthContextType)
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<userProps | null>(null)
 
+  useEffect(() => {
+    const storedUser = sessionStorage.getItem('user')
+    if (storedUser) {
+      setUser(JSON.parse(storedUser))
+    }
+  }, [])
+
   async function signIn({ email, password }: SignInData) {
     try {
       const response = await login(email, password)
-      const token = response.jwt
+      const user = response.user
 
-      if (!token) {
-        alert('Erro ao fazer login.')
-        return
-      }
-
-      const user = (await getUser(token)) || null
       setUser(user)
+      sessionStorage.setItem('user', JSON.stringify(user))
 
       window.location.href = '/dashboard'
     } catch (error) {
