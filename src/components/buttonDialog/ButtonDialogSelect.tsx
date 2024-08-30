@@ -20,7 +20,6 @@ export function ButtonDialogSelect({ albumId, setAlbumId }: buttonDialogProps) {
     const fetchAlbums = async () => {
       try {
         const data = await clientGetAlbums()
-        console.log(data)
         if (Array.isArray(data)) {
           setAlbums(data)
         } else {

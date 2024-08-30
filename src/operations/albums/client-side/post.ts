@@ -1,27 +1,32 @@
+import api from '@/lib/axios'
+import { getToken } from '@/operations/auth/getToken'
+
 interface CreateAlbumParams {
   name: string
   description: string
 }
 
-export async function clientCreateAlbum(
-  params: CreateAlbumParams,
-): Promise<boolean> {
+export async function clientCreateAlbum({
+  name,
+  description,
+}: CreateAlbumParams): Promise<boolean> {
   try {
-    const response = await fetch(`/api/album-routes/create`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    const token = await getToken()
+
+    const response = await api.post(
+      '/album',
+      {
+        name,
+        description,
       },
-      body: JSON.stringify(params),
-    })
+      {
+        headers: {
+          Authorization: token ? `${token}` : undefined,
+        },
+      },
+    )
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`)
-    }
-
-    const result = await response.json()
-
-    return result.success
+    return response.status === 201
   } catch (error) {
     console.error(
       'Failed to create album:',
