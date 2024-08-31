@@ -23,7 +23,7 @@ export function EditMenuItem({ id }: idProps) {
       <MenuItem onClick={handleClick}>Editar</MenuItem>
       <Dialog open={open} onClose={handleClick} maxWidth="lg">
         <DialogContent className="flex flex-col items-center justify-center gap-4">
-          <h2 className="dark:text-black">Criar playlist</h2>
+          <h2 className="dark:text-black">Editar álbum</h2>
           <div className="flex flex-col gap-4 ">
             <input
               placeholder="Nome"

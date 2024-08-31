@@ -6,11 +6,9 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <body className="bg-white dark:bg-black">
+    <body className="m-0 bg-slate-100 dark:bg-black">
       <Header />
-      <main className="my-10 h-fit rounded-md bg-slate-50 p-8 dark:bg-[#141414] max-sm:p-4">
-        {children}
-      </main>
+      <main className="m-[6%] my-10 h-fit rounded-md">{children}</main>
       <ToastContainer
         position="top-center"
         autoClose={5000}

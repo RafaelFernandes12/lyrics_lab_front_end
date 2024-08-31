@@ -20,7 +20,7 @@ export function ButtonDialogRoot({ action, text, children }: rootProps) {
   return (
     <>
       <button
-        className="flex items-center gap-2 bg-blue-800 p-3"
+        className="flex items-center gap-2 bg-[#567EBB] p-3"
         onClick={handleClick}
       >
         <div className="h-fit w-fit">
@@ -36,7 +36,7 @@ export function ButtonDialogRoot({ action, text, children }: rootProps) {
           <h2 className="dark:text-black">{text}</h2>
           <div className="flex flex-col gap-4 ">{children}</div>
           <div className="flex w-full items-center justify-center gap-2">
-            <button onClick={action} className="bg-blue-800 p-2 text-white">
+            <button onClick={action} className="bg-[#567EBB] p-2 text-white">
               Criar
             </button>
             <button onClick={handleClick} className="bg-red-800 p-2 text-white">
