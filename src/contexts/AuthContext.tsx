@@ -23,12 +23,12 @@ export const AuthContext = createContext({} as AuthContextType)
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<userProps | null>(null)
 
-  useEffect(() => {
-    const storedUser = sessionStorage.getItem('user')
-    if (storedUser) {
-      setUser(JSON.parse(storedUser))
-    }
-  }, [])
+  // useEffect(() => {
+  //   const storedUser = sessionStorage.getItem('user')
+  //   if (storedUser) {
+  //     setUser(JSON.parse(storedUser))
+  //   }
+  // }, [])
 
   async function signIn({ email, password }: SignInData) {
     try {

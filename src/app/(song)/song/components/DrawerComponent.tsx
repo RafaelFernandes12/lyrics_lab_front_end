@@ -96,7 +96,7 @@ export function DrawerComponent({
   )
   return (
     <>
-      <div className="fixed dark:text-black">
+      <div className="dark:text-black">
         <Drawer
           variant="permanent"
           className="max-md:hidden"

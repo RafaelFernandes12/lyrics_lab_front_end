@@ -133,7 +133,7 @@ export default function Song({ params }: urlIdProps) {
   }
 
   return (
-    <div>
+    <div className="flex justify-between">
       <DrawerComponent
         toneUp={() => handleToneChange('up')}
         toneDown={() => handleToneChange('down')}
@@ -145,7 +145,7 @@ export default function Song({ params }: urlIdProps) {
       />
       <div
         ref={containerRef}
-        className="m-auto w-1/2 bg-white p-6 dark:bg-black xl:min-w-[800px]"
+        className="m-auto bg-white p-6 dark:bg-black xl:min-w-[800px]"
       >
         {isChecked ? (
           <input

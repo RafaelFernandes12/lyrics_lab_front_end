@@ -1,4 +1,7 @@
 'use client'
+import SearchIcon from '@mui/icons-material/Search'
+import Input from '@mui/material/Input'
+import InputAdornment from '@mui/material/InputAdornment'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { SwitchTheme } from './SwitchTheme'
@@ -6,7 +9,7 @@ export function Header() {
   const pathname = usePathname()
   return (
     <header
-      className={`flex items-center justify-between ${pathname === '/login' || pathname === '/register' ? 'hidden' : ''}`}
+      className={`dark:bg-headerDark flex items-center justify-between bg-white px-[4%] ${pathname === '/login' || pathname === '/register' ? 'hidden' : ''}`}
     >
       <Link href="/">
         <svg
@@ -30,19 +33,33 @@ export function Header() {
           />
         </svg>
       </Link>
-      <ul className="flex items-center gap-16 text-2xl font-semibold max-md:hidden">
-        <li>
-          <Link href="/songs">
-            <span>Músicas</span>
-          </Link>
-        </li>
-        <li>
-          <Link href="/albums">
-            <span>Albums</span>
-          </Link>
-        </li>
-      </ul>
-      <SwitchTheme />
+      <div className="flex justify-end">
+        <ul className="flex items-center gap-16 text-xl max-md:hidden">
+          <li>
+            <Link href="/songs">
+              <span>Músicas</span>
+            </Link>
+          </li>
+          <li>
+            <Link href="/albums">
+              <span>Albums</span>
+            </Link>
+          </li>
+          <li>
+            <Input
+              placeholder="Pesquisar"
+              className="dark:text-white"
+              disableUnderline
+              startAdornment={
+                <InputAdornment position="start">
+                  <SearchIcon className="dark:text-white" />
+                </InputAdornment>
+              }
+            />
+          </li>
+        </ul>
+        <SwitchTheme />
+      </div>
     </header>
   )
 }

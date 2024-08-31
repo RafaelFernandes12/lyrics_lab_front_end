@@ -1,7 +1,4 @@
-import { Album } from '@/components/SongCard/Album'
-import CreatedAt from '@/components/SongCard/CreatedAt'
-import SongCard from '@/components/SongCard/SongCard'
-import { Tom } from '@/components/SongCard/Tom'
+import { SongCard } from '@/components/SongCard/index'
 import { serverGetAllAlbums } from '@/operations/albums/server-side/getAll'
 import { serverGetAllSongs } from '@/operations/songs/server-side/getAll'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
@@ -9,7 +6,6 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { CreateSongDialog } from './components/CreateSongDialog'
-
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
 
@@ -23,39 +19,59 @@ export default async function Songs() {
         <CreateSongDialog />
       </section>
 
-      <section className="flex flex-col gap-4">
-        <ul className="mx-2 flex font-semibold max-sm:justify-between">
-          <li className="w-1/2 max-sm:w-fit">
-            <span>Titulo</span>
-          </li>
-          <div className="mr-10 flex w-1/2 justify-between max-sm:w-fit">
-            <li className="w-full">
+      <table className="w-full border-separate border-spacing-y-4">
+        <thead>
+          <tr>
+            <th className="pl-4 text-left">
+              <span>Titulo</span>
+            </th>
+            <th className="text-left">
               <span>Álbum</span>
-            </li>
-            <li className="w-full max-sm:hidden">
+            </th>
+            <th className="text-left">
               <span>Tom</span>
-            </li>
-            <li className="-mr-5 flex text-center max-sm:hidden">
+            </th>
+            <th className="flex justify-end">
               <span>Adicionado</span>
               <ArrowDropDownIcon className="dark:text-white" />
-            </li>
-          </div>
-        </ul>
-        {songs.map((song) => {
-          return (
-            <SongCard name={song.name} key={song.id} id={song.id}>
-              <Album
-                album={albums.map((album) => {
-                  if (album.id === song.albumId) return album.name
-                  return ''
-                })}
-              />
-              <Tom tom={song.tone} />
-              <CreatedAt createdAt={dayjs().to(song.createdAt)} />
-            </SongCard>
-          )
-        })}
-      </section>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {songs.map((song, i) => {
+            let bgColor = ''
+            if (i % 2 === 0) bgColor = '#567EBB'
+            else bgColor = '#606D80'
+
+            return (
+              <tr
+                key={song.id}
+                className={`w-full rounded py-5`}
+                style={{ backgroundColor: bgColor }}
+              >
+                <td className="flex items-center py-5">
+                  <SongCard.ThreeDots id={song.id} />
+                  <SongCard.Name id={song.id} name={song.name} />
+                </td>
+                <td className="py-5">
+                  <SongCard.Album
+                    album={albums.map((album) => {
+                      if (album.id === song.albumId) return album.name
+                      return ''
+                    })}
+                  />
+                </td>
+                <td className="py-5">
+                  <SongCard.Tone tom={song.tone} />
+                </td>
+                <td className="py-5 pr-4 text-right">
+                  <SongCard.CreatedAt createdAt={dayjs().to(song.createdAt)} />
+                </td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
     </>
   )
 }

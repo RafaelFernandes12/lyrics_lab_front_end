@@ -1,7 +1,5 @@
 import logo from '@/assets/logo.svg'
-import CreatedAt from '@/components/SongCard/CreatedAt'
-import SongCard from '@/components/SongCard/SongCard'
-import { Tom } from '@/components/SongCard/Tom'
+import { SongCard } from '@/components/SongCard/index'
 import { urlIdProps } from '@/models/urlIdProps'
 import { serverGetAlbum } from '@/operations/albums/server-side/getOne'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
@@ -34,30 +32,44 @@ export default async function Album({ params }: urlIdProps) {
           <p className="mt-6 w-10/12">{album?.description}</p>
         </div>
       </section>
-      <section className="flex flex-col gap-4">
-        <ul className="mx-2 flex font-semibold max-sm:justify-between">
-          <li className="w-1/2 max-sm:w-fit">
-            <span>Titulo</span>
-          </li>
-          <div className="mr-10 flex w-1/2 justify-between max-sm:w-fit">
-            <li className="w-full">
-              <span>Tom</span>
-            </li>
-            <li className="-mr-5 flex text-center max-sm:hidden">
+      <table className="w-full border-separate border-spacing-y-4">
+        <thead>
+          <tr>
+            <th className="pl-4 text-left">Titulo</th>
+            <th className="text-left">Tom</th>
+            <th className="flex justify-end">
               <span>Adicionado</span>
               <ArrowDropDownIcon className="dark:text-white" />
-            </li>
-          </div>
-        </ul>
-        {album?.songs.map((song) => {
-          return (
-            <SongCard id={song.id} name={song.name} key={song.id}>
-              <Tom tom={song.tone} />
-              <CreatedAt createdAt={dayjs().to(song.createdAt)} />
-            </SongCard>
-          )
-        })}
-      </section>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {album?.songs.map((song, i) => {
+            let bgColor = ''
+            if (i % 2 === 0) bgColor = '#567EBB'
+            else bgColor = '#606D80'
+
+            return (
+              <tr
+                key={song.id}
+                className={`w-full rounded py-5`}
+                style={{ backgroundColor: bgColor }}
+              >
+                <td className="flex items-center py-5">
+                  <SongCard.ThreeDots id={song.id} />
+                  <SongCard.Name id={song.id} name={song.name} />
+                </td>
+                <td className="py-5">
+                  <SongCard.Tone tom={song.tone} />
+                </td>
+                <td className="py-5 pr-4 text-right">
+                  <SongCard.CreatedAt createdAt={dayjs().to(song.createdAt)} />
+                </td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
     </>
   )
 }
