@@ -1,11 +1,12 @@
 import { Header } from '@/components/Header/Header'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <body className="m-0 bg-slate-200 dark:bg-gray-950">
+    <body className="m-0 bg-slate-100 dark:bg-gray-950">
       <Header />
       <main className="m-10 my-10 h-fit rounded-md p-8 max-sm:p-4">
         {children}

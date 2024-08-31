@@ -1,12 +1,11 @@
 'use client'
 
-import { AuthHeader } from '@/components/Header/AuthHeader'
 import { register } from '@/operations/auth/register'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-export default function SignUp() {
+export default function Register() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -14,6 +13,15 @@ export default function SignUp() {
 
   function handleRegister(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
+
+    const passwordRegex = /^[a-zA-Z0-9]{8,}$/
+    if (!passwordRegex.test(password)) {
+      alert(
+        'Senha inválida. A senha deve ter no mínimo 8 caracteres e conter apenas letras e números.',
+      )
+      return
+    }
+
     register(name, email, password)
       .then((res) => {
         console.log(res)
@@ -26,48 +34,47 @@ export default function SignUp() {
 
   return (
     <>
-      <AuthHeader />
-      <h1 className="my-20 w-full text-center">Cadastrar</h1>
-      <section className="m-auto w-[600px] rounded-2xl border-2 border-black p-6 dark:border-white max-sm:w-full">
-        <form className="flex flex-col gap-4" onSubmit={handleRegister}>
-          <div className="flex w-full flex-col gap-2">
+      <h1 className="my-16 w-full text-center">Cadastre-se</h1>
+      <section className="m-auto w-[400px] max-sm:w-full">
+        <form className="flex flex-col gap-3" onSubmit={handleRegister}>
+          <div className="flex w-full flex-col">
             <label>
-              <p>Nome Completo</p>
+              <p>Nome de usuário</p>
             </label>
             <input
-              className="rounded-lg border-2 border-black p-3"
+              className="rounded-lg bg-gray-200 p-3"
               type="text"
               onChange={(e) => setName(e.target.value)}
             />
           </div>
-          <div className="flex w-full flex-col gap-2">
+          <div className="flex w-full flex-col">
             <label>
               <p>E-mail</p>
             </label>
             <input
-              className="rounded-lg border-2 border-black p-3"
-              type="text"
+              className="rounded-lg bg-gray-200 p-3"
+              type="email"
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <div className="flex w-full flex-col gap-2">
+          <div className="flex w-full flex-col">
             <label>
               <p>Senha</p>
             </label>
             <input
-              className="rounded-lg border-2 border-black p-3"
+              className="rounded-lg bg-gray-200 p-3"
               type="password"
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button className="w-full bg-darkBlue" type="submit">
+          <button className="bg-blueButton mt-3 w-full" type="submit">
             <span className="text-white">Cadastrar</span>
           </button>
         </form>
-        <p className="mt-4 text-center">
+        <p className="mt-3 text-center">
           Já tem uma conta?{'         '}
-          <Link className="text-darkBlue" href="/login">
-            Acesse sua conta
+          <Link className="text-blueButton" href="/login">
+            Acesse sua conta!
           </Link>
         </p>
       </section>

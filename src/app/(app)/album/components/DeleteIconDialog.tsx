@@ -15,12 +15,16 @@ export function DeleteIconDialog({ id }: idProps) {
 
   return (
     <>
-      <button onClick={handleClick} className="dark:bg-transparent ">
-        <DeleteIcon className="h-5 w-5 dark:text-white" />
-      </button>
+      <div
+        className="flex items-center dark:bg-transparent "
+        onClick={handleClick}
+      >
+        <DeleteIcon className="m-2 h-5 w-5 dark:text-white" />
+        <p>Excluir</p>
+      </div>
       <Dialog open={open} onClose={handleClick} maxWidth="lg">
         <DialogContent className="flex flex-col items-center justify-center gap-4">
-          <h2 className="dark:text-black">Deletar Album</h2>
+          <h2 className="dark:text-black">Excluir álbum</h2>
           <p className="dark:text-black">
             Tem certeza que deseja deletar a Album? Esta ação não pode ser
             desfeita

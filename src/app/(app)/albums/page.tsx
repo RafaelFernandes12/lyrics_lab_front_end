@@ -7,7 +7,7 @@ export default async function Algums() {
   return (
     <>
       <section className="flex items-center justify-between">
-        <h1>Album</h1>
+        <h1>Álbuns</h1>
         <CreateAlbumDialog />
       </section>
       <section>

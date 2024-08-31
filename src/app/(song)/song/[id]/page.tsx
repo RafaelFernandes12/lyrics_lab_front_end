@@ -1,4 +1,5 @@
 'use client'
+
 import { fetcher } from '@/lib/fetcher'
 import { urlIdProps } from '@/models/urlIdProps'
 import { clientEditLyric } from '@/operations/songs/client-side/editLyric'
@@ -101,6 +102,7 @@ export default function Song({ params }: urlIdProps) {
       (index + shift + regex.textSizes.length) % regex.textSizes.length
     setTextSize(regex.textSizes[newIndex])
   }
+
   async function handleChangeChord(chordType: 'flatChords' | 'sharpChords') {
     nookies.set(null, 'chordType', chordType)
     let oppositeChordType = chordType
@@ -145,7 +147,7 @@ export default function Song({ params }: urlIdProps) {
       />
       <div
         ref={containerRef}
-        className="m-auto bg-white p-6 dark:bg-black xl:min-w-[800px]"
+        className="m-auto bg-white p-6 dark:bg-headerDark xl:min-w-[800px]"
       >
         {isChecked ? (
           <input

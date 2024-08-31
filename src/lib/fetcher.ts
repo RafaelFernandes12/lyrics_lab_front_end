@@ -14,5 +14,6 @@ export const fetcher = async (url: string) => {
     },
   })
 
-  return response.data
+  // gambiarra pra pegar o song kkkkkkkkkk
+  return response.data[0]
 }

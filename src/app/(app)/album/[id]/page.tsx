@@ -5,7 +5,8 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import Image from 'next/image'
-import { IconsAction } from '../components/IconsActions'
+import { DeleteIconDialog } from '../components/DeleteIconDialog'
+import { EditIconDialog } from '../components/EditIconDialog'
 import { Thead } from '../components/Thead'
 
 dayjs.extend(relativeTime)
@@ -46,50 +47,55 @@ export default async function Album({ params, searchParams }: albumProps) {
   }
   return (
     <>
-      <section className="flex w-full items-center gap-7 max-sm:flex-col max-sm:text-center">
+      <section className="flex w-full gap-7 max-sm:flex-col max-sm:text-center">
         <Image
           src={logo}
           alt="example"
-          className="h-72 w-80 rounded-xl bg-gray-500 max-sm:h-52 max-sm:w-60"
+          className="h-52 w-52 rounded-xl bg-slate-200"
         />
-        <div className="w-full max-sm:flex max-sm:flex-col max-sm:items-center">
-          <div className="flex items-center gap-4 text-center">
+        <div className="flex w-full flex-col justify-between pt-4 max-sm:flex max-sm:flex-col max-sm:items-center">
+          <div>
             <h1>{album?.name}</h1>
-            <IconsAction id={params.id} />
+            <span>{album?.songs.length} músicas</span>
+            <p className="mt-4 w-10/12">{album?.description}</p>
           </div>
-          <span>{album?.songs.length} músicas</span>
-          <p className="mt-6 w-10/12">{album?.description}</p>
+          <div className="flex items-center gap-4">
+            <EditIconDialog id={params.id} />
+            <DeleteIconDialog id={params.id} />
+          </div>
         </div>
       </section>
-      <table className="w-full border-separate border-spacing-y-4">
-        <Thead />
-        <tbody>
-          {sortedSongs?.map((song, i) => {
-            let bgColor = ''
-            if (i % 2 === 0) bgColor = '#567EBB'
-            else bgColor = '#606D80'
+      {album?.songs?.length !== 0 && (
+        <table className="w-full border-separate border-spacing-y-4">
+          <Thead />
+          <tbody>
+            {sortedSongs?.map((song, i) => {
+              const bgColor = i % 2 === 0 ? '#567EBB' : '#606D80'
 
-            return (
-              <tr
-                key={song.id}
-                className={`w-full rounded py-5`}
-                style={{ backgroundColor: bgColor }}
-              >
-                <td className="flex items-center py-5">
-                  <SongCard.ThreeDots id={song.id} />
-                  <SongCard.Name id={song.id} name={song.name} />
-                </td>
-                <td className="py-5">
-                  <SongCard.Tone tom={song.tone} />
-                </td>
-                <td className="py-5 pr-4 text-right">
-                  <SongCard.CreatedAt createdAt={dayjs().to(song.createdAt)} />
-                </td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
+              return (
+                <tr
+                  key={song.id}
+                  className="w-full rounded py-5"
+                  style={{ backgroundColor: bgColor }}
+                >
+                  <td className="flex items-center py-5">
+                    <SongCard.ThreeDots id={song.id} />
+                    <SongCard.Name id={song.id} name={song.name} />
+                  </td>
+                  <td className="py-5">
+                    <SongCard.Tone tom={song.tone} />
+                  </td>
+                  <td className="py-5 pr-4 text-right">
+                    <SongCard.CreatedAt
+                      createdAt={dayjs().to(song.createdAt)}
+                    />
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      )}
     </>
   )
 }

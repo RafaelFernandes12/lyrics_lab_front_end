@@ -11,14 +11,15 @@ interface albumCardProps {
 
 export function AlbumCard(props: albumCardProps) {
   return (
-    <div className="flex w-64 flex-col">
+    <div className="flex h-[285px] w-[240px] flex-col gap-2 rounded-xl bg-slate-200 p-5 dark:bg-headerDark">
       <Link href={`/album/${props.id}`}>
         <Image
           src={logo}
           alt="example"
-          className="m-auto h-52 w-64 flex-col rounded-xl bg-gray-500 dark:bg-gradient-to-b dark:from-zinc-700/70 dark:to-zinc-700/20"
+          className="bg- m-auto h-[180px] w-[200px] flex-col rounded-xl bg-white"
         />
       </Link>
+
       <div className="flex w-full items-center justify-between">
         <div className="w-10/12">
           <p className="text-xl font-semibold ">{props.name}</p>
