@@ -1,20 +1,49 @@
 import logo from '@/assets/logo.svg'
 import { SongCard } from '@/components/SongCard/index'
-import { urlIdProps } from '@/models/urlIdProps'
 import { serverGetAlbum } from '@/operations/albums/server-side/getOne'
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import Image from 'next/image'
 import { IconsAction } from '../components/IconsActions'
+import { Thead } from '../components/Thead'
 
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
 
-export default async function Album({ params }: urlIdProps) {
-  const album = await serverGetAlbum(params.id)
+interface albumProps {
+  params: {
+    id: number
+  }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
 
+export default async function Album({ params, searchParams }: albumProps) {
+  const album = await serverGetAlbum(params.id)
+  let sortedSongs = album?.songs
+
+  const sortedByTitle = searchParams.sortedByTitle
+  const sortedByDay = searchParams.sortedByDay
+
+  if (sortedByTitle === 'true') {
+    sortedSongs = album?.songs.sort((a, b) => a.name.localeCompare(b.name))
+  }
+  if (sortedByTitle === 'false') {
+    sortedSongs = album?.songs.sort((a, b) => b.name.localeCompare(a.name))
+    console.log(sortedSongs)
+  }
+
+  if (sortedByDay === 'true') {
+    sortedSongs = album?.songs.sort((a, b) =>
+      a.createdAt.localeCompare(b.createdAt),
+    )
+  }
+  if (sortedByDay === 'false') {
+    sortedSongs = album?.songs.sort((a, b) =>
+      b.createdAt.localeCompare(a.createdAt),
+    )
+    console.log(sortedSongs)
+  }
   return (
     <>
       <section className="flex w-full items-center gap-7 max-sm:flex-col max-sm:text-center">
@@ -33,18 +62,9 @@ export default async function Album({ params }: urlIdProps) {
         </div>
       </section>
       <table className="w-full border-separate border-spacing-y-4">
-        <thead>
-          <tr>
-            <th className="pl-4 text-left">Titulo</th>
-            <th className="text-left">Tom</th>
-            <th className="flex justify-end">
-              <span>Adicionado</span>
-              <ArrowDropDownIcon className="dark:text-white" />
-            </th>
-          </tr>
-        </thead>
+        <Thead />
         <tbody>
-          {album?.songs.map((song, i) => {
+          {sortedSongs?.map((song, i) => {
             let bgColor = ''
             if (i % 2 === 0) bgColor = '#567EBB'
             else bgColor = '#606D80'

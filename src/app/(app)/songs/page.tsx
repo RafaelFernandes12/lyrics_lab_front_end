@@ -1,17 +1,42 @@
 import { SongCard } from '@/components/SongCard/index'
 import { serverGetAllAlbums } from '@/operations/albums/server-side/getAll'
 import { serverGetAllSongs } from '@/operations/songs/server-side/getAll'
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { CreateSongDialog } from './components/CreateSongDialog'
+import { Thead } from './components/Thead'
+
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
 
-export default async function Songs() {
+export default async function Songs({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined }
+}) {
   const songs = (await serverGetAllSongs()) || []
   const albums = (await serverGetAllAlbums()) || []
+  let sortedSongs = songs
+
+  const sortedByTitle = searchParams.sortedByTitle
+  const sortedByDay = searchParams.sortedByDay
+
+  if (sortedByTitle === 'true') {
+    sortedSongs = songs.sort((a, b) => a.name.localeCompare(b.name))
+  }
+  if (sortedByTitle === 'false') {
+    sortedSongs = songs.sort((a, b) => b.name.localeCompare(a.name))
+    console.log(sortedSongs)
+  }
+
+  if (sortedByDay === 'true') {
+    sortedSongs = songs.sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+  }
+  if (sortedByDay === 'false') {
+    sortedSongs = songs.sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+    console.log(sortedSongs)
+  }
   return (
     <>
       <section className="flex items-center justify-between">
@@ -20,25 +45,9 @@ export default async function Songs() {
       </section>
 
       <table className="w-full border-separate border-spacing-y-4">
-        <thead>
-          <tr>
-            <th className="pl-4 text-left">
-              <span>Titulo</span>
-            </th>
-            <th className="text-left">
-              <span>Álbum</span>
-            </th>
-            <th className="text-left">
-              <span>Tom</span>
-            </th>
-            <th className="flex justify-end">
-              <span>Adicionado</span>
-              <ArrowDropDownIcon className="dark:text-white" />
-            </th>
-          </tr>
-        </thead>
+        <Thead />
         <tbody>
-          {songs.map((song, i) => {
+          {sortedSongs.map((song, i) => {
             let bgColor = ''
             if (i % 2 === 0) bgColor = '#567EBB'
             else bgColor = '#606D80'
