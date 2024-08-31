@@ -26,7 +26,7 @@ export function DeleteIconDialog({ id }: idProps) {
         <DialogContent className="flex flex-col items-center justify-center gap-4">
           <h2 className="dark:text-black">Excluir álbum</h2>
           <p className="dark:text-black">
-            Tem certeza que deseja deletar a Album? Esta ação não pode ser
+            Tem certeza que deseja excluir o álbum? Esta ação não pode ser
             desfeita
           </p>
           <div className="flex gap-2">

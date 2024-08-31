@@ -54,13 +54,13 @@ function DeleteMenuItem({ id }: idProps) {
   return (
     <>
       <MenuItem onClick={handleClick} className="dark:bg-transparent ">
-        Deletar
+        Excluir
       </MenuItem>
       <Dialog open={open} onClose={handleClick} maxWidth="lg">
         <DialogContent className="flex flex-col items-center justify-center gap-4">
-          <h2 className="dark:text-black">Deletar Song</h2>
+          <h2 className="dark:text-black">Excluir música</h2>
           <p className="dark:text-black">
-            Tem certeza que deseja deletar a Song? Esta ação não pode ser
+            Tem certeza que deseja excluir a música? Esta ação não pode ser
             desfeita
           </p>
           <div className="flex gap-2">
@@ -68,7 +68,7 @@ function DeleteMenuItem({ id }: idProps) {
               onClick={() => clientDeleteSong(id)}
               className="bg-blue-800 p-2 text-white"
             >
-              Deletar
+              Excluir
             </button>
             <button onClick={handleClick} className="bg-red-800 p-2 text-white">
               Cancelar

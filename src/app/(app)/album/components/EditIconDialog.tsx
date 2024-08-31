@@ -43,11 +43,18 @@ export function EditIconDialog({ id }: idProps) {
               className="rounded-lg border-[1px] border-black p-2"
             />
           </div>
+          <div className="flex w-full items-center justify-center gap-2">
+            <button
+              onClick={handleEditAlbum}
+              className="bg-blue-800 p-2 text-white"
+            >
+              Editar
+            </button>
+            <button onClick={handleClick} className="bg-red-800 p-2 text-white">
+              Cancelar
+            </button>
+          </div>
         </DialogContent>
-        <div className="flex w-full items-center justify-center gap-2">
-          <button onClick={handleEditAlbum}>Editar</button>
-          <button onClick={handleClick}>Cancelar</button>
-        </div>
       </Dialog>
     </>
   )

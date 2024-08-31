@@ -1,5 +1,5 @@
 import { AuthProvider } from '@/contexts/AuthContext'
-import { Poppins } from '@next/font/google'
+import { Poppins } from 'next/font/google'
 import 'react-toastify/dist/ReactToastify.css'
 import './globals.css'
 
