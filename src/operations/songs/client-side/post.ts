@@ -4,13 +4,11 @@ import { getToken } from '@/operations/auth/getToken'
 interface CreateSongParams {
   name: string
   tone: string
-  albumId: number
 }
 
 export async function clientCreateSong({
   name,
   tone,
-  albumId,
 }: CreateSongParams): Promise<boolean> {
   try {
     const token = await getToken()
@@ -20,7 +18,6 @@ export async function clientCreateSong({
       {
         name,
         tone,
-        albumId,
       },
       {
         headers: {

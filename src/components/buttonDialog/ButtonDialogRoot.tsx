@@ -37,7 +37,7 @@ export function ButtonDialogRoot({ action, text, children }: rootProps) {
           <div className="flex flex-col gap-4 ">{children}</div>
           <div className="flex w-full items-center justify-center gap-2">
             <button onClick={action} className="bg-[#567EBB] p-2 text-white">
-              Criar
+              Confirmar
             </button>
             <button onClick={handleClick} className="bg-red-800 p-2 text-white">
               Cancelar

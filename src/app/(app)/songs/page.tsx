@@ -27,7 +27,6 @@ export default async function Songs({
     sortedSongs = songs.sort((a, b) => b.name.localeCompare(a.name))
     console.log(sortedSongs)
   }
-
   if (sortedByDay === 'true') {
     sortedSongs = songs.sort((a, b) => a.createdAt.localeCompare(b.createdAt))
   }
@@ -35,6 +34,7 @@ export default async function Songs({
     sortedSongs = songs.sort((a, b) => b.createdAt.localeCompare(a.createdAt))
     console.log(sortedSongs)
   }
+
   return (
     <>
       <section className="flex items-center justify-between">

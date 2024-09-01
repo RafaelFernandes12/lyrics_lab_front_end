@@ -9,11 +9,14 @@ import Select, { SelectChangeEvent } from '@mui/material/Select'
 import { useEffect, useState } from 'react'
 
 interface buttonDialogProps {
-  albumId: number
-  setAlbumId: (e: SelectChangeEvent<number>) => void
+  albumIds: number[]
+  setAlbumIds: (e: number[]) => void
 }
 
-export function ButtonDialogSelect({ albumId, setAlbumId }: buttonDialogProps) {
+export function ButtonDialogSelect({
+  albumIds,
+  setAlbumIds,
+}: buttonDialogProps) {
   const [albums, setAlbums] = useState<albumProps[]>([])
 
   useEffect(() => {
@@ -35,12 +38,30 @@ export function ButtonDialogSelect({ albumId, setAlbumId }: buttonDialogProps) {
     fetchAlbums()
   }, [])
 
+  const handleSelectChange = (event: SelectChangeEvent<string[]>) => {
+    const selectedNames = event.target.value as string[]
+    const selectedIds = selectedNames.map(
+      (name) => albums.find((album) => album.name === name)?.id as number,
+    )
+    setAlbumIds(selectedIds)
+  }
+
+  const selectedNames = albumIds
+    .map((id) => albums.find((album) => album.id === id)?.name)
+    .filter((name) => name !== undefined) as string[]
+
   return (
     <FormControl sx={{ minWidth: 120 }} className="w-full">
-      <InputLabel>Álbum</InputLabel>
-      <Select value={albumId} label="Álbum" onChange={setAlbumId}>
-        {albums.map((album: albumProps) => (
-          <MenuItem key={album.id} value={album.id}>
+      <InputLabel>Álbuns</InputLabel>
+      <Select
+        multiple
+        value={selectedNames}
+        label="Álbuns"
+        onChange={handleSelectChange}
+        renderValue={(selected) => selected.join(', ')}
+      >
+        {albums.map((album) => (
+          <MenuItem key={album.id} value={album.name}>
             {album.name}
           </MenuItem>
         ))}
