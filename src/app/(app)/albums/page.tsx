@@ -18,7 +18,12 @@ export default async function Algums() {
             })
             return (
               <li key={album.id}>
-                <AlbumCard id={album.id} name={album.name} songs={songsNames} />
+                <AlbumCard
+                  id={album.id}
+                  name={album.name}
+                  image={album.image}
+                  songs={songsNames}
+                />
               </li>
             )
           })}

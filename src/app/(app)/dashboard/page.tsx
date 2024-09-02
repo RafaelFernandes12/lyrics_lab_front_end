@@ -49,6 +49,7 @@ export default async function Home() {
                 id={album.id}
                 key={album.id}
                 name={album.name}
+                image={album.image}
                 songs={songsNames}
               />
             )

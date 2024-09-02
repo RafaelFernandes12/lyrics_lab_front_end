@@ -17,7 +17,10 @@ export function AlbumCard(props: albumCardProps) {
         <Image
           src={props.image || logo}
           alt="example"
-          className="bg- m-auto h-[180px] w-[200px] flex-col rounded-xl bg-white"
+          width={200}
+          height={180}
+          style={{ objectFit: props.image ? 'cover' : 'contain' }}
+          className={`m-auto h-[180px] w-[200px] flex-col rounded-xl bg-white ${props.image ? 'object-cover' : 'object-contain'}`}
         />
       </Link>
 

@@ -2,12 +2,12 @@ import { initializeApp } from 'firebase/app'
 import { getStorage } from 'firebase/storage'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDicMrFpt3WuxZsD-3DNwOq0ltevuFGxDo',
-  authDomain: 'lyrics-lab-86dc6.firebaseapp.com',
-  projectId: 'lyrics-lab-86dc6',
-  storageBucket: 'lyrics-lab-86dc6.appspot.com',
-  messagingSenderId: '729814746507',
-  appId: '1:729814746507:web:74aa0d5509e9c9e15f5b8e',
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY!,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN!,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID!,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET!,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID!,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID!,
 }
 
 export const app = initializeApp(firebaseConfig)

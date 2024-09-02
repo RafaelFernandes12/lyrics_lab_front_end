@@ -33,6 +33,10 @@ export function EditMenuItem({ id }: idProps) {
 
     uploadTask.on(
       'state_changed',
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        console.log('Upload is ' + progress + '% done')
+      },
       (error) => {
         console.error('Upload failed:', error)
         setUploading(false)
@@ -40,6 +44,7 @@ export function EditMenuItem({ id }: idProps) {
       async () => {
         const url = await getDownloadURL(uploadTask.snapshot.ref)
         clientEditAlbum({ id, name, description, image: url })
+        console.log(url)
         setUploading(false)
         setOpen(false)
       },
@@ -73,7 +78,7 @@ export function EditMenuItem({ id }: idProps) {
               className="bg-blue-800 p-2 text-white"
               disabled={uploading}
             >
-              {uploading ? 'Uploading...' : 'Editar'}
+              Editar
             </button>
             <button onClick={handleClick} className="bg-red-800 p-2 text-white">
               Cancelar
