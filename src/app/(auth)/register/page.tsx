@@ -3,7 +3,7 @@
 import { register } from '@/operations/auth/register'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { ChangeEvent, FormEvent, useState } from 'react'
+import { FormEvent, useState } from 'react'
 
 export default function Register() {
   const [email, setEmail] = useState('')
@@ -13,10 +13,6 @@ export default function Register() {
   const [enteredCode, setEnteredCode] = useState('')
   const [step, setStep] = useState('form')
   const router = useRouter()
-
-  function handleCodeChange(e: ChangeEvent<HTMLInputElement>) {
-    setEnteredCode(e.target.value)
-  }
 
   async function handleRegister(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -108,12 +104,13 @@ export default function Register() {
           </section>
         </>
       ) : (
-        <div>
+        <div className="my-16 flex flex-col items-center">
           <input
             type="text"
+            className="rounded-lg bg-gray-200 p-3"
             placeholder="Código de verificação"
             value={enteredCode}
-            onChange={handleCodeChange}
+            onChange={(e) => setEnteredCode(e.target.value)}
           />
           <button onClick={handleVerifyCode}>Verificar Código</button>
           <button onClick={handleBackToForm}>Voltar</button>

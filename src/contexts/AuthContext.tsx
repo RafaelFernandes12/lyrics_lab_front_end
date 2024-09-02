@@ -2,6 +2,7 @@
 
 import { userProps } from '@/models/userProps'
 import { login } from '@/operations/auth/login'
+import { useRouter } from 'next/navigation'
 import { createContext, ReactNode, useState } from 'react'
 
 interface AuthProviderProps {
@@ -22,6 +23,7 @@ export const AuthContext = createContext({} as AuthContextType)
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<userProps | null>(null)
+  const router = useRouter()
 
   async function signIn({ email, password }: SignInData) {
     try {
@@ -30,7 +32,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       setUser(user)
 
-      window.location.href = '/dashboard'
+      router.push('/dashboard')
     } catch (error) {
       console.error('Erro ao fazer login:', error)
     }
