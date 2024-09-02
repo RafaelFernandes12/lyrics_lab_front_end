@@ -6,6 +6,7 @@ import { ThreeDots } from './ThreeDots'
 interface albumCardProps {
   id: number
   name: string
+  image: string | null
   songs: string[]
 }
 
@@ -14,9 +15,12 @@ export function AlbumCard(props: albumCardProps) {
     <div className="flex h-[285px] w-[240px] flex-col gap-2 rounded-xl bg-slate-200 p-5 dark:bg-headerDark">
       <Link href={`/album/${props.id}`}>
         <Image
-          src={logo}
+          src={props.image || logo}
           alt="example"
-          className="bg- m-auto h-[180px] w-[200px] flex-col rounded-xl bg-white"
+          width={200}
+          height={180}
+          style={{ objectFit: props.image ? 'cover' : 'contain' }}
+          className={`m-auto h-[180px] w-[200px] flex-col rounded-xl bg-white ${props.image ? 'object-cover' : 'object-contain'}`}
         />
       </Link>
 

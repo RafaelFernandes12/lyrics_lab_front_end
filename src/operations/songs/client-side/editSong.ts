@@ -3,14 +3,18 @@ import { getToken } from '@/operations/auth/getToken'
 
 interface EditSongParams {
   id: number
-  name: string
-  lyric: string
+  name?: string
+  lyric?: string
+  tone?: string
+  albumIds?: number[]
 }
 
 export async function clientEditSong({
   id,
   name,
   lyric,
+  tone,
+  albumIds,
 }: EditSongParams): Promise<boolean> {
   try {
     const token = await getToken()
@@ -20,6 +24,8 @@ export async function clientEditSong({
       {
         name,
         lyric,
+        tone,
+        albumIds,
       },
       {
         headers: {

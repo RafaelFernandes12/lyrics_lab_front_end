@@ -49,8 +49,11 @@ export default async function Album({ params, searchParams }: albumProps) {
     <>
       <section className="flex w-full gap-7 max-sm:flex-col max-sm:text-center">
         <Image
-          src={logo}
+          src={album?.image || logo}
           alt="example"
+          width={208}
+          height={208}
+          style={{ objectFit: 'cover' }}
           className="h-52 w-52 rounded-xl bg-slate-200"
         />
         <div className="flex w-full flex-col justify-between pt-4 max-sm:flex max-sm:flex-col max-sm:items-center">

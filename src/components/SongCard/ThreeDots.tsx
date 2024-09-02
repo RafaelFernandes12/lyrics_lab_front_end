@@ -1,10 +1,10 @@
 'use client'
 import { idProps } from '@/models/idProps'
-import { clientDeleteSong } from '@/operations/songs/client-side/delete'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
-import { DialogContent, IconButton, Menu, MenuItem } from '@mui/material'
-import Dialog from '@mui/material/Dialog'
+import { IconButton, Menu } from '@mui/material'
 import { useState } from 'react'
+import { DeleteMenuItem } from './DeleteMenuItem'
+import { EditMenuItem } from './EditMenuItem'
 
 export function ThreeDots({ id }: idProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -16,6 +16,7 @@ export function ThreeDots({ id }: idProps) {
   const handleClose = () => {
     setAnchorEl(null)
   }
+
   return (
     <div>
       <IconButton
@@ -37,45 +38,9 @@ export function ThreeDots({ id }: idProps) {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem>Editar</MenuItem>
+        <EditMenuItem id={id} />
         <DeleteMenuItem id={id} />
       </Menu>
     </div>
-  )
-}
-
-function DeleteMenuItem({ id }: idProps) {
-  const [open, setOpen] = useState(false)
-
-  function handleClick() {
-    setOpen(!open)
-  }
-
-  return (
-    <>
-      <MenuItem onClick={handleClick} className="dark:bg-transparent ">
-        Excluir
-      </MenuItem>
-      <Dialog open={open} onClose={handleClick} maxWidth="lg">
-        <DialogContent className="flex flex-col items-center justify-center gap-4">
-          <h2 className="dark:text-black">Excluir música</h2>
-          <p className="dark:text-black">
-            Tem certeza que deseja excluir a música? Esta ação não pode ser
-            desfeita
-          </p>
-          <div className="flex gap-2">
-            <button
-              onClick={() => clientDeleteSong(id)}
-              className="bg-blue-800 p-2 text-white"
-            >
-              Excluir
-            </button>
-            <button onClick={handleClick} className="bg-red-800 p-2 text-white">
-              Cancelar
-            </button>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </>
   )
 }

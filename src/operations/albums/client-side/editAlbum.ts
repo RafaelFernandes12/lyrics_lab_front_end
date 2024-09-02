@@ -4,13 +4,15 @@ import { getToken } from '@/operations/auth/getToken'
 interface EditAlbumParams {
   id: number
   name: string
-  description: string
+  description?: string
+  image?: string
 }
 
 export async function clientEditAlbum({
   id,
   name,
   description,
+  image,
 }: EditAlbumParams): Promise<boolean> {
   try {
     const token = await getToken()
@@ -20,6 +22,7 @@ export async function clientEditAlbum({
       {
         name,
         description,
+        image,
       },
       {
         headers: {
