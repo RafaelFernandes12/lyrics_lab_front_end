@@ -53,8 +53,8 @@ export default async function Album({ params, searchParams }: albumProps) {
           alt="example"
           width={208}
           height={208}
-          style={{ objectFit: 'cover' }}
-          className="h-52 w-52 rounded-xl bg-slate-200"
+          style={{ objectFit: album?.image ? 'cover' : 'contain' }}
+          className={`h-52 w-52 rounded-xl bg-slate-200 ${album?.image ? 'object-cover' : 'object-contain'}`}
         />
         <div className="flex w-full flex-col justify-between pt-4 max-sm:flex max-sm:flex-col max-sm:items-center">
           <div>

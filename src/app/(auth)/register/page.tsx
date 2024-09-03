@@ -4,6 +4,7 @@ import { register } from '@/operations/auth/register'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { FormEvent, useState } from 'react'
+import CircularIndeterminate from './components/CircularIndeterminate'
 
 export default function Register() {
   const [email, setEmail] = useState('')
@@ -12,6 +13,7 @@ export default function Register() {
   const [verificationCode, setVerificationCode] = useState<number>(0)
   const [enteredCode, setEnteredCode] = useState('')
   const [step, setStep] = useState('form')
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
 
   async function handleRegister(e: FormEvent<HTMLFormElement>) {
@@ -25,16 +27,25 @@ export default function Register() {
       return
     }
 
+    setLoading(true)
+
     const code = Math.floor(100000 + Math.random() * 900000)
     setVerificationCode(code)
 
-    await fetch('/api/sendVerificationEmail', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, code }),
-    })
+    try {
+      await fetch('/api/sendVerificationEmail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, code }),
+      })
 
-    setStep('verify')
+      setStep('verify')
+    } catch (error) {
+      console.error('Erro ao enviar email de verificação:', error)
+      alert('Erro ao enviar o email de verificação. Tente novamente.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   async function handleVerifyCode() {
@@ -69,6 +80,7 @@ export default function Register() {
                   className="rounded-lg bg-gray-200 p-3"
                   type="text"
                   onChange={(e) => setName(e.target.value)}
+                  disabled={loading}
                 />
               </div>
               <div className="flex w-full flex-col">
@@ -79,6 +91,7 @@ export default function Register() {
                   className="rounded-lg bg-gray-200 p-3"
                   type="email"
                   onChange={(e) => setEmail(e.target.value)}
+                  disabled={loading}
                 />
               </div>
               <div className="flex w-full flex-col">
@@ -89,10 +102,19 @@ export default function Register() {
                   className="rounded-lg bg-gray-200 p-3"
                   type="password"
                   onChange={(e) => setPassword(e.target.value)}
+                  disabled={loading}
                 />
               </div>
-              <button className="mt-3 w-full bg-blueButton" type="submit">
-                <span className="text-white">Cadastrar</span>
+              <button
+                className="mt-3 w-full bg-blueButton"
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? (
+                  <CircularIndeterminate />
+                ) : (
+                  <span className="text-white">Cadastrar</span>
+                )}
               </button>
             </form>
             <p className="mt-3 text-center">
@@ -104,17 +126,33 @@ export default function Register() {
           </section>
         </>
       ) : (
-        <div className="my-16 flex flex-col items-center">
-          <input
-            type="text"
-            className="rounded-lg bg-gray-200 p-3"
-            placeholder="Código de verificação"
-            value={enteredCode}
-            onChange={(e) => setEnteredCode(e.target.value)}
-          />
-          <button onClick={handleVerifyCode}>Verificar Código</button>
-          <button onClick={handleBackToForm}>Voltar</button>
-        </div>
+        <>
+          <h1 className="my-16 text-center">Verifique seu email</h1>
+          <div className="m-auto flex w-[400px] flex-col items-center max-sm:w-full">
+            <input
+              type="text"
+              className="w-52 rounded-lg bg-gray-200 p-3"
+              placeholder="Código de verificação"
+              value={enteredCode}
+              onChange={(e) => setEnteredCode(e.target.value)}
+              disabled={loading}
+            />
+            <button
+              className="mt-3 w-52 bg-blueButton"
+              onClick={handleVerifyCode}
+              disabled={loading}
+            >
+              <span className="text-white">Verificar código</span>
+            </button>
+            <button
+              className="mt-3 text-blueButton"
+              onClick={handleBackToForm}
+              disabled={loading}
+            >
+              Voltar
+            </button>
+          </div>
+        </>
       )}
     </div>
   )
