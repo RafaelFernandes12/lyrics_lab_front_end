@@ -1,7 +1,7 @@
 'use client'
+import { ButtonDialog } from '@/components/buttonDialog/index'
 import { clientCreateAlbum } from '@/operations/albums/client-side/post'
 import { useState } from 'react'
-import { ButtonDialog } from '@/components/buttonDialog/index'
 
 export function CreateAlbumDialog() {
   const [name, setName] = useState('')
@@ -12,7 +12,7 @@ export function CreateAlbumDialog() {
   }
 
   return (
-    <ButtonDialog.Root text="Adicionar Album" action={handleCreateAlbum}>
+    <ButtonDialog.Root text="Adicionar Álbum" action={handleCreateAlbum}>
       <ButtonDialog.Input
         placeholder="Nome"
         state={(e) => setName(e.target.value)}

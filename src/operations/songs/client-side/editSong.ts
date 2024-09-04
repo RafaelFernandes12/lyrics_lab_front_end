@@ -1,26 +1,40 @@
+import api from '@/lib/axios'
+import { getToken } from '@/operations/auth/getToken'
+
 interface EditSongParams {
   id: number
-  name: string
-  lyric: string
+  name?: string
+  lyric?: string
+  tone?: string
+  albumIds?: number[]
 }
 
-export async function clientEditSong(params: EditSongParams): Promise<boolean> {
+export async function clientEditSong({
+  id,
+  name,
+  lyric,
+  tone,
+  albumIds,
+}: EditSongParams): Promise<boolean> {
   try {
-    const response = await fetch(`/api/song-routes/editSong`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
+    const token = await getToken()
+
+    const response = await api.put(
+      `/song/${id}`,
+      {
+        name,
+        lyric,
+        tone,
+        albumIds,
       },
-      body: JSON.stringify(params),
-    })
+      {
+        headers: {
+          Authorization: token ? `${token}` : undefined,
+        },
+      },
+    )
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`)
-    }
-
-    const result = await response.json()
-
-    return result.success
+    return response.status === 200
   } catch (error) {
     console.error(
       'Failed to edit song:',

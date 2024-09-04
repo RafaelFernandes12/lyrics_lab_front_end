@@ -1,19 +1,18 @@
+import api from '@/lib/axios'
 import { albumProps } from '@/models/albumProps'
+import { getToken } from '@/operations/auth/getToken'
 
 export async function clientGetAlbums(): Promise<albumProps[]> {
   try {
-    const response = await fetch(`/api/album-routes/getAll`, {
-      method: 'GET',
+    const token = await getToken()
+
+    const response = await api.get(`/album`, {
       headers: {
-        'Content-Type': 'application/json',
+        Authorization: token ? `${token}` : undefined,
       },
     })
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`)
-    }
-
-    const data = await response.json()
+    const data = await response.data
     return data as albumProps[]
   } catch (error) {
     console.error(

@@ -2,9 +2,9 @@
 import { idProps } from '@/models/idProps'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import { IconButton, Menu } from '@mui/material'
-import MenuItem from '@mui/material/MenuItem'
 import { useState } from 'react'
 import { DeleteMenuItem } from './DeleteMenuItem'
+import { EditMenuItem } from './EditMenuItem'
 
 export function ThreeDots({ id }: idProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -16,10 +16,10 @@ export function ThreeDots({ id }: idProps) {
   const handleClose = () => {
     setAnchorEl(null)
   }
+
   return (
     <div>
       <IconButton
-        className="ml-4"
         aria-label="more"
         id="long-button"
         aria-controls={open ? 'long-menu' : undefined}
@@ -27,7 +27,7 @@ export function ThreeDots({ id }: idProps) {
         aria-haspopup="true"
         onClick={handleClick}
       >
-        <MoreVertIcon className="dark:text-white" />
+        <MoreVertIcon className="text-white" />
       </IconButton>
       <Menu
         id="long-menu"
@@ -38,7 +38,7 @@ export function ThreeDots({ id }: idProps) {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem>Editar</MenuItem>
+        <EditMenuItem id={id} />
         <DeleteMenuItem id={id} />
       </Menu>
     </div>

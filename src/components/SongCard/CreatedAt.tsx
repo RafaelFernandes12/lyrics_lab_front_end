@@ -1,6 +1,8 @@
 interface props {
   createdAt: string
 }
-export default function CreatedAt({ createdAt }: props) {
-  return <span className="text-semibold max-sm:hidden">{createdAt}</span>
+export function CreatedAt({ createdAt }: props) {
+  return (
+    <span className="text-semibold text-white max-sm:hidden">{createdAt}</span>
+  )
 }

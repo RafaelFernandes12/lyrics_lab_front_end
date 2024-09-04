@@ -1,24 +1,32 @@
+import api from '@/lib/axios'
+import { getToken } from '@/operations/auth/getToken'
+
 interface CreateSongParams {
   name: string
   tone: string
-  albumId: number
 }
 
-export async function clientCreateSong(
-  params: CreateSongParams,
-): Promise<boolean> {
+export async function clientCreateSong({
+  name,
+  tone,
+}: CreateSongParams): Promise<boolean> {
   try {
-    const response = await fetch(`/api/song-routes/create`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    const token = await getToken()
+
+    const response = await api.post(
+      '/song',
+      {
+        name,
+        tone,
       },
-      body: JSON.stringify(params),
-    })
+      {
+        headers: {
+          Authorization: token ? `${token}` : undefined,
+        },
+      },
+    )
 
-    const result = await response.json()
-
-    return result.success
+    return response.status === 201
   } catch (error) {
     console.error(
       'Failed to create song:',

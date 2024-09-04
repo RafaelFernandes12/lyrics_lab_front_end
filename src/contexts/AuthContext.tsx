@@ -1,8 +1,8 @@
 'use client'
 
 import { userProps } from '@/models/userProps'
-import { getUser } from '@/operations/auth/getUser'
 import { login } from '@/operations/auth/login'
+import { useRouter } from 'next/navigation'
 import { createContext, ReactNode, useState } from 'react'
 
 interface AuthProviderProps {
@@ -23,21 +23,16 @@ export const AuthContext = createContext({} as AuthContextType)
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<userProps | null>(null)
+  const router = useRouter()
 
   async function signIn({ email, password }: SignInData) {
     try {
       const response = await login(email, password)
-      const token = response.jwt
+      const user = response.user
 
-      if (!token) {
-        alert('Erro ao fazer login.')
-        return
-      }
-
-      const user = (await getUser(token)) || null
       setUser(user)
 
-      window.location.href = '/dashboard'
+      router.push('/dashboard')
     } catch (error) {
       console.error('Erro ao fazer login:', error)
     }

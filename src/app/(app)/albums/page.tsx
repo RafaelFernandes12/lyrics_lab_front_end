@@ -7,7 +7,7 @@ export default async function Algums() {
   return (
     <>
       <section className="flex items-center justify-between">
-        <h1>Album</h1>
+        <h1>Álbuns</h1>
         <CreateAlbumDialog />
       </section>
       <section>
@@ -18,7 +18,12 @@ export default async function Algums() {
             })
             return (
               <li key={album.id}>
-                <AlbumCard id={album.id} name={album.name} songs={songsNames} />
+                <AlbumCard
+                  id={album.id}
+                  name={album.name}
+                  image={album.image}
+                  songs={songsNames}
+                />
               </li>
             )
           })}
