@@ -14,7 +14,9 @@ export const noChordRegex = /\b(?![A-G])\w+\b/g;
 export const tabLineRegex = /-{2,}/
 export const AorERegex = /\b[AE](m)?\b(?![/#])/g
 export const tomUpAndDownRegex = /[A-G](#|b)?/g
-export const insideSymbolsRegex = /(?<=\[|\(|\{).*(?=\]|\)|\})/gm
+export const insideSymbolsRegex = /(?<=\[|\(|\{_).*(?=\]|\)|\}_)/gm
+export const insideStarsRegex = /(?<=\*).*(?=\*)/gm
+export const insideUnderlineRegex = /(?<=_).*(?=_)/gm
 export const regex = {
   chordSets, 
   textSizes,
@@ -24,4 +26,6 @@ export const regex = {
   AorERegex,
   tomUpAndDownRegex,
   insideSymbolsRegex,
+  insideStarsRegex,
+  insideUnderlineRegex,
 }

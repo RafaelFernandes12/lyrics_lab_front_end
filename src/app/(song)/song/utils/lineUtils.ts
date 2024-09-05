@@ -13,6 +13,9 @@ export function analyzeLine(line: string) {
   const matchWordInsideSymbols = line
     ? line.match(regex.insideSymbolsRegex)
     : []
+  const isInsideStars = regex.insideStarsRegex.test(line)
+  const isInsideUnderline = regex.insideUnderlineRegex.test(line)
+
   const wordInsideSymbols = matchWordInsideSymbols?.toString() || ''
   const isLineEmpty = words.every((word) => word === '')
   const lenMatchAorE = line ? line.match(regex.AorERegex) : []
@@ -36,5 +39,7 @@ export function analyzeLine(line: string) {
     isLineEmpty,
     isLineInsideSymbols,
     wordInsideSymbols,
+    isInsideStars,
+    isInsideUnderline,
   }
 }

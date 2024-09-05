@@ -18,6 +18,7 @@ export default function Song({ params }: urlIdProps) {
   const [isChecked, setIsChecked] = useState(true)
   const [name, setName] = useState('')
   const [text, setText] = useState('')
+  const [tone, setTone] = useState('')
   const [textSize, setTextSize] = useState(16)
   const preRef = useRef<HTMLPreElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -26,12 +27,14 @@ export default function Song({ params }: urlIdProps) {
   const { data: song, mutate } = useSWR(`/song/${params.id}`, fetcher)
 
   const songLyric: string = song?.lyric || ''
+  const songTone: string = song?.tone || ''
   const lines = songLyric.split('\n')
 
   useEffect(() => {
     if (song) {
       setName(song.name || '')
       setText(song.lyric || '')
+      setTone(song.tone || '')
     }
   }, [song])
 
@@ -52,18 +55,19 @@ export default function Song({ params }: urlIdProps) {
 
   const handleToggle = useCallback(async () => {
     setIsChecked((prev) => !prev)
-    await clientEditSong({ id: params.id, name, lyric: text })
-    await mutate({ name, lyric: text })
-  }, [params.id, name, text, mutate])
+    await clientEditSong({ id: params.id, name, lyric: text, tone })
+    await mutate({ name, lyric: text, tone })
+  }, [params.id, name, text, mutate, tone])
 
   const handlePrint = useReactToPrint({
     content: () => preRef.current,
   })
 
   async function handleToneChange(direction: 'up' | 'down') {
-    const cookies = nookies.get(null)
-    const chordType = cookies.chordType
-    console.log(chordType)
+    // const cookies = nookies.get(null)
+    // const chordType = cookies.chordType
+    // console.log(chordType)
+    const shift = direction === 'up' ? 1 : -1
     const newLines = lines.map((line) => {
       return line.replace(regex.chordRegex, (chord) => {
         let updatedChord = chord
@@ -76,7 +80,6 @@ export default function Song({ params }: urlIdProps) {
           baseChord.forEach((cipher) => {
             const index = regex.chordSets.sharpChords.indexOf(cipher)
             if (index !== -1) {
-              const shift = direction === 'up' ? 1 : -1
               const newChord =
                 regex.chordSets.sharpChords[
                   (index + shift + regex.chordSets.sharpChords.length) %
@@ -89,10 +92,18 @@ export default function Song({ params }: urlIdProps) {
         return updatedChord
       })
     })
-
+    const newTone = songTone.replace(regex.tomUpAndDownRegex, (tone) => {
+      const index = regex.chordSets.sharpChords.indexOf(tone)
+      const newTone =
+        regex.chordSets.sharpChords[
+          (index + shift + regex.chordSets.sharpChords.length) %
+            regex.chordSets.sharpChords.length
+        ]
+      return newTone
+    })
     const newLyrics = newLines.join('\n')
-    await clientEditLyric({ id: params.id, lyric: newLyrics })
-    await mutate({ name, lyric: newLyrics })
+    await clientEditLyric({ id: params.id, lyric: newLyrics, tone: newTone })
+    await mutate({ name, lyric: newLyrics, tone: newTone })
   }
 
   function handleTextChange(direction: 'up' | 'down') {
@@ -128,9 +139,15 @@ export default function Song({ params }: urlIdProps) {
         return updatedChord
       })
     })
+    const newTone = songTone.replace(regex.tomUpAndDownRegex, (tone) => {
+      const index = regex.chordSets[chordType].indexOf(tone)
+      let newTone = tone
+      if (index !== -1) newTone = regex.chordSets[oppositeChordType][index]
+      return newTone
+    })
 
     const newLyrics = newLines.join('\n')
-    await clientEditLyric({ id: params.id, lyric: newLyrics })
+    await clientEditLyric({ id: params.id, lyric: newLyrics, tone: newTone })
     await mutate({ name, lyric: newLyrics })
   }
 
@@ -147,20 +164,37 @@ export default function Song({ params }: urlIdProps) {
       />
       <div
         ref={containerRef}
-        className="m-auto bg-white p-6 dark:bg-headerDark xl:min-w-[800px]"
+        className="m-auto bg-white p-6 dark:bg-headerDark md:min-w-[800px]"
       >
         {isChecked ? (
-          <input
-            className="bg-slate-100 p-2 text-3xl"
-            value={name}
-            onChange={(e) => {
-              setName(e.target.value)
-            }}
-          />
+          <div className="flex flex-col gap-2">
+            <input
+              className="bg-slate-100 p-2 text-3xl"
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value)
+              }}
+            />
+            <div>
+              <span>Tom: </span>
+              <input
+                className="bg-slate-100 p-1 text-xl"
+                value={tone}
+                onChange={(e) => {
+                  setTone(e.target.value)
+                }}
+              />
+            </div>
+          </div>
         ) : (
-          <h1>{song?.name}</h1>
+          <>
+            <h1>{song?.name}</h1>
+            <h3 className="text-base">
+              Tom:{' '}
+              <b className="text-blue-700 dark:text-blue-500">{song?.tone}</b>
+            </h3>
+          </>
         )}
-        <h3 className="text-base">Tom: {song?.tone}</h3>
         <FormGroup>
           <FormControlLabel
             onClick={handleToggle}

@@ -97,7 +97,7 @@ export function RenderText({ lines, fontSize, maxWidth }: renderTextProps) {
     if (isLineInsideSymbols) {
       let div: JSX.Element = <div></div>
       const groupedParagraphs: string[] = []
-      while (fittingParagraphs[i] !== ' ') {
+      while (fittingParagraphs[i] !== ' ' && fittingParagraphs[i]) {
         groupedParagraphs.push(fittingParagraphs[i])
         i++
       }
@@ -105,18 +105,24 @@ export function RenderText({ lines, fontSize, maxWidth }: renderTextProps) {
         (p) => p !== groupedParagraphs[0],
       )
       div = (
-        <div className="rounded-xl bg-white/10">
+        <div className="rounded-xl bg-black/10 dark:bg-white/10">
           <Paragraph
             fontSize={fontSize}
             key={i}
-            className="rounded-t-xl bg-slate-600 py-1 text-center"
+            line={fittingParagraphs[i]}
+            className="rounded-t-xl bg-slate-600 py-1 text-center text-white"
           >
             <Words line={wordInsideSymbols} />
           </Paragraph>
           <pre className="p-3">
             {noTitleGroup.map((line, i) => {
               return (
-                <Paragraph fontSize={fontSize} key={i} className="text-black">
+                <Paragraph
+                  fontSize={fontSize}
+                  key={i}
+                  className="text-black"
+                  line={line}
+                >
                   <Words line={line} />
                 </Paragraph>
               )
@@ -128,7 +134,7 @@ export function RenderText({ lines, fontSize, maxWidth }: renderTextProps) {
       template.push(<p> </p>)
     } else {
       const p = (
-        <Paragraph fontSize={fontSize}>
+        <Paragraph fontSize={fontSize} line={fittingParagraphs[i]}>
           <Words line={fittingParagraphs[i]} />
         </Paragraph>
       )

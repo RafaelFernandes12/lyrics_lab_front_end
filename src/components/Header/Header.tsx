@@ -1,5 +1,3 @@
-'use client'
-
 import PersonIcon from '@mui/icons-material/Person'
 import SearchIcon from '@mui/icons-material/Search'
 import Input from '@mui/material/Input'
