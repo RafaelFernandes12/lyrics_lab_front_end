@@ -1,6 +1,6 @@
 'use client'
 import { analyzeLine } from '../utils/lineUtils'
-import { Paragraph, Words } from './Text'
+import { Italic, Paragraph, Strong, Words } from './Text'
 
 interface renderTextProps {
   lines: string
@@ -91,10 +91,17 @@ export function RenderText({ lines, fontSize, maxWidth }: renderTextProps) {
 
   const template: JSX.Element[] = []
   for (let i = 0; i < fittingParagraphs.length; i++) {
-    const { isLineInsideSymbols, wordInsideSymbols } = analyzeLine(
+    const { isLineInsideBrackets, wordInsideBrackets } = analyzeLine(
       fittingParagraphs[i],
     )
-    if (isLineInsideSymbols) {
+    const isLineInsideStars = /\*.*\*/gm.test(fittingParagraphs[i])
+    const isLineInsideUnderline = /_.*_/gm.test(fittingParagraphs[i])
+
+    if (isLineInsideStars) {
+      template.push(<Italic fontSize={fontSize} line={fittingParagraphs[i]} />)
+    } else if (isLineInsideUnderline) {
+      template.push(<Strong fontSize={fontSize} line={fittingParagraphs[i]} />)
+    } else if (isLineInsideBrackets) {
       let div: JSX.Element = <div></div>
       const groupedParagraphs: string[] = []
       while (fittingParagraphs[i] !== ' ' && fittingParagraphs[i]) {
@@ -110,9 +117,9 @@ export function RenderText({ lines, fontSize, maxWidth }: renderTextProps) {
             fontSize={fontSize}
             key={i}
             line={fittingParagraphs[i]}
-            className="rounded-t-xl bg-slate-600 py-1 text-center text-white"
+            className="rounded-t-xl bg-slate-600 py-1 text-center"
           >
-            <Words line={wordInsideSymbols} />
+            <Words line={wordInsideBrackets} className="text-white" />
           </Paragraph>
           <pre className="p-3">
             {noTitleGroup.map((line, i) => {

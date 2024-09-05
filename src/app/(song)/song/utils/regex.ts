@@ -15,6 +15,7 @@ export const tabLineRegex = /-{2,}/
 export const AorERegex = /\b[AE](m)?\b(?![/#])/g
 export const tomUpAndDownRegex = /[A-G](#|b)?/g
 export const insideSymbolsRegex = /(?<=\[|\(|\{_).*(?=\]|\)|\}_)/gm
+export const insideBracketsRegex = /(?<=\[).*(?=\])/gm
 export const insideStarsRegex = /(?<=\*).*(?=\*)/gm
 export const insideUnderlineRegex = /(?<=_).*(?=_)/gm
 export const regex = {
@@ -25,7 +26,7 @@ export const regex = {
   tabLineRegex, 
   AorERegex,
   tomUpAndDownRegex,
-  insideSymbolsRegex,
+  insideBracketsRegex,
   insideStarsRegex,
   insideUnderlineRegex,
 }
