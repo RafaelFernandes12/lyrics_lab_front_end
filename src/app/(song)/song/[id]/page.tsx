@@ -5,7 +5,6 @@ import { urlIdProps } from '@/models/urlIdProps'
 import { clientEditLyric } from '@/operations/songs/client-side/editLyric'
 import { clientEditSong } from '@/operations/songs/client-side/editSong'
 import { FormControlLabel, FormGroup, Switch } from '@mui/material'
-import nookies from 'nookies'
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react'
 import { useReactToPrint } from 'react-to-print'
 import useSWR from 'swr'
@@ -13,6 +12,8 @@ import { DrawerComponent } from '../components/DrawerComponent'
 import { RenderText } from '../components/RenderText'
 import { analyzeLine } from '../utils/lineUtils'
 import { regex } from '../utils/regex'
+
+type ChordSetKeys = keyof typeof regex.chordSets
 
 export default function Song({ params }: urlIdProps) {
   const [isChecked, setIsChecked] = useState(true)
@@ -22,6 +23,7 @@ export default function Song({ params }: urlIdProps) {
   const [textSize, setTextSize] = useState(16)
   const preRef = useRef<HTMLPreElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [containerWidth, setContainerWidth] = useState<number>(0)
 
   const { data: song, mutate } = useSWR(`/song/${params.id}`, fetcher)
@@ -60,13 +62,12 @@ export default function Song({ params }: urlIdProps) {
   }, [params.id, name, text, mutate, tone])
 
   const handlePrint = useReactToPrint({
-    content: () => preRef.current,
+    content: () => containerRef.current,
   })
 
+  const chordType = localStorage.getItem('chordType') as ChordSetKeys || 'flatChords'
+
   async function handleToneChange(direction: 'up' | 'down') {
-    // const cookies = nookies.get(null)
-    // const chordType = cookies.chordType
-    // console.log(chordType)
     const shift = direction === 'up' ? 1 : -1
     const newLines = lines.map((line) => {
       return line.replace(regex.chordRegex, (chord) => {
@@ -78,12 +79,12 @@ export default function Song({ params }: urlIdProps) {
 
         if (baseChord && !isThereAnAorAnEinTheLine && !isLineATabLine) {
           baseChord.forEach((cipher) => {
-            const index = regex.chordSets.sharpChords.indexOf(cipher)
+            const index = regex.chordSets[chordType].indexOf(cipher)
             if (index !== -1) {
               const newChord =
-                regex.chordSets.sharpChords[
-                  (index + shift + regex.chordSets.sharpChords.length) %
-                    regex.chordSets.sharpChords.length
+                regex.chordSets[chordType][
+                  (index + shift + regex.chordSets[chordType].length) %
+                    regex.chordSets[chordType].length
                 ]
               updatedChord = updatedChord.replace(cipher, newChord)
             }
@@ -93,11 +94,11 @@ export default function Song({ params }: urlIdProps) {
       })
     })
     const newTone = songTone.replace(regex.tomUpAndDownRegex, (tone) => {
-      const index = regex.chordSets.sharpChords.indexOf(tone)
+      const index = regex.chordSets[chordType].indexOf(tone)
       const newTone =
-        regex.chordSets.sharpChords[
-          (index + shift + regex.chordSets.sharpChords.length) %
-            regex.chordSets.sharpChords.length
+        regex.chordSets[chordType][
+          (index + shift + regex.chordSets[chordType].length) %
+            regex.chordSets[chordType].length
         ]
       return newTone
     })
@@ -113,12 +114,16 @@ export default function Song({ params }: urlIdProps) {
       (index + shift + regex.textSizes.length) % regex.textSizes.length
     setTextSize(regex.textSizes[newIndex])
   }
-
-  async function handleChangeChord(chordType: 'flatChords' | 'sharpChords') {
-    nookies.set(null, 'chordType', chordType)
+  
+  async function handleChangeChord() {
     let oppositeChordType = chordType
-    if (chordType === 'sharpChords') oppositeChordType = 'flatChords'
-    if (chordType === 'flatChords') oppositeChordType = 'sharpChords'
+
+    if (chordType === 'sharpChords') {
+      oppositeChordType = 'flatChords'
+    }
+    if (chordType === 'flatChords') {
+      oppositeChordType = 'sharpChords'
+    }
     const newLines = lines.map((line) => {
       return line.replace(regex.chordRegex, (chord) => {
         let updatedChord = chord
@@ -129,7 +134,6 @@ export default function Song({ params }: urlIdProps) {
         if (baseChord && !isThereAnAorAnEinTheLine && !isLineATabLine) {
           baseChord.forEach((cipher) => {
             const index = regex.chordSets[chordType].indexOf(cipher)
-            console.log(cipher + index)
             if (index !== -1) {
               const newChord = regex.chordSets[oppositeChordType][index]
               updatedChord = updatedChord.replace(cipher, newChord)
@@ -159,8 +163,8 @@ export default function Song({ params }: urlIdProps) {
         pdfGenerator={handlePrint}
         textUp={() => handleTextChange('up')}
         textDown={() => handleTextChange('down')}
-        flatChord={() => handleChangeChord('flatChords')}
-        sharpChord={() => handleChangeChord('sharpChords')}
+        flatChord={() => handleChangeChord()}
+        sharpChord={() => handleChangeChord()}
       />
       <div
         ref={containerRef}
@@ -203,7 +207,6 @@ export default function Song({ params }: urlIdProps) {
           />
         </FormGroup>
 
-        <p>{containerWidth}px</p>
         {isChecked ? (
           <>
             <textarea
@@ -222,7 +225,7 @@ export default function Song({ params }: urlIdProps) {
               lines={text}
               fontSize={textSize}
               maxWidth={containerWidth}
-            />
+              />
           </pre>
         )}
       </div>

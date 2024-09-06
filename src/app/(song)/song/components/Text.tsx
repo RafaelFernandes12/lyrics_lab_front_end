@@ -7,7 +7,7 @@ interface paragraphProps {
   className?: ClassNameValue
   children?: ReactNode
   fontSize: number
-  line: string
+  line?: string
 }
 interface wordsProps {
   className?: ClassNameValue
@@ -22,14 +22,21 @@ export function Words({ line, className }: wordsProps) {
           word.match(regex.chordRegex) &&
           !isLineATabLine &&
           !isThereAnAorAnEinTheLine
+        if (isChord) {
+          return (
+            <b
+              key={index}
+              className={twMerge(
+                'font-semibold text-blue-700 dark:text-blue-500',
+                className,
+              )}
+            >
+              {word}{' '}
+            </b>
+          )
+        }
         return (
-          <span
-            key={index}
-            className={twMerge(
-              isChord ? 'font-semibold text-blue-700 dark:text-blue-500' : '',
-              className,
-            )}
-          >
+          <span key={index} className={twMerge('', className)}>
             {word}{' '}
           </span>
         )
@@ -49,46 +56,22 @@ export function Paragraph({ children, fontSize, className }: paragraphProps) {
 }
 
 export function Italic({ fontSize, className, line }: paragraphProps) {
-  const initialIndex = line.indexOf('*')
-  const lastIndex = line.lastIndexOf('*') + 1
-  let wordsInsideStars = line.substring(initialIndex, lastIndex)
-  line = line.replace(wordsInsideStars, '')
-  wordsInsideStars = wordsInsideStars.replace(/\*/g, '')
-  const italic = (
-    <i>
-      <Words line={wordsInsideStars} />
-    </i>
-  )
-  const normalText = <Words line={line} />
-
   return (
-    <p
+    <em
       className={twMerge('whitespace-pre-wrap font-mono', className)}
       style={{ fontSize }}
     >
-      {italic} {normalText}
-    </p>
+      {line}
+    </em>
   )
 }
 export function Strong({ fontSize, className, line }: paragraphProps) {
-  const initialIndex = line.indexOf('_')
-  const lastIndex = line.lastIndexOf('_') + 1
-  let wordsInsideUnderline = line.substring(initialIndex, lastIndex)
-  line = line.replace(wordsInsideUnderline, '')
-  wordsInsideUnderline = wordsInsideUnderline.replace(/_/g, '')
-  const strong = (
-    <strong>
-      <Words line={wordsInsideUnderline} />
-    </strong>
-  )
-  const normalText = <Words line={line} />
-
   return (
-    <p
+    <strong
       className={twMerge('whitespace-pre-wrap font-mono', className)}
       style={{ fontSize }}
     >
-      {strong} {normalText}
-    </p>
+      {line}
+    </strong>
   )
 }

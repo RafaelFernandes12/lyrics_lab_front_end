@@ -1,4 +1,5 @@
 'use client'
+import { Fragment } from 'react'
 import { analyzeLine } from '../utils/lineUtils'
 import { Italic, Paragraph, Strong, Words } from './Text'
 
@@ -94,14 +95,8 @@ export function RenderText({ lines, fontSize, maxWidth }: renderTextProps) {
     const { isLineInsideBrackets, wordInsideBrackets } = analyzeLine(
       fittingParagraphs[i],
     )
-    const isLineInsideStars = /\*.*\*/gm.test(fittingParagraphs[i])
-    const isLineInsideUnderline = /_.*_/gm.test(fittingParagraphs[i])
 
-    if (isLineInsideStars) {
-      template.push(<Italic fontSize={fontSize} line={fittingParagraphs[i]} />)
-    } else if (isLineInsideUnderline) {
-      template.push(<Strong fontSize={fontSize} line={fittingParagraphs[i]} />)
-    } else if (isLineInsideBrackets) {
+    if (isLineInsideBrackets) {
       let div: JSX.Element = <div></div>
       const groupedParagraphs: string[] = []
       while (fittingParagraphs[i] !== ' ' && fittingParagraphs[i]) {
@@ -140,13 +135,50 @@ export function RenderText({ lines, fontSize, maxWidth }: renderTextProps) {
       template.push(div)
       template.push(<p> </p>)
     } else {
-      const p = (
-        <Paragraph fontSize={fontSize} line={fittingParagraphs[i]}>
-          <Words line={fittingParagraphs[i]} />
-        </Paragraph>
+      const regex = /(\*_([^*_]+)_\*)|(\*[^*_]+\*)|(_[^*_]+_)|([^*_]+)/g
+
+      const parseText = () => {
+        const matches = fittingParagraphs[i].match(regex) || []
+
+        return matches.map((part, index) => {
+          if (part.startsWith('*_') && part.endsWith('_*')) {
+            return (
+              <i key={index}>
+                <Strong fontSize={fontSize} line={part.slice(2, -2)} />
+              </i>
+            )
+          } else if (part.startsWith('_') && part.endsWith('_')) {
+            return (
+              <Strong
+                key={index}
+                fontSize={fontSize}
+                line={part.slice(1, -1)}
+              />
+            )
+          } else if (part.startsWith('*') && part.endsWith('*')) {
+            return (
+              <Italic
+                key={index}
+                fontSize={fontSize}
+                line={part.slice(1, -1)}
+              />
+            )
+          } else {
+            return <Words line={part} key={index} />
+          }
+        })
+      }
+      const content = (
+        <Paragraph fontSize={fontSize}>{parseText().map((a) => a)}</Paragraph>
       )
-      template.push(p)
+      template.push(content)
     }
   }
-  return <>{template.map((a) => a)}</>
+  return (
+    <>
+      {template.map((a, i) => (
+        <Fragment key={i}>{a}</Fragment>
+      ))}
+    </>
+  )
 }

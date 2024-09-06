@@ -28,6 +28,9 @@ export function analyzeLine(line: string) {
     matchNoChord
   )
 
+  const isLineInsideStars = /\*.*\*/gm.test(line)
+  const isLineInsideUnderline = /_.*_/gm.test(line)
+
   return {
     words,
     isLineATabLine,
@@ -41,5 +44,7 @@ export function analyzeLine(line: string) {
     wordInsideBrackets,
     isInsideStars,
     isInsideUnderline,
+    isLineInsideStars,
+    isLineInsideUnderline,
   }
 }

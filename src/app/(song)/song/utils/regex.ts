@@ -5,7 +5,7 @@ export const chordSets = {
   ],
   flatChords: [
     "A", "Bb", "B", "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab"
-  ]
+  ],
 }
 export const textSizes = [8, 9, 10, 12, 14, 16, 18, 20, 22, 24, 26]
 export const chordRegex =
