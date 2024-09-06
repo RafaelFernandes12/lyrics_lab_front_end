@@ -7,6 +7,7 @@ interface paragraphProps {
   className?: ClassNameValue
   children?: ReactNode
   fontSize: number
+  lineHeight: number
   line?: string
 }
 interface wordsProps {
@@ -44,34 +45,64 @@ export function Words({ line, className }: wordsProps) {
     </>
   )
 }
-export function Paragraph({ children, fontSize, className }: paragraphProps) {
+export function Paragraph({
+  children,
+  fontSize,
+  lineHeight,
+  className,
+}: paragraphProps) {
   return (
     <p
       className={twMerge('whitespace-pre-wrap font-mono', className)}
-      style={{ fontSize }}
+      style={{ fontSize, lineHeight }}
     >
       {children}
     </p>
   )
 }
 
-export function Italic({ fontSize, className, line }: paragraphProps) {
+export function Italic({
+  fontSize,
+  lineHeight,
+  className,
+  line,
+}: paragraphProps) {
   return (
     <em
       className={twMerge('whitespace-pre-wrap font-mono', className)}
-      style={{ fontSize }}
+      style={{ fontSize, lineHeight }}
     >
       {line}
     </em>
   )
 }
-export function Strong({ fontSize, className, line }: paragraphProps) {
+export function Strong({
+  fontSize,
+  lineHeight,
+  className,
+  line,
+}: paragraphProps) {
   return (
     <strong
       className={twMerge('whitespace-pre-wrap font-mono', className)}
-      style={{ fontSize }}
+      style={{ fontSize, lineHeight }}
     >
       {line}
     </strong>
+  )
+}
+export function Underline({
+  fontSize,
+  lineHeight,
+  className,
+  line,
+}: paragraphProps) {
+  return (
+    <u
+      className={twMerge('whitespace-pre-wrap font-mono', className)}
+      style={{ fontSize, lineHeight }}
+    >
+      {line}
+    </u>
   )
 }

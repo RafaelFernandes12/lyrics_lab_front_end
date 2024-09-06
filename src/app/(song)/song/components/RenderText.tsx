@@ -6,10 +6,16 @@ import { Italic, Paragraph, Strong, Words } from './Text'
 interface renderTextProps {
   lines: string
   fontSize: number
+  lineHeight: number
   maxWidth: number
 }
 
-export function RenderText({ lines, fontSize, maxWidth }: renderTextProps) {
+export function RenderText({
+  lines,
+  fontSize,
+  lineHeight,
+  maxWidth,
+}: renderTextProps) {
   function breakTextIntoLines(text: string, maxCharsPerLine: number) {
     const lines = []
     let start = 0
@@ -96,22 +102,36 @@ export function RenderText({ lines, fontSize, maxWidth }: renderTextProps) {
     const regex = /(\*_([^*_]+)_\*)|(\*[^*_]+\*)|(_[^*_]+_)|([^*_]+)/g
 
     const parseText = () => {
-      const matches = fittingParagraphs[i].match(regex) || []
+      const matches = fittingParagraphs[i]?.match(regex) || []
 
       return matches.map((part, index) => {
         if (part.startsWith('*_') && part.endsWith('_*')) {
           return (
             <i key={index}>
-              <Strong fontSize={fontSize} line={part.slice(2, -2)} />
+              <Strong
+                fontSize={fontSize}
+                lineHeight={lineHeight}
+                line={part.slice(2, -2)}
+              />
             </i>
           )
         } else if (part.startsWith('_') && part.endsWith('_')) {
           return (
-            <Strong key={index} fontSize={fontSize} line={part.slice(1, -1)} />
+            <Strong
+              key={index}
+              fontSize={fontSize}
+              lineHeight={lineHeight}
+              line={part.slice(1, -1)}
+            />
           )
         } else if (part.startsWith('*') && part.endsWith('*')) {
           return (
-            <Italic key={index} fontSize={fontSize} line={part.slice(1, -1)} />
+            <Italic
+              key={index}
+              fontSize={fontSize}
+              lineHeight={lineHeight}
+              line={part.slice(1, -1)}
+            />
           )
         } else {
           return <Words line={part} key={index} />
@@ -119,7 +139,9 @@ export function RenderText({ lines, fontSize, maxWidth }: renderTextProps) {
       })
     }
     const content = (
-      <Paragraph fontSize={fontSize}>{parseText().map((a) => a)}</Paragraph>
+      <Paragraph fontSize={fontSize} lineHeight={lineHeight}>
+        {parseText().map((a) => a)}
+      </Paragraph>
     )
     template.push(content)
   }

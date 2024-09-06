@@ -14,11 +14,15 @@ import { analyzeLine } from '../utils/lineUtils'
 import { regex } from '../utils/regex'
 
 export default function Song({ params }: urlIdProps) {
-  const [isChecked, setIsChecked] = useState(true)
+  const [isChecked, setIsChecked] = useState(false)
   const [name, setName] = useState('')
   const [text, setText] = useState('')
   const [tone, setTone] = useState('')
-  const [textSize, setTextSize] = useState(16)
+  const [textSizeIndex, setTextSizeIndex] = useState(6)
+  const [textSize, setTextSize] = useState({
+    fontSize: 16,
+    lineHeight: 1,
+  })
   const preRef = useRef<HTMLPreElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerWidth, setContainerWidth] = useState<number>(0)
@@ -65,7 +69,6 @@ export default function Song({ params }: urlIdProps) {
   const chordType =
     (localStorage.getItem(chordTypeStorage) as keyof typeof regex.chordSets) ||
     'flatChords'
-  console.log(chordType)
   async function handleToneChange(direction: 'up' | 'down') {
     const shift = direction === 'up' ? 1 : -1
     const newLines = lines.map((line) => {
@@ -107,11 +110,15 @@ export default function Song({ params }: urlIdProps) {
   }
 
   function handleTextChange(direction: 'up' | 'down') {
-    const index = regex.textSizes.indexOf(textSize)
     const shift = direction === 'up' ? 1 : -1
     const newIndex =
-      (index + shift + regex.textSizes.length) % regex.textSizes.length
-    setTextSize(regex.textSizes[newIndex])
+      (textSizeIndex + shift + regex.textSizes.length) % regex.textSizes.length
+    setTextSizeIndex(newIndex)
+    console.log(textSize)
+      setTextSize({
+      fontSize: regex.textSizes[newIndex][0],
+      lineHeight: regex.textSizes[newIndex][1],
+    })
   }
 
   async function handleChangeChord() {
@@ -222,7 +229,8 @@ export default function Song({ params }: urlIdProps) {
           <pre className="mt-10" ref={preRef}>
             <RenderText
               lines={text}
-              fontSize={textSize}
+              fontSize={textSize.fontSize}
+              lineHeight={textSize.lineHeight}
               maxWidth={containerWidth}
             />
           </pre>

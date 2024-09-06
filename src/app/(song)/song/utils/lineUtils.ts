@@ -9,14 +9,9 @@ export function analyzeLine(line: string) {
   const isLineAChordLine = words.every(
     (word) => regex.chordRegex.test(word) || word === '',
   )
-  const isLineInsideBrackets = regex.insideBracketsRegex.test(line)
-  const matchWordInsideBrackets = line
-    ? line.match(regex.insideBracketsRegex)
-    : []
   const isInsideStars = regex.insideStarsRegex.test(line)
   const isInsideUnderline = regex.insideUnderlineRegex.test(line)
 
-  const wordInsideBrackets = matchWordInsideBrackets?.toString() || ''
   const isLineEmpty = words.every((word) => word === '')
   const lenMatchAorE = line ? line.match(regex.AorERegex) : []
   const lenMatchNoChord = line ? line.match(regex.noChordRegex) : []
@@ -40,8 +35,6 @@ export function analyzeLine(line: string) {
     isThereAnAorAnEinTheLine,
     isLineAChordLine,
     isLineEmpty,
-    isLineInsideBrackets,
-    wordInsideBrackets,
     isInsideStars,
     isInsideUnderline,
     isLineInsideStars,
