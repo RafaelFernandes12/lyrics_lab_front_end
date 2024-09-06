@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer base {
+    element.style {
+        @apply pr-0 overflow-auto
+    }
     body {
         @apply mx-12 my-6 max-sm:mx-2;
         @apply font-sans;

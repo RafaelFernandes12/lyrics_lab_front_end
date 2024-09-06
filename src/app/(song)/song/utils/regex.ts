@@ -9,7 +9,7 @@ export const chordSets = {
 }
 export const textSizes = [8, 9, 10, 12, 14, 16, 18, 20, 22, 24, 26]
 export const chordRegex =
-  /(?![áéíóúÁÉÍÓÚãẽĩõũÃẼĨÕŨâêîôûÂÊÎÔÛ.,\-+=:;])\b[A-G](#|b)?(maj|min|dim|aug|sus|m|M|add)?(\d+)?(\/[A-G](#|b)?)?\b[#+b+]?(?![áéíóúÁÉÍÓÚãẽĩõũÃẼĨÕŨâêîôûÂÊÎÔÛ.,\-+=:;])/g
+  /(?![áéíóúÁÉÍÓÚãẽĩõũÃẼĨÕŨâêîôûÂÊÎÔÛ.,\-+=:;])\b[A-G](#|b)?(maj|min|dim|aug|sus|m|M|add|7|maj7|m7|7M)?(\d+)?(\/[A-G](#|b)?(maj|min|dim|aug|sus|m|M|add|7|maj7|m7|7M)?(\d+)?)*\b[#+b+]?(?![áéíóúÁÉÍÓÚãẽĩõũÃẼĨÕŨâêîôûÂÊÎÔÛ.,\-+=:;])/g
 export const noChordRegex = /\b(?![A-G])\w+\b/g;
 export const tabLineRegex = /-{2,}/
 export const AorERegex = /\b[AE](m)?\b(?![/#])/g

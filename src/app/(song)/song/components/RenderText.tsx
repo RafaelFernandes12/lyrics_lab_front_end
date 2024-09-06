@@ -93,88 +93,37 @@ export function RenderText({ lines, fontSize, maxWidth }: renderTextProps) {
 
   const template: JSX.Element[] = []
   for (let i = 0; i < fittingParagraphs.length; i++) {
-    const { isLineInsideBrackets, wordInsideBrackets } = analyzeLine(
-      fittingParagraphs[i],
-    )
+    const regex = /(\*_([^*_]+)_\*)|(\*[^*_]+\*)|(_[^*_]+_)|([^*_]+)/g
 
-    if (isLineInsideBrackets) {
-      let div: JSX.Element = <div></div>
-      const groupedParagraphs: string[] = []
-      while (fittingParagraphs[i] !== ' ' && fittingParagraphs[i]) {
-        groupedParagraphs.push(fittingParagraphs[i])
-        i++
-      }
-      const noTitleGroup = groupedParagraphs.filter(
-        (p) => p !== groupedParagraphs[0],
-      )
-      div = (
-        <div className="rounded-xl bg-black/10 dark:bg-white/10">
-          <Paragraph
-            fontSize={fontSize}
-            key={i}
-            line={fittingParagraphs[i]}
-            className="rounded-t-xl bg-slate-600 py-1 text-center"
-          >
-            <Words line={wordInsideBrackets} className="text-white" />
-          </Paragraph>
-          <pre className="p-3">
-            {noTitleGroup.map((line, i) => {
-              return (
-                <Paragraph
-                  fontSize={fontSize}
-                  key={i}
-                  className="text-black"
-                  line={line}
-                >
-                  <Words line={line} />
-                </Paragraph>
-              )
-            })}
-          </pre>
-        </div>
-      )
-      template.push(div)
-      template.push(<p> </p>)
-    } else {
-      const regex = /(\*_([^*_]+)_\*)|(\*[^*_]+\*)|(_[^*_]+_)|([^*_]+)/g
+    const parseText = () => {
+      const matches = fittingParagraphs[i].match(regex) || []
 
-      const parseText = () => {
-        const matches = fittingParagraphs[i].match(regex) || []
-
-        return matches.map((part, index) => {
-          if (part.startsWith('*_') && part.endsWith('_*')) {
-            return (
-              <i key={index}>
-                <Strong fontSize={fontSize} line={part.slice(2, -2)} />
-              </i>
-            )
-          } else if (part.startsWith('_') && part.endsWith('_')) {
-            return (
-              <Strong
-                key={index}
-                fontSize={fontSize}
-                line={part.slice(1, -1)}
-              />
-            )
-          } else if (part.startsWith('*') && part.endsWith('*')) {
-            return (
-              <Italic
-                key={index}
-                fontSize={fontSize}
-                line={part.slice(1, -1)}
-              />
-            )
-          } else {
-            return <Words line={part} key={index} />
-          }
-        })
-      }
-      const content = (
-        <Paragraph fontSize={fontSize}>{parseText().map((a) => a)}</Paragraph>
-      )
-      template.push(content)
+      return matches.map((part, index) => {
+        if (part.startsWith('*_') && part.endsWith('_*')) {
+          return (
+            <i key={index}>
+              <Strong fontSize={fontSize} line={part.slice(2, -2)} />
+            </i>
+          )
+        } else if (part.startsWith('_') && part.endsWith('_')) {
+          return (
+            <Strong key={index} fontSize={fontSize} line={part.slice(1, -1)} />
+          )
+        } else if (part.startsWith('*') && part.endsWith('*')) {
+          return (
+            <Italic key={index} fontSize={fontSize} line={part.slice(1, -1)} />
+          )
+        } else {
+          return <Words line={part} key={index} />
+        }
+      })
     }
+    const content = (
+      <Paragraph fontSize={fontSize}>{parseText().map((a) => a)}</Paragraph>
+    )
+    template.push(content)
   }
+
   return (
     <>
       {template.map((a, i) => (
