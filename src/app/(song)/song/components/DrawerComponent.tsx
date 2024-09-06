@@ -19,12 +19,16 @@ interface drawerComponentProps {
   pdfGenerator: () => void
   sharpChord: () => void
   flatChord: () => void
+  songId: number
 }
 interface listProps {
   action: () => void
   icon?: React.ReactNode
   text?: string
 }
+
+const sharpChords = 'sharpChords'
+const flatChords = 'flatChords'
 
 function ListItem({ action, icon, text }: listProps) {
   return (
@@ -43,47 +47,47 @@ export function DrawerComponent({
   textDown,
   sharpChord,
   flatChord,
+  songId,
 }: drawerComponentProps) {
   const [mobileOpen, setMobileOpen] = useState(true)
   const [isClosing, setIsClosing] = useState(true)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
- 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) =>
     setAnchorEl(event.currentTarget)
-  }
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
+
+  const handleClose = () => setAnchorEl(null)
+
   const handleDrawerClose = () => {
     setIsClosing(true)
     setMobileOpen(false)
   }
 
-  const handleDrawerTransitionEnd = () => {
-    setIsClosing(false)
-  }
+  const handleDrawerTransitionEnd = () => setIsClosing(false)
 
   const handleDrawerToggle = () => {
     if (!isClosing) {
       setMobileOpen(!mobileOpen)
     }
   }
+  const chordTypeStorage = `chordType/song${songId}/user${7}}`
+
   function sharpChordType() {
-    localStorage.setItem('chordType', 'sharpChords')
+    localStorage.setItem(chordTypeStorage, sharpChords)
     sharpChord()
   }
   function flatChordType() {
-    localStorage.setItem('chordType', 'flatChords')
+    localStorage.setItem(chordTypeStorage, flatChords)
     flatChord()
   }
-  const chordType = localStorage.getItem('chordType')
-  const isSharpOrFlat =
-    chordType === 'sharpChords' ? 'sharpChords' : 'flatChords'
+  const chordType = localStorage.getItem(chordTypeStorage)
+
+  const isSharpOrFlat = chordType === sharpChords ? sharpChords : flatChords
   const drawer = (
     <div className="p-4 dark:bg-black dark:text-white">
       <ul className="w-full">
-        <li className='flex items-center justify-center'>
+        <li className="flex items-center justify-center">
           <ListItem
             action={pdfGenerator}
             icon={<PictureAsPdfIcon />}
@@ -108,11 +112,8 @@ export function DrawerComponent({
       <Divider className="h-2 w-full border-black dark:border-white" />
       <ul className="w-full">
         <li className="flex items-center justify-center">
-          <IconButton
-            id="long-button"
-            onClick={handleClick}
-          >
-            {isSharpOrFlat === 'sharpChords' ? <span>A#</span> : <span>Ab</span>}
+          <IconButton id="long-button" onClick={handleClick}>
+            {isSharpOrFlat === sharpChords ? <span>A#</span> : <span>Ab</span>}
           </IconButton>
           <Menu
             id="long-menu"
@@ -124,11 +125,11 @@ export function DrawerComponent({
             onClose={handleClose}
           >
             <MenuItem onClick={sharpChordType}>
-              <Checkbox checked={isSharpOrFlat === 'sharpChords'} />
+              <Checkbox checked={isSharpOrFlat === sharpChords} />
               A# | C# | D# | F# | G#
             </MenuItem>
             <MenuItem onClick={flatChordType}>
-              <Checkbox checked={isSharpOrFlat === 'flatChords'} />
+              <Checkbox checked={isSharpOrFlat === flatChords} />
               Bb | Db | Eb | Gb | Ab
             </MenuItem>
           </Menu>

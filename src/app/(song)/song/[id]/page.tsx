@@ -13,8 +13,6 @@ import { RenderText } from '../components/RenderText'
 import { analyzeLine } from '../utils/lineUtils'
 import { regex } from '../utils/regex'
 
-type ChordSetKeys = keyof typeof regex.chordSets
-
 export default function Song({ params }: urlIdProps) {
   const [isChecked, setIsChecked] = useState(true)
   const [name, setName] = useState('')
@@ -23,7 +21,6 @@ export default function Song({ params }: urlIdProps) {
   const [textSize, setTextSize] = useState(16)
   const preRef = useRef<HTMLPreElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-  const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [containerWidth, setContainerWidth] = useState<number>(0)
 
   const { data: song, mutate } = useSWR(`/song/${params.id}`, fetcher)
@@ -64,9 +61,11 @@ export default function Song({ params }: urlIdProps) {
   const handlePrint = useReactToPrint({
     content: () => containerRef.current,
   })
-
-  const chordType = localStorage.getItem('chordType') as ChordSetKeys || 'flatChords'
-
+  const chordTypeStorage = `chordType/song${params.id}/user${7}}`
+  const chordType =
+    (localStorage.getItem(chordTypeStorage) as keyof typeof regex.chordSets) ||
+    'flatChords'
+  console.log(chordType)
   async function handleToneChange(direction: 'up' | 'down') {
     const shift = direction === 'up' ? 1 : -1
     const newLines = lines.map((line) => {
@@ -114,7 +113,7 @@ export default function Song({ params }: urlIdProps) {
       (index + shift + regex.textSizes.length) % regex.textSizes.length
     setTextSize(regex.textSizes[newIndex])
   }
-  
+
   async function handleChangeChord() {
     let oppositeChordType = chordType
 
@@ -154,7 +153,6 @@ export default function Song({ params }: urlIdProps) {
     await clientEditLyric({ id: params.id, lyric: newLyrics, tone: newTone })
     await mutate({ name, lyric: newLyrics })
   }
-
   return (
     <div className="flex justify-between">
       <DrawerComponent
@@ -165,6 +163,7 @@ export default function Song({ params }: urlIdProps) {
         textDown={() => handleTextChange('down')}
         flatChord={() => handleChangeChord()}
         sharpChord={() => handleChangeChord()}
+        songId={params.id}
       />
       <div
         ref={containerRef}
@@ -225,7 +224,7 @@ export default function Song({ params }: urlIdProps) {
               lines={text}
               fontSize={textSize}
               maxWidth={containerWidth}
-              />
+            />
           </pre>
         )}
       </div>

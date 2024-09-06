@@ -43,6 +43,7 @@ export function RenderText({ lines, fontSize, maxWidth }: renderTextProps) {
     const lines = text.split('\n')
     const fittingText: string[] = []
     const maxCharsPerLine = Math.floor(maxWidth / (fontSize * 0.6))
+
     for (let i = 0; i < lines.length; i++) {
       const {
         isLineAChordLine: ILine1,
