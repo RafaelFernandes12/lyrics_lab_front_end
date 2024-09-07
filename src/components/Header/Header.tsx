@@ -4,6 +4,7 @@ import PersonIcon from '@mui/icons-material/Person'
 import Link from 'next/link'
 import { SearchBar } from './SearchBar'
 import { SwitchTheme } from './SwitchTheme'
+
 export async function Header() {
   const songs = await serverGetAllSongs()
   const albums = await serverGetAllAlbums()
@@ -37,7 +38,7 @@ export async function Header() {
           />
         </svg>
       </Link>
-      <div className="flex justify-end">
+      <div className="flex w-full justify-end">
         <ul className="flex items-center gap-16 text-xl max-md:hidden">
           <li>
             <Link href="/songs">
@@ -49,7 +50,7 @@ export async function Header() {
               <span>Álbuns</span>
             </Link>
           </li>
-          <li className="w-96">
+          <li>
             <SearchBar albums={albums} songs={songs} />
           </li>
         </ul>
