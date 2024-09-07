@@ -13,7 +13,9 @@ export async function clientGetAlbums(): Promise<albumProps[]> {
     })
 
     const data = await response.data
-    return data as albumProps[]
+
+    const filteredData = data.filter((album: albumProps) => !album.isDefault)
+    return filteredData as albumProps[]
   } catch (error) {
     console.error(
       'Failed to get albums:',

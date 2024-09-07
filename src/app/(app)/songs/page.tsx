@@ -63,9 +63,9 @@ export default async function Songs({
                   </td>
                   <td className="py-5">
                     <SongCard.Album
-                      album={song.albums.map((album) => {
-                        return album.name
-                      })}
+                      album={song.albums
+                        .filter((album) => !album.isDefault)
+                        .map((album) => album.name)}
                     />
                   </td>
                   <td className="py-5">
