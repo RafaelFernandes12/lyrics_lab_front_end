@@ -40,11 +40,11 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button className="bg-blueButton mt-3 w-full" type="submit">
+          <button className="mt-3 w-full bg-blueButton" type="submit">
             <span className="text-white">Entrar</span>
           </button>
         </form>
-        <p className="text-blueButton mt-3 text-center">Esqueci minha senha</p>
+        <p className="mt-3 text-center text-blueButton">Esqueci minha senha</p>
         <p className="mt-3 text-center">
           Não tem uma conta?{' '}
           <Link className="text-blueButton" href="/register">

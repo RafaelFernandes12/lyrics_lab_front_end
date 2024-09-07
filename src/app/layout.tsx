@@ -14,7 +14,11 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <AuthProvider>
-      <html lang="pt-br" className={poppins.variable}>
+      <html
+        lang="pt-br"
+        className={poppins.variable}
+        style={{ overflow: 'auto' }}
+      >
         {children}
       </html>
     </AuthProvider>

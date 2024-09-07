@@ -1,14 +1,21 @@
 'use client'
+import { Fragment } from 'react'
 import { analyzeLine } from '../utils/lineUtils'
-import { Paragraph, Words } from './Text'
+import { Italic, Paragraph, Strong, Words } from './Text'
 
 interface renderTextProps {
   lines: string
   fontSize: number
+  lineHeight: number
   maxWidth: number
 }
 
-export function RenderText({ lines, fontSize, maxWidth }: renderTextProps) {
+export function RenderText({
+  lines,
+  fontSize,
+  lineHeight,
+  maxWidth,
+}: renderTextProps) {
   function breakTextIntoLines(text: string, maxCharsPerLine: number) {
     const lines = []
     let start = 0
@@ -42,6 +49,7 @@ export function RenderText({ lines, fontSize, maxWidth }: renderTextProps) {
     const lines = text.split('\n')
     const fittingText: string[] = []
     const maxCharsPerLine = Math.floor(maxWidth / (fontSize * 0.6))
+
     for (let i = 0; i < lines.length; i++) {
       const {
         isLineAChordLine: ILine1,
@@ -91,49 +99,58 @@ export function RenderText({ lines, fontSize, maxWidth }: renderTextProps) {
 
   const template: JSX.Element[] = []
   for (let i = 0; i < fittingParagraphs.length; i++) {
-    const { isLineInsideSymbols, wordInsideSymbols } = analyzeLine(
-      fittingParagraphs[i],
-    )
-    if (isLineInsideSymbols) {
-      let div: JSX.Element = <div></div>
-      const groupedParagraphs: string[] = []
-      while (fittingParagraphs[i] !== ' ') {
-        groupedParagraphs.push(fittingParagraphs[i])
-        i++
-      }
-      const noTitleGroup = groupedParagraphs.filter(
-        (p) => p !== groupedParagraphs[0],
-      )
-      div = (
-        <div className="rounded-xl bg-white/10">
-          <Paragraph
-            fontSize={fontSize}
-            key={i}
-            className="rounded-t-xl bg-slate-600 py-1 text-center"
-          >
-            <Words line={wordInsideSymbols} />
-          </Paragraph>
-          <pre className="p-3">
-            {noTitleGroup.map((line, i) => {
-              return (
-                <Paragraph fontSize={fontSize} key={i} className="text-black">
-                  <Words line={line} />
-                </Paragraph>
-              )
-            })}
-          </pre>
-        </div>
-      )
-      template.push(div)
-      template.push(<p> </p>)
-    } else {
-      const p = (
-        <Paragraph fontSize={fontSize}>
-          <Words line={fittingParagraphs[i]} />
-        </Paragraph>
-      )
-      template.push(p)
+    const regex = /(\*_([^*_]+)_\*)|(\*[^*_]+\*)|(_[^*_]+_)|([^*_]+)/g
+
+    const parseText = () => {
+      const matches = fittingParagraphs[i]?.match(regex) || []
+
+      return matches.map((part, index) => {
+        if (part.startsWith('*_') && part.endsWith('_*')) {
+          return (
+            <i key={index}>
+              <Strong
+                fontSize={fontSize}
+                lineHeight={lineHeight}
+                line={part.slice(2, -2)}
+              />
+            </i>
+          )
+        } else if (part.startsWith('_') && part.endsWith('_')) {
+          return (
+            <Strong
+              key={index}
+              fontSize={fontSize}
+              lineHeight={lineHeight}
+              line={part.slice(1, -1)}
+            />
+          )
+        } else if (part.startsWith('*') && part.endsWith('*')) {
+          return (
+            <Italic
+              key={index}
+              fontSize={fontSize}
+              lineHeight={lineHeight}
+              line={part.slice(1, -1)}
+            />
+          )
+        } else {
+          return <Words line={part} key={index} />
+        }
+      })
     }
+    const content = (
+      <Paragraph fontSize={fontSize} lineHeight={lineHeight}>
+        {parseText().map((a) => a)}
+      </Paragraph>
+    )
+    template.push(content)
   }
-  return <>{template.map((a) => a)}</>
+
+  return (
+    <>
+      {template.map((a, i) => (
+        <Fragment key={i}>{a}</Fragment>
+      ))}
+    </>
+  )
 }

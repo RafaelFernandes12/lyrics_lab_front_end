@@ -4,11 +4,13 @@ import { getToken } from '@/operations/auth/getToken'
 interface EditLyricParams {
   id: number
   lyric: string
+  tone: string
 }
 
 export async function clientEditLyric({
   id,
   lyric,
+  tone,
 }: EditLyricParams): Promise<boolean> {
   try {
     const token = await getToken()
@@ -17,6 +19,7 @@ export async function clientEditLyric({
       `/song/${id}`,
       {
         lyric,
+        tone,
       },
       {
         headers: {
