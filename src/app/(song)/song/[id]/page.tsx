@@ -21,7 +21,7 @@ export default function Song({ params }: urlIdProps) {
   const [textSizeIndex, setTextSizeIndex] = useState(6)
   const [textSize, setTextSize] = useState({
     fontSize: 16,
-    lineHeight: 1,
+    lineHeight: 1.1,
   })
   const preRef = useRef<HTMLPreElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -115,7 +115,7 @@ export default function Song({ params }: urlIdProps) {
       (textSizeIndex + shift + regex.textSizes.length) % regex.textSizes.length
     setTextSizeIndex(newIndex)
     console.log(textSize)
-      setTextSize({
+    setTextSize({
       fontSize: regex.textSizes[newIndex][0],
       lineHeight: regex.textSizes[newIndex][1],
     })

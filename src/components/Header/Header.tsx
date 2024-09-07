@@ -1,10 +1,13 @@
+import { serverGetAllAlbums } from '@/operations/albums/server-side/getAll'
+import { serverGetAllSongs } from '@/operations/songs/server-side/getAll'
 import PersonIcon from '@mui/icons-material/Person'
-import SearchIcon from '@mui/icons-material/Search'
-import Input from '@mui/material/Input'
-import InputAdornment from '@mui/material/InputAdornment'
 import Link from 'next/link'
+import { SearchBar } from './SearchBar'
 import { SwitchTheme } from './SwitchTheme'
-export function Header() {
+export async function Header() {
+  const songs = await serverGetAllSongs()
+  const albums = await serverGetAllAlbums()
+
   return (
     <header
       className={`flex h-[100px] items-center justify-between bg-white px-[4%] dark:bg-headerDark`}
@@ -46,17 +49,8 @@ export function Header() {
               <span>Álbuns</span>
             </Link>
           </li>
-          <li>
-            <Input
-              placeholder="Pesquisar"
-              className="dark:text-white"
-              disableUnderline
-              startAdornment={
-                <InputAdornment position="start">
-                  <SearchIcon className="dark:text-white" />
-                </InputAdornment>
-              }
-            />
+          <li className="w-96">
+            <SearchBar albums={albums} songs={songs} />
           </li>
         </ul>
         <div className="flex items-center gap-6">
