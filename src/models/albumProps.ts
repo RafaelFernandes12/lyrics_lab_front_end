@@ -5,6 +5,7 @@ export interface albumProps {
   name: string
   description: string
   image: string
+  isDefault: boolean
   userId: number
   songs: songProps[]
 }

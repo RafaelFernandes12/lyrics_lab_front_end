@@ -3,7 +3,7 @@ import { getToken } from '@/operations/auth/getToken'
 
 interface EditAlbumParams {
   id: number
-  name: string
+  name?: string
   description?: string
   image?: string
 }
