@@ -1,11 +1,13 @@
 'use client'
 import { ButtonDialog } from '@/components/buttonDialog'
+// import { ButtonDialogSelect } from '@/components/buttonDialog/ButtonDialogSelect'
 import { clientCreateSong } from '@/operations/songs/client-side/post'
 import { useState } from 'react'
 
 export function CreateSongDialog() {
   const [name, setName] = useState('')
   const [tone, setTone] = useState('')
+  // const [albumIds, setAlbumIds] = useState<number[]>([])
 
   function handleCreateSong() {
     clientCreateSong({ name, tone })
@@ -21,6 +23,10 @@ export function CreateSongDialog() {
         placeholder="Tom"
         state={(e) => setTone(e.target.value)}
       />
+      {/* <ButtonDialogSelect
+        albumIds={albumIds}
+        setAlbumIds={(value) => setAlbumIds(value)}
+      /> */}
     </ButtonDialog.Root>
   )
 }

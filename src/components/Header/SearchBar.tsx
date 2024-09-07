@@ -58,7 +58,7 @@ export function SearchBar({ songs, albums }: searchBarProps) {
         <Divider className="my-1" />
         <li>
           <span className="p-2 text-sm font-semibold text-gray-700">
-            Albums
+            Álbuns
           </span>
         </li>
         {albums.map((album, i) => {

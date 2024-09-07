@@ -41,7 +41,7 @@ const UploadImage = ({
       >
         Escolher imagem
       </button>
-      {fileName && <span>{fileName}</span>}
+      {fileName && <span className="dark:text-black">{fileName}</span>}
     </div>
   )
 }
