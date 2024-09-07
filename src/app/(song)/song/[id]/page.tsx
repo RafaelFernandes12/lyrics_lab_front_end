@@ -160,6 +160,7 @@ export default function Song({ params }: urlIdProps) {
     await clientEditLyric({ id: params.id, lyric: newLyrics, tone: newTone })
     await mutate({ name, lyric: newLyrics })
   }
+
   return (
     <div className="flex justify-between">
       <DrawerComponent
