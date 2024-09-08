@@ -9,6 +9,7 @@ import { DialogContent } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export function EditIconDialog({ id }: idProps) {
   const [open, setOpen] = useState(false)
@@ -16,14 +17,14 @@ export function EditIconDialog({ id }: idProps) {
   const [description, setDescription] = useState('')
   const [file, setFile] = useState<File | null>(null)
   const [uploading, setUploading] = useState(false)
-
+  const router = useRouter()
   function handleClick() {
     setOpen(!open)
   }
 
   const handleEditAlbum = async () => {
     if (!file) {
-      clientEditAlbum({ id, name, description, image: '' })
+      clientEditAlbum({ id, name, description, image: '' }).then(() => router.refresh())
       return
     }
 
@@ -49,13 +50,13 @@ export function EditIconDialog({ id }: idProps) {
 
   return (
     <>
-      <div
+      <button
         className="flex items-center dark:bg-transparent"
         onClick={handleClick}
       >
         <EditIcon className="m-2 h-5 w-5 dark:text-white" />
         <p>Editar</p>
-      </div>
+      </button>
       <Dialog open={open} onClose={handleClick} maxWidth="lg">
         <DialogContent className="flex flex-col items-center justify-center gap-4">
           <h2 className="dark:text-black">Editar álbum</h2>

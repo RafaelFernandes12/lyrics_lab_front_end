@@ -1,14 +1,17 @@
 'use client'
-import { ButtonDialog } from '@/components/buttonDialog/index'
-import { clientCreateAlbum } from '@/operations/albums/client-side/post'
-import { useState } from 'react'
+import { ButtonDialog } from '@/components/buttonDialog/index';
+import { clientCreateAlbum } from '@/operations/albums/client-side/post';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export function CreateAlbumDialog() {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
-
+  const router = useRouter()
   function handleCreateAlbum() {
-    clientCreateAlbum({ name, description })
+    clientCreateAlbum({ name, description }).then(() => {
+      router.refresh()
+    })
   }
 
   return (

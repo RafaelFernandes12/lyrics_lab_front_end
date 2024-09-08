@@ -4,19 +4,19 @@ import { clientEditSong } from '@/operations/songs/client-side/editSong'
 import { Dialog, DialogContent, MenuItem } from '@mui/material'
 import { useState } from 'react'
 import { ButtonDialogSelect } from '../buttonDialog/ButtonDialogSelect'
-
+import { useRouter } from 'next/navigation'
 export function EditMenuItem({ id }: idProps) {
   const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
   const [tone, setTone] = useState('')
   const [albumIds, setAlbumIds] = useState<number[]>([])
-
+  const router = useRouter()
   function handleClick() {
     setOpen(!open)
   }
 
   function handleEditSong() {
-    clientEditSong({ id, name, tone, albumIds })
+    clientEditSong({ id, name, tone, albumIds }).then(() => router.refresh())
   }
 
   return (

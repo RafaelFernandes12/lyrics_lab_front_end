@@ -2,15 +2,18 @@
 import { ButtonDialog } from '@/components/buttonDialog'
 // import { ButtonDialogSelect } from '@/components/buttonDialog/ButtonDialogSelect'
 import { clientCreateSong } from '@/operations/songs/client-side/post'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 export function CreateSongDialog() {
   const [name, setName] = useState('')
   const [tone, setTone] = useState('')
   // const [albumIds, setAlbumIds] = useState<number[]>([])
-
+  const router = useRouter()
   function handleCreateSong() {
-    clientCreateSong({ name, tone })
+    clientCreateSong({ name, tone }).then(() => {
+      router.refresh()
+    })
   }
 
   return (

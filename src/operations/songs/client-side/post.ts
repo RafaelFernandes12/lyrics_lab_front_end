@@ -1,5 +1,7 @@
+import { SuccessHandler } from '@/helpers/SuccessHandler'
 import api from '@/lib/axios'
 import { getToken } from '@/operations/auth/getToken'
+import { v4 as uuidv4 } from 'uuid';
 
 interface CreateSongParams {
   name: string
@@ -13,18 +15,23 @@ export async function clientCreateSong({
   try {
     const token = await getToken()
 
-    const response = await api.post(
-      '/song',
-      {
-        name,
-        tone,
-      },
-      {
-        headers: {
-          Authorization: token ? `${token}` : undefined,
+    const response = await api
+      .post(
+        '/song',
+        {
+          name,
+          tone,
         },
-      },
-    )
+        {
+          headers: {
+            Authorization: token ? `${token}` : undefined,
+          },
+        },
+      )
+      .then((res) => {
+        SuccessHandler({ id:uuidv4() , message: 'Música criada com sucesso!' })
+        return res
+      })
 
     return response.status === 201
   } catch (error) {

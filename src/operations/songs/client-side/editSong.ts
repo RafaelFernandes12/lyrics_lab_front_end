@@ -1,6 +1,5 @@
 import api from '@/lib/axios'
 import { getToken } from '@/operations/auth/getToken'
-
 interface EditSongParams {
   id: number
   name?: string

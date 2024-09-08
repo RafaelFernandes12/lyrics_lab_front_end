@@ -2,7 +2,7 @@ import { Header } from '@/components/Header/Header'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-export default function RootLayout({
+export default function AppLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
@@ -20,8 +20,8 @@ export default function RootLayout({
         draggable
         pauseOnHover
         theme="colored"
+        limit={1}
       />
-      <ToastContainer />
     </body>
   )
 }

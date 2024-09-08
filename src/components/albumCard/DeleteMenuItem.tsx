@@ -4,14 +4,18 @@ import { clientDeleteAlbum } from '@/operations/albums/client-side/delete'
 import { DialogContent, MenuItem } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
 import { useState } from 'react'
-
+import { useRouter } from 'next/navigation';
 export function DeleteMenuItem({ id }: idProps) {
   const [open, setOpen] = useState(false)
-
+  const router = useRouter()
   function handleClick() {
     setOpen(!open)
   }
-
+  function handleDeleteAlbum(){
+    clientDeleteAlbum(id).then(() => {
+      router.refresh()
+    })
+  }
   return (
     <>
       <MenuItem onClick={handleClick} className="dark:bg-transparent ">
@@ -26,7 +30,7 @@ export function DeleteMenuItem({ id }: idProps) {
           </p>
           <div className="flex gap-2">
             <button
-              onClick={() => clientDeleteAlbum(id)}
+              onClick={handleDeleteAlbum}
               className="bg-blue-800 p-2 text-white"
             >
               Excluir

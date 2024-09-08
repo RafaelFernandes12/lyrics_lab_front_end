@@ -2,13 +2,15 @@
 
 import AddIcon from '@mui/icons-material/Add'
 import MenuIcon from '@mui/icons-material/Menu'
+import ModeEditIcon from '@mui/icons-material/ModeEdit'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
 import RemoveIcon from '@mui/icons-material/Remove'
 import TextDecreaseIcon from '@mui/icons-material/TextDecrease'
 import TextIncreaseIcon from '@mui/icons-material/TextIncrease'
-import { Divider, IconButton, Menu, MenuItem } from '@mui/material'
+import { IconButton, Menu, MenuItem } from '@mui/material'
 import Checkbox from '@mui/material/Checkbox'
 import Drawer from '@mui/material/Drawer'
+import Link from 'next/link'
 import { useState } from 'react'
 
 interface drawerComponentProps {
@@ -32,7 +34,7 @@ const flatChords = 'flatChords'
 
 function ListItem({ action, icon, text }: listProps) {
   return (
-    <button onClick={action} className="m-0 flex w-full gap-4">
+    <button onClick={action} className="m-0 p-0 w-fit">
       {icon}
       <span className="p-0 text-sm">{text}</span>
     </button>
@@ -85,34 +87,26 @@ export function DrawerComponent({
 
   const isSharpOrFlat = chordType === sharpChords ? sharpChords : flatChords
   const drawer = (
-    <div className="p-4 dark:bg-black dark:text-white">
-      <ul className="w-full">
-        <li className="flex items-center justify-center">
+    <ul className="dark:bg-black dark:text-white flex flex-col">
+        <li className="flex items-center justify-center gap-3 py-4 px-6 border-b-[1px] border-gray-400 hover:bg-slate-200 ">
           <ListItem
             action={pdfGenerator}
             icon={<PictureAsPdfIcon />}
             text="Gerar PDF"
           />
         </li>
-      </ul>
-      <Divider className="h-2 w-full border-black dark:border-white" />
-      <ul className="flex w-full flex-col">
-        <li className="flex items-center justify-center gap-2">
+        <li className="flex items-center justify-center gap-3 py-4 px-6 border-b-[1px] border-gray-400 hover:bg-slate-200 ">
           <ListItem action={toneDown} icon={<RemoveIcon />} />
           <span className="p-0 text-sm">Tom</span>
           <ListItem action={toneUp} icon={<AddIcon />} />
         </li>
-        <Divider className="h-2 w-full border-black dark:border-white" />
-        <li className="flex items-center justify-center gap-2">
+        <li className="flex items-center justify-center gap-3 py-4 px-6 border-b-[1px] border-gray-400 hover:bg-slate-200 ">
           <ListItem action={textDown} icon={<TextDecreaseIcon />} />
           <span className="p-0 text-sm">Texto</span>
           <ListItem action={textUp} icon={<TextIncreaseIcon />} />
         </li>
-      </ul>
-      <Divider className="h-2 w-full border-black dark:border-white" />
-      <ul className="w-full">
-        <li className="flex items-center justify-center">
-          <IconButton id="long-button" onClick={handleClick}>
+        <li className="flex items-center justify-center gap-3 py-4 px-6 hover:bg-slate-200 ">
+          <IconButton id="long-button" onClick={handleClick} className='p-0 m-0 text-base'>
             {isSharpOrFlat === sharpChords ? <span>A#</span> : <span>Ab</span>}
           </IconButton>
           <Menu
@@ -134,8 +128,7 @@ export function DrawerComponent({
             </MenuItem>
           </Menu>
         </li>
-      </ul>
-    </div>
+    </ul>
   )
   return (
     <>
@@ -157,7 +150,6 @@ export function DrawerComponent({
         <div>
           <button
             color="inherit"
-            aria-label="open drawer"
             onClick={handleDrawerToggle}
             className="p-0 dark:text-white md:hidden"
           >

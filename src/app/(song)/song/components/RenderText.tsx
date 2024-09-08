@@ -1,4 +1,3 @@
-'use client'
 import { Fragment } from 'react'
 import { analyzeLine } from '../utils/lineUtils'
 import { Italic, Paragraph, Strong, Words } from './Text'
@@ -46,7 +45,7 @@ export function RenderText({
     return lines
   }
   function getTextWithinWidth(text: string, maxWidth: number) {
-    const lines = text.split('\n')
+    const lines = text ? text.split('\n') : []
     const fittingText: string[] = []
     const maxCharsPerLine = Math.floor(maxWidth / (fontSize * 0.6))
 

@@ -1,7 +1,12 @@
 import { toast } from 'react-toastify'
 
-export const SuccessHandler = () => {
-  toast.success('Operação realizada com sucesso', {
+interface successHandlerProps {
+  id: string
+  message: string
+}
+
+export const SuccessHandler = ({ message, id }: successHandlerProps) => {
+  toast.success(message, {
     position: 'top-center',
     autoClose: 5000,
     hideProgressBar: false,
@@ -10,5 +15,6 @@ export const SuccessHandler = () => {
     draggable: true,
     progress: undefined,
     theme: 'colored',
+    toastId: id
   })
 }

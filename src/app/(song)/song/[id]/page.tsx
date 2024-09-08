@@ -5,7 +5,7 @@ import { urlIdProps } from '@/models/urlIdProps'
 import { clientEditLyric } from '@/operations/songs/client-side/editLyric'
 import { clientEditSong } from '@/operations/songs/client-side/editSong'
 import { FormControlLabel, FormGroup, Switch } from '@mui/material'
-import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useReactToPrint } from 'react-to-print'
 import useSWR from 'swr'
 import { DrawerComponent } from '../components/DrawerComponent'
@@ -14,10 +14,15 @@ import { analyzeLine } from '../utils/lineUtils'
 import { regex } from '../utils/regex'
 
 export default function Song({ params }: urlIdProps) {
+
+  const { data: song, mutate } = useSWR(`/song/${params.id}`, fetcher)
+
   const [isChecked, setIsChecked] = useState(false)
-  const [name, setName] = useState('')
-  const [text, setText] = useState('')
-  const [tone, setTone] = useState('')
+  const [text, setText] = useState({
+    name: '',
+    tone: '',
+    lyrics: ''
+})
   const [textSizeIndex, setTextSizeIndex] = useState(6)
   const [textSize, setTextSize] = useState({
     fontSize: 16,
@@ -27,20 +32,20 @@ export default function Song({ params }: urlIdProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerWidth, setContainerWidth] = useState<number>(0)
 
-  const { data: song, mutate } = useSWR(`/song/${params.id}`, fetcher)
-
   const songLyric: string = song?.lyric || ''
   const songTone: string = song?.tone || ''
   const lines = songLyric.split('\n')
 
   useEffect(() => {
     if (song) {
-      setName(song.name || '')
-      setText(song.lyric || '')
-      setTone(song.tone || '')
+      setText({
+        name: song.name,
+        tone: song.tone,
+        lyrics: song.lyric,
+      })
     }
+    console.log('aqui')
   }, [song])
-
   useEffect(() => {
     if (containerRef.current) {
       const observer = new ResizeObserver((entries) => {
@@ -58,9 +63,9 @@ export default function Song({ params }: urlIdProps) {
 
   const handleToggle = useCallback(async () => {
     setIsChecked((prev) => !prev)
-    await clientEditSong({ id: params.id, name, lyric: text, tone })
-    await mutate({ name, lyric: text, tone })
-  }, [params.id, name, text, mutate, tone])
+    await clientEditSong({ id: params.id, name: text.name, lyric: text.lyrics, tone:text.tone })
+    await mutate({ name: text.name, lyric: text.lyrics, tone:text.tone })
+  }, [params.id, text, mutate])
 
   const handlePrint = useReactToPrint({
     content: () => containerRef.current,
@@ -106,7 +111,7 @@ export default function Song({ params }: urlIdProps) {
     })
     const newLyrics = newLines.join('\n')
     await clientEditLyric({ id: params.id, lyric: newLyrics, tone: newTone })
-    await mutate({ name, lyric: newLyrics, tone: newTone })
+    await mutate({ name: text.name, lyric: newLyrics, tone: newTone })
   }
 
   function handleTextChange(direction: 'up' | 'down') {
@@ -158,7 +163,7 @@ export default function Song({ params }: urlIdProps) {
 
     const newLyrics = newLines.join('\n')
     await clientEditLyric({ id: params.id, lyric: newLyrics, tone: newTone })
-    await mutate({ name, lyric: newLyrics })
+    await mutate({ name: text.name, lyric: newLyrics })
   }
 
   return (
@@ -181,19 +186,27 @@ export default function Song({ params }: urlIdProps) {
           <div className="flex flex-col gap-2">
             <input
               className="bg-slate-100 p-2 text-3xl"
-              value={name}
-              onChange={(e) => {
-                setName(e.target.value)
-              }}
+              value={text.name}
+                onChange={(e) => {
+                    setText((prev) => ({
+                        ...prev,
+                        name: e.target.value,
+                    })
+                    )
+                }}
             />
             <div>
               <span>Tom: </span>
               <input
                 className="bg-slate-100 p-1 text-xl"
-                value={tone}
+                value={text.tone}
                 onChange={(e) => {
-                  setTone(e.target.value)
-                }}
+                    setText((prev) => ({
+                        ...prev,
+                        tone: e.target.value,
+                        })
+                    )
+                  }}
               />
             </div>
           </div>
@@ -217,10 +230,14 @@ export default function Song({ params }: urlIdProps) {
         {isChecked ? (
           <>
             <textarea
-              onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
-                setText(e.target.value)
+              onChange={(e) => {
+                setText((prev) => ({
+                    ...prev,
+                    lyrics: e.target.value,
+                    })
+                )
               }}
-              value={text}
+              value={text.lyrics}
               className="mt-10 h-[1200px] w-full resize-none rounded-sm bg-slate-100 p-1 font-mono text-sm outline-none max-sm:w-full"
               placeholder="Comece aqui"
               spellCheck={false}
@@ -229,7 +246,7 @@ export default function Song({ params }: urlIdProps) {
         ) : (
           <pre className="mt-10" ref={preRef}>
             <RenderText
-              lines={text}
+              lines={text.lyrics}
               fontSize={textSize.fontSize}
               lineHeight={textSize.lineHeight}
               maxWidth={containerWidth}

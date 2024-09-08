@@ -29,14 +29,20 @@ export function SwitchTheme() {
 
   return (
     <div>
-      <WbSunnyIcon
-        onClick={handleThemeSwitch}
-        className="cursor-pointer text-white max-md:hidden"
-      />
-      <DarkModeIcon
-        onClick={handleThemeSwitch}
-        className=" cursor-pointer dark:hidden max-md:hidden"
-      />
+      {theme === 'dark' && (
+        <WbSunnyIcon
+          onClick={handleThemeSwitch}
+          className="cursor-pointer text-white max-md:hidden"
+        />
+      )}
+
+      {theme === 'light' && (
+        <DarkModeIcon
+          onClick={handleThemeSwitch}
+          className="cursor-pointer max-md:hidden"
+        />
+      )}
+
       <button className="dark:bg-transparent dark:text-white md:hidden">
         <MenuIcon sx={{ width: 40, height: 40 }} />
       </button>

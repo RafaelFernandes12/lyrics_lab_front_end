@@ -8,6 +8,7 @@ import { DialogContent, MenuItem } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation';
 
 export function EditMenuItem({ id }: idProps) {
   const [open, setOpen] = useState(false)
@@ -15,14 +16,14 @@ export function EditMenuItem({ id }: idProps) {
   const [description, setDescription] = useState('')
   const [file, setFile] = useState<File | null>(null)
   const [uploading, setUploading] = useState(false)
-
+  const router = useRouter()
   function handleClick() {
     setOpen(!open)
   }
 
   const handleEditAlbum = async () => {
     if (!file) {
-      clientEditAlbum({ id, name, description, image: '' })
+      clientEditAlbum({ id, name, description, image: '' }).then(() => router.refresh())
       return
     }
 
