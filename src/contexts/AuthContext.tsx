@@ -1,9 +1,10 @@
 'use client'
 
 import { userProps } from '@/models/userProps'
-import { deleteToken } from '@/operations/auth/deleteToken'
+
 import { getUser } from '@/operations/auth/getUser'
 import { login } from '@/operations/auth/login'
+import { logout } from '@/operations/auth/logout'
 import { useRouter } from 'next/navigation'
 import { createContext, ReactNode, useEffect, useState } from 'react'
 
@@ -51,7 +52,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   async function signOut() {
-    await deleteToken()
+    await logout()
     router.push('/login')
   }
 
