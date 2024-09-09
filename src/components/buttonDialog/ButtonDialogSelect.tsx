@@ -1,5 +1,6 @@
 'use client'
 
+import { fetcher } from '@/lib/fetcher'
 import { albumProps } from '@/models/albumProps'
 import { clientGetAlbums } from '@/operations/albums/client-side/getAll'
 import FormControl from '@mui/material/FormControl'
@@ -7,47 +8,41 @@ import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import { useEffect, useState } from 'react'
+import useSWR from 'swr'
 
 interface buttonDialogProps {
-  albumIds: number[]
-  setAlbumIds: (e: number[]) => void
+  title: string
+  url: string
+  dataIds: number[]
+  setDataIds: (e: number[]) => void
+}
+
+interface dataProps {
+  id: number
+  name: string
 }
 
 export function ButtonDialogSelect({
-  albumIds,
-  setAlbumIds,
+  url,
+  title,
+  dataIds,
+  setDataIds,
 }: buttonDialogProps) {
-  const [albums, setAlbums] = useState<albumProps[]>([])
 
-  useEffect(() => {
-    const fetchAlbums = async () => {
-      try {
-        const data = await clientGetAlbums()
-        if (Array.isArray(data)) {
-          setAlbums(data)
-        } else {
-          console.error('Fetched albums is not an array')
-          setAlbums([])
-        }
-      } catch (error) {
-        console.error('Failed to fetch albums:', error)
-        setAlbums([])
-      }
-    }
+  let { data } = useSWR<dataProps[]>(url, fetcher)
 
-    fetchAlbums()
-  }, [])
+  if(!data) data = []
 
   const handleSelectChange = (event: SelectChangeEvent<string[]>) => {
     const selectedNames = event.target.value as string[]
     const selectedIds = selectedNames.map(
-      (name) => albums.find((album) => album.name === name)?.id as number,
+      (name) => data?.find((album) => album.name === name)?.id as number,
     )
-    setAlbumIds(selectedIds)
+    setDataIds(selectedIds)
   }
 
-  const selectedNames = albumIds
-    .map((id) => albums.find((album) => album.id === id)?.name)
+  const selectedNames = dataIds
+    .map((id) => data?.find((album) => album.id === id)?.name)
     .filter((name) => name !== undefined) as string[]
 
   return (
@@ -56,11 +51,11 @@ export function ButtonDialogSelect({
       <Select
         multiple
         value={selectedNames}
-        label="Álbuns"
+        label={title}
         onChange={handleSelectChange}
         renderValue={(selected) => selected.join(', ')}
       >
-        {albums.map((album) => (
+        {data?.map((album) => (
           <MenuItem key={album.id} value={album.name}>
             {album.name}
           </MenuItem>

@@ -1,6 +1,7 @@
 import { Fragment } from 'react'
 import { analyzeLine } from '../utils/lineUtils'
-import { Italic, Paragraph, Strong, Words } from './Text'
+import { modifyLines } from '../utils/modifyLines'
+import { Italic, Paragraph, Strong, Underline, Words } from './Text'
 
 interface renderTextProps {
   lines: string
@@ -8,6 +9,8 @@ interface renderTextProps {
   lineHeight: number
   maxWidth: number
 }
+
+
 
 export function RenderText({
   lines,
@@ -98,32 +101,77 @@ export function RenderText({
 
   const template: JSX.Element[] = []
   for (let i = 0; i < fittingParagraphs.length; i++) {
-    const regex = /(\*_([^*_]+)_\*)|(\*[^*_]+\*)|(_[^*_]+_)|([^*_]+)/g
+   const regex = /(\*_([^*_]+)_\*)|(\*[^*_]+\*)|(_[^*_]+_)|(~[^~]+~)|(\*~_([^*_]+)_~\*)|(\*~([^*_]+)~\*)|(\*[^*_]+~\*)|(_[^*_]+~_)|([^*_]+)/g
 
     const parseText = () => {
       const matches = fittingParagraphs[i]?.match(regex) || []
 
       return matches.map((part, index) => {
-        if (part.startsWith('*_') && part.endsWith('_*')) {
+        const modifier = modifyLines(part)
+        if (modifier.isBoldItalicUnderlineTrue) {
+          // Bold, Italic, and Underline
+          return (
+            <i key={index}>
+              <u>
+                <Strong
+                  fontSize={fontSize}
+                  lineHeight={lineHeight}
+                  line={part.slice(3, -3)} // Removing *_- and -_*
+                />
+              </u>
+            </i>
+          )
+        } else if (modifier.isBoldItalicTrue) {
+          // Bold and Italic
           return (
             <i key={index}>
               <Strong
                 fontSize={fontSize}
                 lineHeight={lineHeight}
-                line={part.slice(2, -2)}
+                line={part.slice(2, -2)} // Removing *_ and _*
               />
             </i>
           )
-        } else if (part.startsWith('_') && part.endsWith('_')) {
+        } else if (modifier.isUnderlineItalicTrue) {
+          // Underline and Italic
           return (
-            <Strong
+            <u key={index}>
+              <Italic
+                fontSize={fontSize}
+                lineHeight={lineHeight}
+                line={part.slice(2, -2)} // Removing -* and *-
+              />
+            </u>
+          )
+        } else if (modifier.isUnderlineBoldTrue) {
+          // Bold and Underline
+          return (
+            <u key={index}>
+              <Strong
+                fontSize={fontSize}
+                lineHeight={lineHeight}
+                line={part.slice(2, -2)} // Removing _- and -_
+              />
+            </u>
+          )
+        } else if (modifier.underline) {
+          return (
+            <Underline
               key={index}
               fontSize={fontSize}
               lineHeight={lineHeight}
               line={part.slice(1, -1)}
             />
-          )
-        } else if (part.startsWith('*') && part.endsWith('*')) {
+          )} else if (modifier.bold) {
+            return (
+              <Strong
+                key={index}
+                fontSize={fontSize}
+                lineHeight={lineHeight}
+                line={part.slice(1, -1)}
+              />
+            )}
+          else if (modifier.italic) {
           return (
             <Italic
               key={index}
