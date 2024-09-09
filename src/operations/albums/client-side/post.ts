@@ -1,16 +1,19 @@
 import { SuccessHandler } from '@/helpers/SuccessHandler'
 import api from '@/lib/axios'
+import { songProps } from '@/models/songProps';
 import { getToken } from '@/operations/auth/getToken'
 import { v4 as uuidv4 } from 'uuid';
 
 interface CreateAlbumParams {
   name: string
   description: string
+  // songs: songProps[]
 }
 
 export async function clientCreateAlbum({
   name,
   description,
+  // songs
 }: CreateAlbumParams): Promise<boolean> {
   try {
     const token = await getToken()
@@ -21,6 +24,7 @@ export async function clientCreateAlbum({
         {
           name,
           description,
+          // songs
         },
         {
           headers: {
