@@ -53,7 +53,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function signOut() {
     await logout()
-    router.push('/login')
   }
 
   return (

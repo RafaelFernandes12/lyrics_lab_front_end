@@ -6,6 +6,8 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded'
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded'
 import { useContext } from 'react'
+import { EditNameItem } from './components/EditNameItem'
+import { EditPassItem } from './components/EditPassItem'
 
 export default function User() {
   const { user, signOut } = useContext(AuthContext)
@@ -32,23 +34,23 @@ export default function User() {
         </div>
         <hr className="my-8" />
         <div className="flex flex-col items-start justify-start gap-4 ">
-          <button className="m-0 flex items-center gap-3 p-0 hover:text-blue-400 dark:text-white  dark:hover:text-blue-400">
+          <div className="m-0 flex items-center gap-3 p-0 hover:text-blue-400 dark:text-white  dark:hover:text-blue-400">
             <EditRoundedIcon />
-            <p>Alterar o nome</p>
-          </button>
-          <button className="m-0 flex items-center gap-3 p-0 hover:text-blue-400  dark:text-white dark:hover:text-blue-400">
+            <EditNameItem id={user.id} />
+          </div>
+          <div className="m-0 flex items-center gap-3 p-0 hover:text-blue-400  dark:text-white dark:hover:text-blue-400">
             <EditRoundedIcon />
-            <p>Alterar a senha</p>
-          </button>
+            <EditPassItem email={user.email} />
+          </div>
         </div>
         <hr className="my-8" />
-        <div className="flex flex-col items-start justify-start gap-4 ">
+        <div className=" flex w-20 flex-col items-start justify-start gap-4 hover:text-red-500 dark:hover:text-red-500 ">
           <button
             onClick={signOut}
-            className="m-0 flex items-center gap-3 p-0 hover:text-red-500 dark:text-white dark:hover:text-red-500"
+            className="m-0 flex items-center gap-3 p-0 dark:text-white "
           >
-            <LogoutRoundedIcon className=" dark:hover:text-red-500" />
-            <p className="font-normal text-red-500 dark:text-red-500">Sair</p>
+            <LogoutRoundedIcon />
+            Sair
           </button>
         </div>
       </div>
