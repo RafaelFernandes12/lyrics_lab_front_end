@@ -4,17 +4,21 @@ import { idProps } from '@/models/idProps'
 import { clientDeleteSong } from '@/operations/songs/client-side/delete'
 import { DialogContent, MenuItem } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
-import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+
 export function DeleteMenuItem({ id }: idProps) {
   const [open, setOpen] = useState(false)
   const router = useRouter()
+
   function handleClick() {
     setOpen(!open)
   }
-  function handleDeleteSong(){
+
+  function handleDeleteSong() {
     clientDeleteSong(id).then(() => router.refresh())
   }
+
   return (
     <>
       <MenuItem onClick={handleClick} className="dark:bg-transparent ">
@@ -30,7 +34,7 @@ export function DeleteMenuItem({ id }: idProps) {
           <div className="flex gap-2">
             <button
               onClick={handleDeleteSong}
-              className="bg-blue-800 p-2 text-white"
+              className="bg-blueButton p-2 text-white"
             >
               Excluir
             </button>

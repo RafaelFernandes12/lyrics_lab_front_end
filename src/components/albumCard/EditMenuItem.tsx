@@ -7,8 +7,8 @@ import { clientEditAlbum } from '@/operations/albums/client-side/editAlbum'
 import { DialogContent, MenuItem } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { useRouter } from 'next/navigation';
 
 export function EditMenuItem({ id }: idProps) {
   const [open, setOpen] = useState(false)
@@ -17,13 +17,16 @@ export function EditMenuItem({ id }: idProps) {
   const [file, setFile] = useState<File | null>(null)
   const [uploading, setUploading] = useState(false)
   const router = useRouter()
+
   function handleClick() {
     setOpen(!open)
   }
 
   const handleEditAlbum = async () => {
     if (!file) {
-      clientEditAlbum({ id, name, description, image: '' }).then(() => router.refresh())
+      clientEditAlbum({ id, name, description, image: '' }).then(() =>
+        router.refresh(),
+      )
       return
     }
 
@@ -76,7 +79,7 @@ export function EditMenuItem({ id }: idProps) {
           <div className="flex w-full items-center justify-center gap-2">
             <button
               onClick={handleEditAlbum}
-              className="bg-blue-800 p-2 text-white"
+              className="bg-blueButton p-2 text-white"
               disabled={uploading}
             >
               Editar

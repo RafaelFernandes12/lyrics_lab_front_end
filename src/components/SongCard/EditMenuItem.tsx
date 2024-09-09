@@ -2,15 +2,17 @@
 import { idProps } from '@/models/idProps'
 import { clientEditSong } from '@/operations/songs/client-side/editSong'
 import { Dialog, DialogContent, MenuItem } from '@mui/material'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ButtonDialogSelect } from '../buttonDialog/ButtonDialogSelect'
-import { useRouter } from 'next/navigation'
+
 export function EditMenuItem({ id }: idProps) {
   const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
   const [tone, setTone] = useState('')
   const [albumIds, setAlbumIds] = useState<number[]>([])
   const router = useRouter()
+
   function handleClick() {
     setOpen(!open)
   }
@@ -44,7 +46,7 @@ export function EditMenuItem({ id }: idProps) {
           <div className="flex w-full items-center justify-center gap-2">
             <button
               onClick={handleEditSong}
-              className="bg-blue-800 p-2 text-white"
+              className="bg-blueButton p-2 text-white"
             >
               Editar
             </button>
