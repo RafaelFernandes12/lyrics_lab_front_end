@@ -1,6 +1,7 @@
 'use client'
 
 import { userProps } from '@/models/userProps'
+import { deleteToken } from '@/operations/auth/deleteToken'
 import { getUser } from '@/operations/auth/getUser'
 import { login } from '@/operations/auth/login'
 import { useRouter } from 'next/navigation'
@@ -18,6 +19,7 @@ interface SignInData {
 type AuthContextType = {
   user: userProps | null
   signIn: (data: SignInData) => Promise<void>
+  signOut: () => Promise<void>
 }
 
 export const AuthContext = createContext({} as AuthContextType)
@@ -48,8 +50,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
+  async function signOut() {
+    await deleteToken()
+    router.push('/login')
+  }
+
   return (
-    <AuthContext.Provider value={{ user, signIn }}>
+    <AuthContext.Provider value={{ user, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   )

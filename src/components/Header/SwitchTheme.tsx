@@ -31,6 +31,7 @@ export function SwitchTheme() {
     <div>
       {theme === 'dark' && (
         <WbSunnyIcon
+          sx={{ width: 24, height: 24 }}
           onClick={handleThemeSwitch}
           className="cursor-pointer text-white max-md:hidden"
         />
@@ -38,6 +39,7 @@ export function SwitchTheme() {
 
       {theme === 'light' && (
         <DarkModeIcon
+          sx={{ width: 24, height: 24 }}
           onClick={handleThemeSwitch}
           className="cursor-pointer max-md:hidden"
         />
