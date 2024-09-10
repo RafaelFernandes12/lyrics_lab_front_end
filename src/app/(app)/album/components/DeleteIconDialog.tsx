@@ -4,8 +4,8 @@ import { clientDeleteAlbum } from '@/operations/albums/client-side/delete'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { DialogContent } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
-import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 export function DeleteIconDialog({ id }: idProps) {
   const [open, setOpen] = useState(false)
@@ -15,7 +15,9 @@ export function DeleteIconDialog({ id }: idProps) {
   }
 
   function handleDeleteAlbum() {
-    clientDeleteAlbum(id).then(() => router.push('/albums')).then(() => router.refresh())
+    clientDeleteAlbum(id)
+      .then(() => router.push('/albums'))
+      .then(() => router.refresh())
   }
 
   return (

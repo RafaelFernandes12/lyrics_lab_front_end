@@ -1,6 +1,6 @@
-import { Fragment } from 'react'
 import { analyzeLine } from '../utils/lineUtils'
-import { Italic, Paragraph, Strong, Words } from './Text'
+// import { modifyLines } from '../utils/modifyLines'
+import { Paragraph, Words } from './Text'
 
 interface renderTextProps {
   lines: string
@@ -96,60 +96,109 @@ export function RenderText({
   const fittingParagraphs =
     maxWidth > 0 ? getTextWithinWidth(lines, maxWidth) : []
 
-  const template: JSX.Element[] = []
-  for (let i = 0; i < fittingParagraphs.length; i++) {
-    const regex = /(\*_([^*_]+)_\*)|(\*[^*_]+\*)|(_[^*_]+_)|([^*_]+)/g
+  // const template: JSX.Element[] = []
+  // for (let i = 0; i < fittingParagraphs.length; i++) {
+  //  const regex = /(\*_([^*_]+)_\*)|(\*[^*_]+\*)|(_[^*_]+_)|(~[^~]+~)|(\*~_([^*_]+)_~\*)|(\*~([^*_]+)~\*)|(\*[^*_]+~\*)|(_[^*_]+~_)|([^*_]+)/g
 
-    const parseText = () => {
-      const matches = fittingParagraphs[i]?.match(regex) || []
+  //   const parseText = () => {
+  //     const matches = fittingParagraphs[i]?.match(regex) || []
 
-      return matches.map((part, index) => {
-        if (part.startsWith('*_') && part.endsWith('_*')) {
-          return (
-            <i key={index}>
-              <Strong
-                fontSize={fontSize}
-                lineHeight={lineHeight}
-                line={part.slice(2, -2)}
-              />
-            </i>
-          )
-        } else if (part.startsWith('_') && part.endsWith('_')) {
-          return (
-            <Strong
-              key={index}
-              fontSize={fontSize}
-              lineHeight={lineHeight}
-              line={part.slice(1, -1)}
-            />
-          )
-        } else if (part.startsWith('*') && part.endsWith('*')) {
-          return (
-            <Italic
-              key={index}
-              fontSize={fontSize}
-              lineHeight={lineHeight}
-              line={part.slice(1, -1)}
-            />
-          )
-        } else {
-          return <Words line={part} key={index} />
-        }
-      })
-    }
-    const content = (
-      <Paragraph fontSize={fontSize} lineHeight={lineHeight}>
-        {parseText().map((a) => a)}
-      </Paragraph>
-    )
-    template.push(content)
-  }
+  //     return matches.map((part, index) => {
+  //       const modifier = modifyLines(part)
+  //       if (modifier.isBoldItalicUnderlineTrue) {
+  //         // Bold, Italic, and Underline
+  //         return (
+  //           <i key={index}>
+  //             <u>
+  //               <Strong
+  //                 fontSize={fontSize}
+  //                 lineHeight={lineHeight}
+  //                 line={part.slice(3, -3)} // Removing *_- and -_*
+  //               />
+  //             </u>
+  //           </i>
+  //         )
+  //       } else if (modifier.isBoldItalicTrue) {
+  //         // Bold and Italic
+  //         return (
+  //           <i key={index}>
+  //             <Strong
+  //               fontSize={fontSize}
+  //               lineHeight={lineHeight}
+  //               line={part.slice(2, -2)} // Removing *_ and _*
+  //             />
+  //           </i>
+  //         )
+  //       } else if (modifier.isUnderlineItalicTrue) {
+  //         // Underline and Italic
+  //         return (
+  //           <u key={index}>
+  //             <Italic
+  //               fontSize={fontSize}
+  //               lineHeight={lineHeight}
+  //               line={part.slice(2, -2)} // Removing -* and *-
+  //             />
+  //           </u>
+  //         )
+  //       } else if (modifier.isUnderlineBoldTrue) {
+  //         // Bold and Underline
+  //         return (
+  //           <u key={index}>
+  //             <Strong
+  //               fontSize={fontSize}
+  //               lineHeight={lineHeight}
+  //               line={part.slice(2, -2)} // Removing _- and -_
+  //             />
+  //           </u>
+  //         )
+  //       } else if (modifier.underline) {
+  //         return (
+  //           <Underline
+  //             key={index}
+  //             fontSize={fontSize}
+  //             lineHeight={lineHeight}
+  //             line={part.slice(1, -1)}
+  //           />
+  //         )} else if (modifier.bold) {
+  //           return (
+  //             <Strong
+  //               key={index}
+  //               fontSize={fontSize}
+  //               lineHeight={lineHeight}
+  //               line={part.slice(1, -1)}
+  //             />
+  //           )}
+  //         else if (modifier.italic) {
+  //         return (
+  //           <Italic
+  //             key={index}
+  //             fontSize={fontSize}
+  //             lineHeight={lineHeight}
+  //             line={part.slice(1, -1)}
+  //           />
+  //         )
+  //       } else {
+  //         return <Words line={part} key={index} />
+  //       }
+  //     })
+  //   }
+  //   const content = (
+  //     <Paragraph fontSize={fontSize} lineHeight={lineHeight}>
+  //       {parseText().map((a) => a)}
+  //     </Paragraph>
+  //   )
+  //   template.push(content)
+  // }
 
   return (
     <>
-      {template.map((a, i) => (
-        <Fragment key={i}>{a}</Fragment>
-      ))}
+      {fittingParagraphs.map((line, i) => {
+        return (
+          <Paragraph fontSize={fontSize} lineHeight={lineHeight} key={i}>
+            <Words line={line} />
+          </Paragraph>
+        )
+      })}
     </>
   )
 }

@@ -39,8 +39,10 @@ export function EditMenuItem({ id }: idProps) {
               className="rounded-lg border-[1px] border-black p-2"
             />
             <ButtonDialogSelect
-              albumIds={albumIds}
-              setAlbumIds={(value) => setAlbumIds(value)}
+              url="album"
+              title="albums"
+              dataIds={albumIds}
+              setDataIds={(value) => setAlbumIds(value)}
             />
           </div>
           <div className="flex w-full items-center justify-center gap-2">

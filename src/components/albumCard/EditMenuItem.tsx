@@ -1,6 +1,7 @@
 'use client'
 
 import UploadImage from '@/components/albumCard/UploadImage'
+import { fetcher } from '@/lib/fetcher'
 import { storage } from '@/lib/firebase'
 import { idProps } from '@/models/idProps'
 import { clientEditAlbum } from '@/operations/albums/client-side/editAlbum'
@@ -8,23 +9,37 @@ import { DialogContent, MenuItem } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import useSWR from 'swr'
+import { ButtonDialog } from '../buttonDialog/index'
 
 export function EditMenuItem({ id }: idProps) {
   const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
+  const [songIds, setSongIds] = useState<number[]>([])
   const [file, setFile] = useState<File | null>(null)
   const [uploading, setUploading] = useState(false)
+
   const router = useRouter()
 
   function handleClick() {
     setOpen(!open)
   }
 
+  console.log(songIds)
+  const { data: album } = useSWR(`/album/${id}`, fetcher)
+
+  useEffect(() => {
+    if (open && album) {
+      setName(album.name)
+      setDescription(album.description)
+    }
+  }, [open, album])
+
   const handleEditAlbum = async () => {
     if (!file) {
-      clientEditAlbum({ id, name, description, image: '' }).then(() =>
+      clientEditAlbum({ id, name, description, image: '', songIds }).then(() =>
         router.refresh(),
       )
       return
@@ -47,8 +62,9 @@ export function EditMenuItem({ id }: idProps) {
       },
       async () => {
         const url = await getDownloadURL(uploadTask.snapshot.ref)
-        clientEditAlbum({ id, name, description, image: url })
-        console.log(url)
+        clientEditAlbum({ id, name, description, image: url }).then(() =>
+          router.refresh(),
+        )
         setUploading(false)
         setOpen(false)
       },
@@ -64,13 +80,21 @@ export function EditMenuItem({ id }: idProps) {
           <div className="flex flex-col gap-4 ">
             <input
               placeholder="Nome"
+              value={name}
               onChange={(e) => setName(e.target.value)}
               className="rounded-lg border-[1px] border-black p-2"
             />
             <input
               placeholder="Descrição"
+              value={description}
               onChange={(e) => setDescription(e.target.value)}
               className="rounded-lg border-[1px] border-black p-2"
+            />
+            <ButtonDialog.Select
+              url="song"
+              title="Músicas"
+              dataIds={songIds}
+              setDataIds={(value) => setSongIds(value)}
             />
             <div>
               <UploadImage onFileSelect={(file) => setFile(file)} />

@@ -2,7 +2,6 @@
 
 import AddIcon from '@mui/icons-material/Add'
 import MenuIcon from '@mui/icons-material/Menu'
-import ModeEditIcon from '@mui/icons-material/ModeEdit'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
 import RemoveIcon from '@mui/icons-material/Remove'
 import TextDecreaseIcon from '@mui/icons-material/TextDecrease'
@@ -10,7 +9,6 @@ import TextIncreaseIcon from '@mui/icons-material/TextIncrease'
 import { IconButton, Menu, MenuItem } from '@mui/material'
 import Checkbox from '@mui/material/Checkbox'
 import Drawer from '@mui/material/Drawer'
-import Link from 'next/link'
 import { useState } from 'react'
 
 interface drawerComponentProps {
@@ -34,7 +32,7 @@ const flatChords = 'flatChords'
 
 function ListItem({ action, icon, text }: listProps) {
   return (
-    <button onClick={action} className="m-0 p-0 w-fit">
+    <button onClick={action} className="m-0 w-fit p-0">
       {icon}
       <span className="p-0 text-sm">{text}</span>
     </button>
@@ -51,8 +49,8 @@ export function DrawerComponent({
   flatChord,
   songId,
 }: drawerComponentProps) {
-  const [mobileOpen, setMobileOpen] = useState(true)
-  const [isClosing, setIsClosing] = useState(true)
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const [isClosing, setIsClosing] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
@@ -87,47 +85,51 @@ export function DrawerComponent({
 
   const isSharpOrFlat = chordType === sharpChords ? sharpChords : flatChords
   const drawer = (
-    <ul className="dark:bg-black dark:text-white flex flex-col">
-        <li className="flex items-center justify-center gap-3 py-4 px-6 border-b-[1px] border-gray-400 hover:bg-slate-200 ">
-          <ListItem
-            action={pdfGenerator}
-            icon={<PictureAsPdfIcon />}
-            text="Gerar PDF"
-          />
-        </li>
-        <li className="flex items-center justify-center gap-3 py-4 px-6 border-b-[1px] border-gray-400 hover:bg-slate-200 ">
-          <ListItem action={toneDown} icon={<RemoveIcon />} />
-          <span className="p-0 text-sm">Tom</span>
-          <ListItem action={toneUp} icon={<AddIcon />} />
-        </li>
-        <li className="flex items-center justify-center gap-3 py-4 px-6 border-b-[1px] border-gray-400 hover:bg-slate-200 ">
-          <ListItem action={textDown} icon={<TextDecreaseIcon />} />
-          <span className="p-0 text-sm">Texto</span>
-          <ListItem action={textUp} icon={<TextIncreaseIcon />} />
-        </li>
-        <li className="flex items-center justify-center gap-3 py-4 px-6 hover:bg-slate-200 ">
-          <IconButton id="long-button" onClick={handleClick} className='p-0 m-0 text-base'>
-            {isSharpOrFlat === sharpChords ? <span>A#</span> : <span>Ab</span>}
-          </IconButton>
-          <Menu
-            id="long-menu"
-            MenuListProps={{
-              'aria-labelledby': 'long-button',
-            }}
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-          >
-            <MenuItem onClick={sharpChordType}>
-              <Checkbox checked={isSharpOrFlat === sharpChords} />
-              A# | C# | D# | F# | G#
-            </MenuItem>
-            <MenuItem onClick={flatChordType}>
-              <Checkbox checked={isSharpOrFlat === flatChords} />
-              Bb | Db | Eb | Gb | Ab
-            </MenuItem>
-          </Menu>
-        </li>
+    <ul className="flex flex-col dark:bg-black dark:text-white">
+      <li className="flex items-center justify-center gap-3 border-b-[1px] border-gray-400 px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-600">
+        <ListItem
+          action={pdfGenerator}
+          icon={<PictureAsPdfIcon />}
+          text="Gerar PDF"
+        />
+      </li>
+      <li className="flex items-center justify-center gap-3 border-b-[1px] border-gray-400 px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-600 ">
+        <ListItem action={toneDown} icon={<RemoveIcon />} />
+        <span className="p-0 text-sm">Tom</span>
+        <ListItem action={toneUp} icon={<AddIcon />} />
+      </li>
+      <li className="flex items-center justify-center gap-3 border-b-[1px] border-gray-400 px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-600 ">
+        <ListItem action={textDown} icon={<TextDecreaseIcon />} />
+        <span className="p-0 text-sm">Texto</span>
+        <ListItem action={textUp} icon={<TextIncreaseIcon />} />
+      </li>
+      <li className="flex items-center justify-center gap-3 px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-600">
+        <IconButton
+          id="long-button"
+          onClick={handleClick}
+          className="m-0 p-0 text-base"
+        >
+          {isSharpOrFlat === sharpChords ? <span>A#</span> : <span>Ab</span>}
+        </IconButton>
+        <Menu
+          id="long-menu"
+          MenuListProps={{
+            'aria-labelledby': 'long-button',
+          }}
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+        >
+          <MenuItem onClick={sharpChordType}>
+            <Checkbox checked={isSharpOrFlat === sharpChords} />
+            A# | C# | D# | F# | G#
+          </MenuItem>
+          <MenuItem onClick={flatChordType}>
+            <Checkbox checked={isSharpOrFlat === flatChords} />
+            Bb | Db | Eb | Gb | Ab
+          </MenuItem>
+        </Menu>
+      </li>
     </ul>
   )
   return (
@@ -165,7 +167,7 @@ export function DrawerComponent({
         onTransitionEnd={handleDrawerTransitionEnd}
         onClose={handleDrawerClose}
         ModalProps={{
-          keepMounted: true,
+          keepMounted: false,
         }}
         sx={{
           '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 'full' },

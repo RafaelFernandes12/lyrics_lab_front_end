@@ -40,7 +40,6 @@ export function SearchBar({ songs, albums }: searchBarProps) {
   const filteredAlbums = albums.filter((album) =>
     album.name.toLowerCase().includes(search.toLowerCase().trim()),
   )
-
   return (
     <div className="relative w-full" ref={searchRef}>
       <Input
@@ -71,7 +70,7 @@ export function SearchBar({ songs, albums }: searchBarProps) {
                   <span className="p-2">{song.name}</span>
                   {song.albums.map((album) => (
                     <span key={album.id} className="text-xs">
-                      {album.name}
+                      {album.name === 'Default' ? '' : album.name}
                     </span>
                   ))}
                 </li>

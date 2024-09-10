@@ -7,6 +7,7 @@ interface EditAlbumParams {
   name?: string
   description?: string
   image?: string
+  songIds?: number[]
 }
 
 export async function clientEditAlbum({
@@ -14,6 +15,7 @@ export async function clientEditAlbum({
   name,
   description,
   image,
+  songIds,
 }: EditAlbumParams): Promise<boolean> {
   try {
     const token = await getToken()
@@ -25,6 +27,7 @@ export async function clientEditAlbum({
           name,
           description,
           image,
+          songIds,
         },
         {
           headers: {
@@ -33,7 +36,7 @@ export async function clientEditAlbum({
         },
       )
       .then((r) => {
-        SuccessHandler({ id: uuidv4(), message: 'Álbum editado com sucesso!' })
+        SuccessHandler({ id: uuidv4(), message: 'Album editado com sucesso!' })
         return r
       })
 
