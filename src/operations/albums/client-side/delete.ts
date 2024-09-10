@@ -1,7 +1,7 @@
 import { SuccessHandler } from '@/helpers/SuccessHandler'
 import api from '@/lib/axios'
 import { getToken } from '@/operations/auth/getToken'
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 export async function clientDeleteAlbum(id: number): Promise<boolean> {
   try {
     const token = await getToken()

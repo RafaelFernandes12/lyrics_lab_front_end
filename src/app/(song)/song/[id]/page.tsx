@@ -14,15 +14,16 @@ import { analyzeLine } from '../utils/lineUtils'
 import { regex } from '../utils/regex'
 
 export default function Song({ params }: urlIdProps) {
-
   const { data: song, mutate } = useSWR(`/song/${params.id}`, fetcher)
 
   const [isChecked, setIsChecked] = useState(false)
   const [text, setText] = useState({
     name: '',
-    tone: '',
-    lyrics: ''
-})
+    tone: 'Comece aqui',
+    lyrics: '',
+    bpm: 0,
+    compass: '',
+  })
   const [textSizeIndex, setTextSizeIndex] = useState(6)
   const [textSize, setTextSize] = useState({
     fontSize: 16,
@@ -42,9 +43,10 @@ export default function Song({ params }: urlIdProps) {
         name: song.name,
         tone: song.tone,
         lyrics: song.lyric,
+        bpm: song.bpm,
+        compass: song.compass,
       })
     }
-    console.log('aqui')
   }, [song])
   useEffect(() => {
     if (containerRef.current) {
@@ -63,8 +65,15 @@ export default function Song({ params }: urlIdProps) {
 
   const handleToggle = useCallback(async () => {
     setIsChecked((prev) => !prev)
-    await clientEditSong({ id: params.id, name: text.name, lyric: text.lyrics, tone:text.tone })
-    await mutate({ name: text.name, lyric: text.lyrics, tone:text.tone })
+    await clientEditSong({
+      id: params.id,
+      name: text.name,
+      lyric: text.lyrics,
+      tone: text.tone,
+      bpm: text.bpm,
+      compass: text.compass,
+    })
+    await mutate({ name: text.name, lyric: text.lyrics, tone: text.tone })
   }, [params.id, text, mutate])
 
   const handlePrint = useReactToPrint({
@@ -119,7 +128,6 @@ export default function Song({ params }: urlIdProps) {
     const newIndex =
       (textSizeIndex + shift + regex.textSizes.length) % regex.textSizes.length
     setTextSizeIndex(newIndex)
-    console.log(textSize)
     setTextSize({
       fontSize: regex.textSizes[newIndex][0],
       lineHeight: regex.textSizes[newIndex][1],
@@ -187,13 +195,12 @@ export default function Song({ params }: urlIdProps) {
             <input
               className="bg-slate-100 p-2 text-3xl"
               value={text.name}
-                onChange={(e) => {
-                    setText((prev) => ({
-                        ...prev,
-                        name: e.target.value,
-                    })
-                    )
-                }}
+              onChange={(e) => {
+                setText((prev) => ({
+                  ...prev,
+                  name: e.target.value,
+                }))
+              }}
             />
             <div>
               <span>Tom: </span>
@@ -201,28 +208,56 @@ export default function Song({ params }: urlIdProps) {
                 className="bg-slate-100 p-1 text-xl"
                 value={text.tone}
                 onChange={(e) => {
-                    setText((prev) => ({
-                        ...prev,
-                        tone: e.target.value,
-                        })
-                    )
-                  }}
+                  setText((prev) => ({
+                    ...prev,
+                    tone: e.target.value,
+                  }))
+                }}
+              />
+            </div>
+            <div className="flex gap-4">
+              <span>Bpm: </span>
+              <input
+                className="w-20 bg-slate-100 p-1"
+                value={text.bpm}
+                onChange={(e) => {
+                  setText((prev) => ({
+                    ...prev,
+                    bpm: parseInt(e.target.value),
+                  }))
+                }}
+              />
+              <span>Compasso: </span>
+              <input
+                className="w-20 bg-slate-100 p-1"
+                value={text.compass}
+                onChange={(e) => {
+                  setText((prev) => ({
+                    ...prev,
+                    compass: e.target.value,
+                  }))
+                }}
               />
             </div>
           </div>
         ) : (
-          <>
+          <div className="mb-2 flex flex-col gap-2">
             <h1>{song?.name}</h1>
             <h3 className="text-base">
               Tom:{' '}
               <b className="text-blue-700 dark:text-blue-500">{song?.tone}</b>
             </h3>
-          </>
+            <span
+              className={`whitespace-pre-wrap ${!song?.compass && !song?.bpm ? 'hidden' : ''}`}
+            >
+              Compasso: {song?.compass} BPM: {song?.bpm}
+            </span>
+          </div>
         )}
         <FormGroup>
           <FormControlLabel
             onClick={handleToggle}
-            control={<Switch defaultChecked />}
+            control={<Switch />}
             label="Edição"
           />
         </FormGroup>
@@ -232,10 +267,9 @@ export default function Song({ params }: urlIdProps) {
             <textarea
               onChange={(e) => {
                 setText((prev) => ({
-                    ...prev,
-                    lyrics: e.target.value,
-                    })
-                )
+                  ...prev,
+                  lyrics: e.target.value,
+                }))
               }}
               value={text.lyrics}
               className="mt-10 h-[1200px] w-full resize-none rounded-sm bg-slate-100 p-1 font-mono text-sm outline-none max-sm:w-full"

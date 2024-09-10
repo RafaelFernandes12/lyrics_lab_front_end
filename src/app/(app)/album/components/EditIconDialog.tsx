@@ -1,6 +1,8 @@
 'use client'
 
 import UploadImage from '@/components/albumCard/UploadImage'
+import { ButtonDialog } from '@/components/buttonDialog/index'
+import { fetcher } from '@/lib/fetcher'
 import { storage } from '@/lib/firebase'
 import { idProps } from '@/models/idProps'
 import { clientEditAlbum } from '@/operations/albums/client-side/editAlbum'
@@ -9,10 +11,7 @@ import { DialogContent } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-// import { ButtonDialogSelect } from '../buttonDialog/ButtonDialogSelect'
-import { fetcher } from '@/lib/fetcher'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 
 export function EditIconDialog({ id }: idProps) {
@@ -37,7 +36,9 @@ export function EditIconDialog({ id }: idProps) {
 
   const handleEditAlbum = async () => {
     if (!file) {
-      clientEditAlbum({ id, name, description, image: '' }).then(() => router.refresh())
+      clientEditAlbum({ id, name, description, image: '', songIds }).then(() =>
+        router.refresh(),
+      )
       return
     }
 
@@ -54,7 +55,7 @@ export function EditIconDialog({ id }: idProps) {
       },
       async () => {
         const url = await getDownloadURL(uploadTask.snapshot.ref)
-        clientEditAlbum({ id, name, description, image: url })
+        clientEditAlbum({ id, name, description, image: url, songIds })
         setUploading(false)
         setOpen(false)
       },
@@ -86,12 +87,12 @@ export function EditIconDialog({ id }: idProps) {
               onChange={(e) => setDescription(e.target.value)}
               className="rounded-lg border-[1px] border-black p-2"
             />
-            {/* <ButtonDialogSelect
-              url='song'
-              title='Músicas'
+            <ButtonDialog.Select
+              url="song"
+              title="Músicas"
               dataIds={songIds}
               setDataIds={(value) => setSongIds(value)}
-            /> */}
+            />
             <div>
               <UploadImage onFileSelect={(file) => setFile(file)} />
             </div>

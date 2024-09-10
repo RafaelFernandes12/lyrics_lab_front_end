@@ -2,10 +2,12 @@ import api from '@/lib/axios'
 import { getToken } from '@/operations/auth/getToken'
 interface EditSongParams {
   id: number
-  name?: string
+  name: string
   lyric?: string
-  tone?: string
+  tone: string
   albumIds?: number[]
+  bpm?: number
+  compass?: string
 }
 
 export async function clientEditSong({
@@ -14,6 +16,8 @@ export async function clientEditSong({
   lyric,
   tone,
   albumIds,
+  bpm,
+  compass,
 }: EditSongParams): Promise<boolean> {
   try {
     const token = await getToken()
@@ -25,6 +29,8 @@ export async function clientEditSong({
         lyric,
         tone,
         albumIds,
+        bpm,
+        compass,
       },
       {
         headers: {

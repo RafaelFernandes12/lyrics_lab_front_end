@@ -2,10 +2,9 @@
 import { idProps } from '@/models/idProps'
 import { clientEditSong } from '@/operations/songs/client-side/editSong'
 import { Dialog, DialogContent, MenuItem } from '@mui/material'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ButtonDialogSelect } from '../buttonDialog/ButtonDialogSelect'
-import { useRouter } from 'next/navigation'
-import { clientGetAlbums } from '@/operations/albums/client-side/getAll'
 export function EditMenuItem({ id }: idProps) {
   const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
@@ -38,8 +37,8 @@ export function EditMenuItem({ id }: idProps) {
               className="rounded-lg border-[1px] border-black p-2"
             />
             <ButtonDialogSelect
-              url='album'
-              title='albums'
+              url="album"
+              title="albums"
               dataIds={albumIds}
               setDataIds={(value) => setAlbumIds(value)}
             />
