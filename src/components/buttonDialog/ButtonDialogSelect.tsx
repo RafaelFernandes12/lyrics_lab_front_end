@@ -1,13 +1,10 @@
 'use client'
 
 import { fetcher } from '@/lib/fetcher'
-import { albumProps } from '@/models/albumProps'
-import { clientGetAlbums } from '@/operations/albums/client-side/getAll'
 import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
-import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 
 interface buttonDialogProps {
@@ -28,10 +25,9 @@ export function ButtonDialogSelect({
   dataIds,
   setDataIds,
 }: buttonDialogProps) {
-
   let { data } = useSWR<dataProps[]>(url, fetcher)
 
-  if(!data) data = []
+  if (!data) data = []
 
   const handleSelectChange = (event: SelectChangeEvent<string[]>) => {
     const selectedNames = event.target.value as string[]
@@ -47,7 +43,7 @@ export function ButtonDialogSelect({
 
   return (
     <FormControl sx={{ minWidth: 120 }} className="w-full">
-      <InputLabel>Álbuns</InputLabel>
+      <InputLabel>{title}</InputLabel>
       <Select
         multiple
         value={selectedNames}

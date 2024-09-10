@@ -1,7 +1,7 @@
 import { SuccessHandler } from '@/helpers/SuccessHandler'
 import api from '@/lib/axios'
 import { getToken } from '@/operations/auth/getToken'
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 
 export async function clientDeleteSong(id: number): Promise<boolean> {
   try {
@@ -14,7 +14,10 @@ export async function clientDeleteSong(id: number): Promise<boolean> {
         },
       })
       .then((res) => {
-        SuccessHandler({ id: uuidv4(), message: 'Música deletada com sucesso!' })
+        SuccessHandler({
+          id: uuidv4(),
+          message: 'Música deletada com sucesso!',
+        })
         return res
       })
 

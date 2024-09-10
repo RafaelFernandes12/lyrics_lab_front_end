@@ -11,7 +11,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
-import { ButtonDialogSelect } from '../buttonDialog/ButtonDialogSelect'
+import { ButtonDialog } from '../buttonDialog/index'
 
 export function EditMenuItem({ id }: idProps) {
   const [open, setOpen] = useState(false)
@@ -25,7 +25,7 @@ export function EditMenuItem({ id }: idProps) {
   function handleClick() {
     setOpen(!open)
   }
-
+  console.log(songIds)
   const { data: album } = useSWR(`/album/${id}`, fetcher)
 
   useEffect(() => {
@@ -37,7 +37,9 @@ export function EditMenuItem({ id }: idProps) {
 
   const handleEditAlbum = async () => {
     if (!file) {
-      clientEditAlbum({ id, name, description, image: '' }).then(() => router.refresh())
+      clientEditAlbum({ id, name, description, image: '', songIds }).then(() =>
+        router.refresh(),
+      )
       return
     }
 
@@ -58,7 +60,9 @@ export function EditMenuItem({ id }: idProps) {
       },
       async () => {
         const url = await getDownloadURL(uploadTask.snapshot.ref)
-        clientEditAlbum({ id, name, description, image: url }).then(() => router.refresh())
+        clientEditAlbum({ id, name, description, image: url }).then(() =>
+          router.refresh(),
+        )
         setUploading(false)
         setOpen(false)
       },
@@ -84,9 +88,9 @@ export function EditMenuItem({ id }: idProps) {
               onChange={(e) => setDescription(e.target.value)}
               className="rounded-lg border-[1px] border-black p-2"
             />
-            <ButtonDialogSelect
-              url='song'
-              title='Músicas'
+            <ButtonDialog.Select
+              url="song"
+              title="Músicas"
               dataIds={songIds}
               setDataIds={(value) => setSongIds(value)}
             />
