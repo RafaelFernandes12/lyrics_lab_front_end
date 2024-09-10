@@ -7,10 +7,15 @@ interface inputProps {
 
 export function ButtonDialogInput({ state, placeholder }: inputProps) {
   return (
-    <input
-      placeholder={placeholder}
-      onChange={state}
-      className="rounded-lg border-[1px] border-black p-2"
-    />
+    <div className="flex w-full flex-col">
+      <label>
+        <p>{placeholder}</p>
+      </label>
+      <input
+        className="rounded-lg bg-gray-200 p-3"
+        type="email"
+        onChange={state}
+      />
+    </div>
   )
 }

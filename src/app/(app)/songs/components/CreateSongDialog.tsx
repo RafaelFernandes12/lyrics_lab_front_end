@@ -9,6 +9,7 @@ export function CreateSongDialog() {
   const [tone, setTone] = useState('')
   const [albumIds, setAlbumIds] = useState<number[]>([])
   const router = useRouter()
+
   function handleCreateSong() {
     clientCreateSong({ name, tone }).then(() => {
       router.refresh()

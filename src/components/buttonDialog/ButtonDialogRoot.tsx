@@ -35,11 +35,14 @@ export function ButtonDialogRoot({ action, text, children }: rootProps) {
         <DialogContent className="flex flex-col items-center justify-center gap-4">
           <h2 className="dark:text-black">{text}</h2>
           <div className="flex flex-col gap-4 ">{children}</div>
-          <div className="flex w-full items-center justify-center gap-2">
-            <button onClick={action} className="bg-[#567EBB] p-2 text-white">
+          <div className="mt-3 flex w-full items-center justify-center gap-2">
+            <button onClick={action} className="bg-blueButton p-2 text-white">
               Confirmar
             </button>
-            <button onClick={handleClick} className="bg-red-800 p-2 text-white">
+            <button
+              onClick={handleClick}
+              className="bg-redButton p-2 text-white"
+            >
               Cancelar
             </button>
           </div>
