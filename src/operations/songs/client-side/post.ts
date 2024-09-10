@@ -1,7 +1,7 @@
 import { SuccessHandler } from '@/helpers/SuccessHandler'
 import api from '@/lib/axios'
 import { getToken } from '@/operations/auth/getToken'
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 
 interface CreateSongParams {
   name: string
@@ -29,7 +29,7 @@ export async function clientCreateSong({
         },
       )
       .then((res) => {
-        SuccessHandler({ id:uuidv4() , message: 'Música criada com sucesso!' })
+        SuccessHandler({ id: uuidv4(), message: 'Música criada com sucesso!' })
         return res
       })
 
