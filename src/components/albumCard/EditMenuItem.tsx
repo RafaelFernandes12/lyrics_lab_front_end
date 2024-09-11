@@ -5,16 +5,15 @@ import { fetcher } from '@/lib/fetcher'
 import { storage } from '@/lib/firebase'
 import { idProps } from '@/models/idProps'
 import { clientEditAlbum } from '@/operations/albums/client-side/editAlbum'
-import { DialogContent, MenuItem } from '@mui/material'
-import Dialog from '@mui/material/Dialog'
+import { MenuItem } from '@mui/material'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { ButtonDialog } from '../buttonDialog/index'
+import { albumProps } from '@/models/albumProps'
 
 export function EditMenuItem({ id }: idProps) {
-  const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [songIds, setSongIds] = useState<number[]>([])
@@ -22,19 +21,17 @@ export function EditMenuItem({ id }: idProps) {
   const [uploading, setUploading] = useState(false)
 
   const router = useRouter()
-  function handleClick() {
-    setOpen(!open)
-  }
-  console.log(songIds)
-  const { data: album } = useSWR(`/album/${id}`, fetcher)
+  const { handleClick, open, setOpen } = ButtonDialog.useOpen()
+
+  const { data: album } = useSWR<albumProps>(`/album/${id}`, fetcher)
 
   useEffect(() => {
     if (open && album) {
       setName(album.name)
       setDescription(album.description)
+      setSongIds(album.songs.map((song) => song.id))
     }
   }, [open, album])
-
   const handleEditAlbum = async () => {
     if (!file) {
       clientEditAlbum({ id, name, description, image: '', songIds }).then(() =>
@@ -70,48 +67,24 @@ export function EditMenuItem({ id }: idProps) {
   }
 
   return (
-    <>
+    <div>
       <MenuItem onClick={handleClick}>Editar</MenuItem>
-      <Dialog open={open} onClose={handleClick} maxWidth="lg">
-        <DialogContent className="flex flex-col items-center justify-center gap-4">
-          <h2 className="dark:text-black">Editar álbum</h2>
-          <div className="flex flex-col gap-4 ">
-            <input
-              placeholder="Nome"
+      <ButtonDialog.Root handleClick={handleClick} action={handleEditAlbum} open={open} text='Editar Album' uploading={uploading}>
+          <ButtonDialog.Input
               value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="rounded-lg border-[1px] border-black p-2"
+              placeholder="Nome"
+              state={(e) => setName(e.target.value)}
             />
-            <input
-              placeholder="Descrição"
+            <ButtonDialog.Input
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="rounded-lg border-[1px] border-black p-2"
+              placeholder="Tom"
+              state={(e) => setDescription(e.target.value)}
             />
-            <ButtonDialog.Select
-              url="song"
-              title="Músicas"
-              dataIds={songIds}
-              setDataIds={(value) => setSongIds(value)}
-            />
+            <ButtonDialog.SelectSongs setSongIds={setSongIds} songIds={songIds}/>
             <div>
               <UploadImage onFileSelect={(file) => setFile(file)} />
             </div>
-          </div>
-          <div className="flex w-full items-center justify-center gap-2">
-            <button
-              onClick={handleEditAlbum}
-              className="bg-blue-800 p-2 text-white"
-              disabled={uploading}
-            >
-              Editar
-            </button>
-            <button onClick={handleClick} className="bg-red-800 p-2 text-white">
-              Cancelar
-            </button>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </>
+        </ButtonDialog.Root>
+      </div>
   )
 }

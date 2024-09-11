@@ -135,25 +135,12 @@ export function DrawerComponent({
   return (
     <>
       <div className="dark:text-black">
-        <Drawer
-          variant="permanent"
-          className="max-md:hidden"
-          sx={{
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              position: 'relative',
-              border: 'none',
-            },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
+        <div className="max-lg:hidden">{drawer}</div>
         <div>
           <button
             color="inherit"
             onClick={handleDrawerToggle}
-            className="p-0 dark:text-white md:hidden"
+            className="p-0 dark:text-white lg:hidden"
           >
             <MenuIcon />
           </button>
@@ -162,12 +149,17 @@ export function DrawerComponent({
       <Drawer
         anchor="bottom"
         variant="temporary"
-        className="sm:hidden"
+        className=""
         open={mobileOpen}
         onTransitionEnd={handleDrawerTransitionEnd}
         onClose={handleDrawerClose}
         ModalProps={{
           keepMounted: false,
+        }}
+        slotProps={{
+          backdrop: {
+            invisible: false,
+          },
         }}
         sx={{
           '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 'full' },

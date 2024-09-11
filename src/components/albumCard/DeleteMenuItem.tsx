@@ -2,45 +2,25 @@
 import { idProps } from '@/models/idProps'
 import { clientDeleteAlbum } from '@/operations/albums/client-side/delete'
 import { DialogContent, MenuItem } from '@mui/material'
-import Dialog from '@mui/material/Dialog'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { ButtonDialog } from '../buttonDialog'
 export function DeleteMenuItem({ id }: idProps) {
-  const [open, setOpen] = useState(false)
   const router = useRouter()
-  function handleClick() {
-    setOpen(!open)
-  }
+  const {open, handleClick} = ButtonDialog.useOpen()
   function handleDeleteAlbum() {
     clientDeleteAlbum(id).then(() => {
       router.refresh()
     })
   }
   return (
-    <>
-      <MenuItem onClick={handleClick} className="dark:bg-transparent ">
-        Excluir
-      </MenuItem>
-      <Dialog open={open} onClose={handleClick} maxWidth="lg">
-        <DialogContent className="flex flex-col items-center justify-center gap-4">
-          <h2 className="dark:text-black">Excluir álbum</h2>
-          <p className="dark:text-black">
-            Tem certeza que deseja excluir o álbum? Esta ação não pode ser
-            desfeita
-          </p>
-          <div className="flex gap-2">
-            <button
-              onClick={handleDeleteAlbum}
-              className="bg-blue-800 p-2 text-white"
-            >
-              Excluir
-            </button>
-            <button onClick={handleClick} className="bg-red-800 p-2 text-white">
-              Cancelar
-            </button>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </>
+    <div>
+      <MenuItem onClick={handleClick}>Editar</MenuItem>
+      <ButtonDialog.Root handleClick={handleClick} action={handleDeleteAlbum} open={open} text='Deletar Album'>
+        <p className="dark:text-black">Tem certeza que deseja excluir o álbum? Esta ação não pode ser
+          desfeita 
+        </p>
+      </ButtonDialog.Root>
+    </div>
   )
 }

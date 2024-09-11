@@ -9,28 +9,33 @@ export function CreateSongDialog() {
   const [tone, setTone] = useState('')
   const [albumIds, setAlbumIds] = useState<number[]>([])
   const router = useRouter()
+  const [open, setOpen] = useState(false)
+
+  function handleClick() {
+    setOpen(!open)
+  }
   function handleCreateSong() {
-    clientCreateSong({ name, tone }).then(() => {
+    clientCreateSong({ name, tone, albumIds }).then(() => {
       router.refresh()
     })
   }
 
   return (
-    <ButtonDialog.Root text="Adicionar Música" action={handleCreateSong}>
-      <ButtonDialog.Input
-        placeholder="Nome"
-        state={(e) => setName(e.target.value)}
-      />
-      <ButtonDialog.Input
-        placeholder="Tom"
-        state={(e) => setTone(e.target.value)}
-      />
-      <ButtonDialog.Select
-        title="Albums"
-        url="album"
-        dataIds={albumIds}
-        setDataIds={(value) => setAlbumIds(value)}
-      />
-    </ButtonDialog.Root>
+    <div>
+        <ButtonDialog.Button handleClick={handleClick} text='Criar Música' />
+        <ButtonDialog.Root text="Adicionar Música" action={handleCreateSong} open={open} handleClick={handleClick}>
+          <ButtonDialog.Input
+            value={name}
+            placeholder="Nome"
+            state={(e) => setName(e.target.value)}
+          />
+          <ButtonDialog.Input
+            value={tone}
+            placeholder="Tom"
+            state={(e) => setTone(e.target.value)}
+          />
+          <ButtonDialog.SelectAlbums setAlbumsIds={setAlbumIds} albumsIds={albumIds}/>
+        </ButtonDialog.Root>
+    </div>
   )
 }

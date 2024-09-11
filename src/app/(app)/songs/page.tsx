@@ -1,4 +1,4 @@
-import { SongCard } from '@/components/SongCard/index'
+import { SongCard } from '@/components/songCard/Index'
 import { serverGetAllSongs } from '@/operations/songs/server-side/getAll'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
@@ -22,15 +22,12 @@ export default async function Songs({
 
   if (sortedByTitle === 'true') {
     sortedSongs = songs.sort((a, b) => a.name.localeCompare(b.name))
-  }
-  if (sortedByTitle === 'false') {
+  } else if (sortedByTitle === 'false') {
     sortedSongs = songs.sort((a, b) => b.name.localeCompare(a.name))
     console.log(sortedSongs)
-  }
-  if (sortedByDay === 'true') {
+  } else if (sortedByDay === 'true') {
     sortedSongs = songs.sort((a, b) => a.createdAt.localeCompare(b.createdAt))
-  }
-  if (sortedByDay === 'false') {
+  } else if (sortedByDay === 'false') {
     sortedSongs = songs.sort((a, b) => b.createdAt.localeCompare(a.createdAt))
     console.log(sortedSongs)
   }
@@ -54,24 +51,28 @@ export default async function Songs({
               return (
                 <tr
                   key={song.id}
-                  className={`w-full rounded py-5`}
+                  className="w-full rounded py-5"
                   style={{ backgroundColor: bgColor }}
                 >
                   <td className="flex items-center py-5">
-                    <SongCard.ThreeDots id={song.id} />
+                    <SongCard.ThreeDots>
+                      <SongCard.EditMenuItem id={song.id} />
+                      <SongCard.DeleteMenuItem id={song.id} />
+                    </SongCard.ThreeDots>
                     <SongCard.Name id={song.id} name={song.name} />
                   </td>
-                  <td className="py-5">
+                  <td className="py-5 max-sm:hidden">
                     <SongCard.Album
+                      className="max-w-6 truncate"
                       album={song.albums
                         .filter((album) => !album.isDefault)
                         .map((album) => album.name)}
                     />
                   </td>
-                  <td className="py-5">
+                  <td className="py-5 max-sm:hidden">
                     <SongCard.Tone tom={song.tone} />
                   </td>
-                  <td className="py-5 pr-4 text-right">
+                  <td className=" py-5 pr-4 text-right">
                     <SongCard.CreatedAt
                       createdAt={dayjs().to(song.createdAt)}
                     />

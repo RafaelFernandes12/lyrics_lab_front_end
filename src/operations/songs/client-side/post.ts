@@ -6,11 +6,13 @@ import { v4 as uuidv4 } from 'uuid'
 interface CreateSongParams {
   name: string
   tone: string
+  albumIds: number[]
 }
 
 export async function clientCreateSong({
   name,
   tone,
+  albumIds
 }: CreateSongParams): Promise<boolean> {
   try {
     const token = await getToken()
@@ -21,6 +23,7 @@ export async function clientCreateSong({
         {
           name,
           tone,
+          albumIds
         },
         {
           headers: {

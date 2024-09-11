@@ -1,4 +1,4 @@
-import { Header } from '@/components/Header/Header'
+import { Header } from '@/components/header/Header'
 
 export default function SongLayout({
   children,
@@ -9,7 +9,7 @@ export default function SongLayout({
       style={{ overflow: 'auto', paddingRight: '0px', margin: '0px' }}
     >
       <Header />
-      <main className="m-10 my-10 h-fit rounded-md p-8 max-sm:p-4">
+      <main className="m-10 my-10 h-fit rounded-md p-8 max-lg:m-1 max-lg:p-1">
         {children}
       </main>
     </body>

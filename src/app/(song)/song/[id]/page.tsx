@@ -175,7 +175,7 @@ export default function Song({ params }: urlIdProps) {
   }
 
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between max-lg:flex-col">
       <DrawerComponent
         toneUp={() => handleToneChange('up')}
         toneDown={() => handleToneChange('down')}
@@ -188,7 +188,7 @@ export default function Song({ params }: urlIdProps) {
       />
       <div
         ref={containerRef}
-        className="m-auto bg-white p-6 dark:bg-headerDark md:min-w-[800px]"
+        className="m-auto bg-white p-6 dark:bg-headerDark max-lg:w-full md:min-w-[800px]"
       >
         {isChecked ? (
           <div className="flex flex-col gap-2">

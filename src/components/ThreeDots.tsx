@@ -1,12 +1,9 @@
 'use client'
-import { idProps } from '@/models/idProps'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import { IconButton, Menu } from '@mui/material'
-import { useState } from 'react'
-import { DeleteMenuItem } from './DeleteMenuItem'
-import { EditMenuItem } from './EditMenuItem'
+import { ReactNode, useState } from 'react'
 
-export function ThreeDots({ id }: idProps) {
+export function ThreeDots({ children }: { children: ReactNode }) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
@@ -16,6 +13,7 @@ export function ThreeDots({ id }: idProps) {
   const handleClose = () => {
     setAnchorEl(null)
   }
+
   return (
     <div>
       <IconButton
@@ -26,7 +24,7 @@ export function ThreeDots({ id }: idProps) {
         aria-haspopup="true"
         onClick={handleClick}
       >
-        <MoreVertIcon className="dark:text-white" />
+        <MoreVertIcon className="text-white" />
       </IconButton>
       <Menu
         id="long-menu"
@@ -37,8 +35,7 @@ export function ThreeDots({ id }: idProps) {
         open={open}
         onClose={handleClose}
       >
-        <EditMenuItem id={id} />
-        <DeleteMenuItem id={id} />
+        {children}
       </Menu>
     </div>
   )

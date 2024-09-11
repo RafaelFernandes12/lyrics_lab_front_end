@@ -13,6 +13,5 @@ export const fetcher = async (url: string) => {
       Authorization: `${token}`,
     },
   })
-
   return response.data
 }

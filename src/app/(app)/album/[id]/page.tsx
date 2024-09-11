@@ -1,5 +1,5 @@
 import logo from '@/assets/logo.svg'
-import { SongCard } from '@/components/SongCard/index'
+import { SongCard } from '@/components/songCard/Index'
 import { serverGetAlbum } from '@/operations/albums/server-side/getOne'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
@@ -82,7 +82,10 @@ export default async function Album({ params, searchParams }: albumProps) {
                   style={{ backgroundColor: bgColor }}
                 >
                   <td className="flex items-center py-5">
-                    <SongCard.ThreeDots id={song.id} />
+                    <SongCard.ThreeDots>
+                      <SongCard.EditMenuItem id={song.id} />
+                      <SongCard.DeleteMenuItem id={song.id} />
+                    </SongCard.ThreeDots>
                     <SongCard.Name id={song.id} name={song.name} />
                   </td>
                   <td className="py-5">

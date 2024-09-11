@@ -2,7 +2,7 @@ import { serverGetAllAlbums } from '@/operations/albums/server-side/getAll'
 import { serverGetAllSongs } from '@/operations/songs/server-side/getAll'
 import PersonIcon from '@mui/icons-material/Person'
 import Link from 'next/link'
-import { SearchBar } from './SearchBar'
+import { SearchBarComponent } from './SearchBarComponent'
 import { SwitchTheme } from './SwitchTheme'
 
 export async function Header() {
@@ -51,7 +51,7 @@ export async function Header() {
             </Link>
           </li>
           <li>
-            <SearchBar albums={albums} songs={songs} />
+            <SearchBarComponent albums={albums} songs={songs} />
           </li>
         </ul>
         <div className="flex items-center gap-6">

@@ -1,7 +1,9 @@
 import logo from '@/assets/logo.svg'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ThreeDots } from './ThreeDots'
+import { ThreeDots } from '../ThreeDots'
+import { EditMenuItem } from './EditMenuItem'
+import { DeleteMenuItem } from './DeleteMenuItem'
 
 interface albumCardProps {
   id: number
@@ -26,7 +28,7 @@ export function AlbumCard(props: albumCardProps) {
 
       <div className="flex w-full items-center justify-between">
         <div className="w-10/12">
-          <p className="text-xl font-semibold ">{props.name}</p>
+          <p className="truncate text-xl font-semibold">{props.name}</p>
           <p className="truncate text-sm">
             {props.songs.map((song, index) => {
               if (props.songs.indexOf(song, index) !== props.songs.length - 1) {
@@ -41,7 +43,10 @@ export function AlbumCard(props: albumCardProps) {
             })}
           </p>
         </div>
-        <ThreeDots id={props.id} />
+        <ThreeDots>
+          <EditMenuItem id={props.id} />
+          <DeleteMenuItem id={props.id} />
+        </ThreeDots>
       </div>
     </div>
   )

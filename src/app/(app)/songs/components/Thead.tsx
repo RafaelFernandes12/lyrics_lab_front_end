@@ -20,23 +20,23 @@ export function Thead() {
 
   return (
     <thead>
-      <tr>
-        <th className="pl-4 text-left">
+      <tr className="w-full">
+        <th className="w-1/5 pl-4 text-left">
           <button className="p-0" onClick={handleSortByTitle}>
             <span>Titulo</span>
           </button>
         </th>
-        <th className="text-left">
+        <th className="w-2/5 text-left max-sm:hidden">
           <span>Álbum</span>
         </th>
-        <th className="text-left">
+        <th className="w-1/5 text-left max-sm:hidden">
           <span>Tom</span>
         </th>
-        <th className="flex justify-end">
+        <th className="w-1/5 text-right">
           <button className="p-0" onClick={handleSortByDay}>
             <span>Adicionado</span>
+            <ArrowDropDownIcon className="dark:text-white" />
           </button>
-          <ArrowDropDownIcon className="dark:text-white" />
         </th>
       </tr>
     </thead>
