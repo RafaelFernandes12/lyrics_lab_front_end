@@ -2,16 +2,23 @@
 
 import UploadImage from '@/components/albumCard/UploadImage'
 import { ButtonDialog } from '@/components/buttonDialog/index'
+import { AuthContext } from '@/contexts/AuthContext'
 import { fetcher } from '@/lib/fetcher'
 import { storage } from '@/lib/firebase'
 import { idProps } from '@/models/idProps'
 import { clientEditAlbum } from '@/operations/albums/client-side/editAlbum'
+import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import { DialogContent } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytesResumable,
+} from 'firebase/storage'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import useSWR from 'swr'
 
 export function EditIconDialog({ id }: idProps) {
@@ -21,6 +28,7 @@ export function EditIconDialog({ id }: idProps) {
   const [file, setFile] = useState<File | null>(null)
   const [uploading, setUploading] = useState(false)
   const [songIds, setSongIds] = useState<number[]>([])
+  const { user } = useContext(AuthContext)
   const { data: album } = useSWR(`/album/${id}`, fetcher)
 
   useEffect(() => {
@@ -44,22 +52,53 @@ export function EditIconDialog({ id }: idProps) {
 
     setUploading(true)
 
-    const storageRef = ref(storage, `images/${file.name}`)
+    const storageRef = ref(storage, `users/${user?.id}/${id}`)
     const uploadTask = uploadBytesResumable(storageRef, file)
 
     uploadTask.on(
       'state_changed',
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        console.log('Upload is ' + progress + '% done')
+      },
       (error) => {
         console.error('Upload failed:', error)
         setUploading(false)
       },
       async () => {
         const url = await getDownloadURL(uploadTask.snapshot.ref)
-        clientEditAlbum({ id, name, description, image: url, songIds })
+        clientEditAlbum({ id, name, description, image: url, songIds }).then(
+          () => {
+            setUploading(false)
+            setOpen(false)
+            router.refresh()
+          },
+        )
         setUploading(false)
         setOpen(false)
       },
     )
+  }
+
+  const handleDeleteAlbumImage = async () => {
+    try {
+      const decodedPath = decodeURIComponent(
+        album.image.split('/o/')[1].split('?')[0],
+      )
+      const imageRef = ref(storage, decodedPath)
+
+      await deleteObject(imageRef)
+
+      await clientEditAlbum({ id, name, description, image: '', songIds }).then(
+        () => {
+          setUploading(false)
+          setOpen(false)
+          router.refresh()
+        },
+      )
+    } catch (error) {
+      console.error('Erro ao deletar a imagem:', error)
+    }
   }
 
   return (
@@ -95,6 +134,16 @@ export function EditIconDialog({ id }: idProps) {
             />
             <div>
               <UploadImage onFileSelect={(file) => setFile(file)} />
+            </div>
+            <div>
+              <button
+                onClick={() => handleDeleteAlbumImage()}
+                className="flex items-center gap-2 rounded bg-redButton p-2 text-white"
+                disabled={uploading}
+              >
+                <DeleteIcon />
+                Excluir imagem
+              </button>
             </div>
           </div>
           <div className="flex w-full items-center justify-center gap-2">

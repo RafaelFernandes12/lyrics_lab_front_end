@@ -29,7 +29,7 @@ export async function clientCreateAlbum({
         },
       )
       .then((res) => {
-        SuccessHandler({ id: uuidv4(), message: 'Album criado com sucesso!' })
+        SuccessHandler({ id: uuidv4(), message: 'Álbum criado com sucesso!' })
         return res
       })
     return response.status === 201

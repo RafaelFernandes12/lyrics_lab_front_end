@@ -1,6 +1,6 @@
 import { serverGetAllAlbums } from '@/operations/albums/server-side/getAll'
 import { serverGetAllSongs } from '@/operations/songs/server-side/getAll'
-import PersonIcon from '@mui/icons-material/Person'
+import PersonRoundedIcon from '@mui/icons-material/PersonRounded'
 import Link from 'next/link'
 import { SearchBarComponent } from './SearchBarComponent'
 import { SwitchTheme } from './SwitchTheme'
@@ -57,8 +57,8 @@ export async function Header() {
         <div className="flex items-center gap-6">
           <SwitchTheme />
           <Link href="/user">
-            <PersonIcon
-              sx={{ width: 70, height: 70 }}
+            <PersonRoundedIcon
+              sx={{ width: 60, height: 60 }}
               className="dark:text-white max-md:hidden"
             />
           </Link>

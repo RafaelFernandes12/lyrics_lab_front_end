@@ -13,7 +13,7 @@ export async function clientDeleteAlbum(id: number): Promise<boolean> {
         },
       })
       .then((r) => {
-        SuccessHandler({ id: uuidv4(), message: 'Album deletado com sucesso!' })
+        SuccessHandler({ id: uuidv4(), message: 'Álbum excluído com sucesso!' })
         return r
       })
 

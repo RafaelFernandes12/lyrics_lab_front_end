@@ -11,7 +11,7 @@ export default function AppLayout({
       <main className="m-[6%] my-10 h-fit rounded-md">{children}</main>
       <ToastContainer
         position="top-center"
-        autoClose={5000}
+        autoClose={2500}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick

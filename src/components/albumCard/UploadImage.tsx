@@ -1,5 +1,6 @@
 'use client'
 
+import ImageIcon from '@mui/icons-material/Image'
 import { useRef, useState } from 'react'
 
 const UploadImage = ({
@@ -37,8 +38,9 @@ const UploadImage = ({
       />
       <button
         onClick={handleButtonClick}
-        className="rounded bg-blueButton p-2 text-white"
+        className="flex items-center gap-2 rounded bg-blueButton p-2 text-white"
       >
+        <ImageIcon />
         Escolher imagem
       </button>
       {fileName && <span className="dark:text-black">{fileName}</span>}

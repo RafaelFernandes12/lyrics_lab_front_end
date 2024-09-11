@@ -39,7 +39,9 @@ export default async function Songs({
         <CreateSongDialog />
       </section>
 
-      {songs.length !== 0 && (
+      {songs.length === 0 ? (
+        <p className="text-gray-500">Você ainda não criou nenhuma música.</p>
+      ) : (
         <table className="w-full border-separate border-spacing-y-4">
           <Thead />
           <tbody>

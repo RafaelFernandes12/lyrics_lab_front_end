@@ -16,7 +16,7 @@ export async function clientDeleteSong(id: number): Promise<boolean> {
       .then((res) => {
         SuccessHandler({
           id: uuidv4(),
-          message: 'Música deletada com sucesso!',
+          message: 'Música excluída com sucesso!',
         })
         return res
       })
