@@ -2,15 +2,14 @@
 import { SuccessHandler } from '@/helpers/SuccessHandler'
 import { fetcher } from '@/lib/fetcher'
 import { idProps } from '@/models/idProps'
+import { songProps } from '@/models/songProps'
 import { clientEditSong } from '@/operations/songs/client-side/editSong'
-import { Dialog, DialogContent, MenuItem } from '@mui/material'
+import { MenuItem } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { v4 as uuidv4 } from 'uuid'
 import { ButtonDialog } from '../buttonDialog/index'
-import { songProps } from '@/models/songProps'
-import { albumProps } from '@/models/albumProps'
 export function EditMenuItem({ id }: idProps) {
   const [name, setName] = useState('')
   const [tone, setTone] = useState('')
