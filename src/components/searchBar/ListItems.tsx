@@ -34,16 +34,14 @@ const highlightText = (text: string, highlight: string) => {
     ),
   )
 }
-export function Title({title} : {title: string}){
-    return(
-        <li>
-            <span className="p-2 text-sm font-semibold text-gray-700">
-              {title}
-            </span>
-        </li>
-    )
+export function Title({ title }: { title: string }) {
+  return (
+    <li>
+      <span className="p-2 text-sm font-semibold text-gray-700">{title}</span>
+    </li>
+  )
 }
-export function SongItem({ song, album,  search }: songItemsProps) {
+export function SongItem({ song, album, search }: songItemsProps) {
   return (
     <>
       <li
@@ -62,11 +60,11 @@ export function SongItem({ song, album,  search }: songItemsProps) {
     </>
   )
 }
-export function AlbumItem({search, album} : albumItemsProps){
-    return(
-        <li className="mx-4 mb-1 w-[calc(100%-24px)] truncate rounded-md border-slate-500 p-1 hover:border-[1px] hover:bg-slate-200 hover:p-1.5 dark:hover:bg-slate-900">
-            <LibraryBooksOutlinedIcon className="mr-2 dark:text-white" />
-            <span className="p-2">{highlightText(album.name, search)}</span>
-        </li>
-    )
+export function AlbumItem({ search, album }: albumItemsProps) {
+  return (
+    <li className="mx-4 mb-1 w-[calc(100%-24px)] truncate rounded-md border-slate-500 p-1 hover:border-[1px] hover:bg-slate-200 hover:p-1.5 dark:hover:bg-slate-900">
+      <LibraryBooksOutlinedIcon className="mr-2 dark:text-white" />
+      <span className="p-2">{highlightText(album.name, search)}</span>
+    </li>
+  )
 }

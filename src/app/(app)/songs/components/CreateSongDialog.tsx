@@ -22,20 +22,28 @@ export function CreateSongDialog() {
 
   return (
     <div>
-        <ButtonDialog.Button handleClick={handleClick} text='Criar Música' />
-        <ButtonDialog.Root text="Adicionar Música" action={handleCreateSong} open={open} handleClick={handleClick}>
-          <ButtonDialog.Input
-            value={name}
-            placeholder="Nome"
-            state={(e) => setName(e.target.value)}
-          />
-          <ButtonDialog.Input
-            value={tone}
-            placeholder="Tom"
-            state={(e) => setTone(e.target.value)}
-          />
-          <ButtonDialog.SelectAlbums setAlbumsIds={setAlbumIds} albumsIds={albumIds}/>
-        </ButtonDialog.Root>
+      <ButtonDialog.Button handleClick={handleClick} text="Criar Música" />
+      <ButtonDialog.Root
+        text="Adicionar Música"
+        action={handleCreateSong}
+        open={open}
+        handleClick={handleClick}
+      >
+        <ButtonDialog.Input
+          value={name}
+          placeholder="Nome"
+          state={(e) => setName(e.target.value)}
+        />
+        <ButtonDialog.Input
+          value={tone}
+          placeholder="Tom"
+          state={(e) => setTone(e.target.value)}
+        />
+        <ButtonDialog.SelectAlbums
+          setAlbumsIds={setAlbumIds}
+          albumsIds={albumIds}
+        />
+      </ButtonDialog.Root>
     </div>
   )
 }

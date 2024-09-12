@@ -2,8 +2,8 @@ import logo from '@/assets/logo.svg'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ThreeDots } from '../ThreeDots'
-import { EditMenuItem } from './EditMenuItem'
 import { DeleteMenuItem } from './DeleteMenuItem'
+import { EditMenuItem } from './EditMenuItem'
 
 interface albumCardProps {
   id: number

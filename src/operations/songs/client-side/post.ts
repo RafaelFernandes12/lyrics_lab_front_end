@@ -12,7 +12,7 @@ interface CreateSongParams {
 export async function clientCreateSong({
   name,
   tone,
-  albumIds
+  albumIds,
 }: CreateSongParams): Promise<boolean> {
   try {
     const token = await getToken()
@@ -23,7 +23,7 @@ export async function clientCreateSong({
         {
           name,
           tone,
-          albumIds
+          albumIds,
         },
         {
           headers: {

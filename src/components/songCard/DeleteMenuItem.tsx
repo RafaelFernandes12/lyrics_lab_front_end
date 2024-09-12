@@ -21,9 +21,16 @@ export function DeleteMenuItem({ id }: idProps) {
       <MenuItem onClick={handleClick} className="dark:bg-transparent ">
         Excluir
       </MenuItem>
-      <ButtonDialog.Root handleClick={handleClick} action={handleDeleteSong} open={open} text='Deletar Música'>
-        <p className="dark:text-black">Tem certeza que deseja excluir o álbum? Esta ação não pode ser
-        desfeita </p>
+      <ButtonDialog.Root
+        handleClick={handleClick}
+        action={handleDeleteSong}
+        open={open}
+        text="Deletar Música"
+      >
+        <p className="dark:text-black">
+          Tem certeza que deseja excluir o álbum? Esta ação não pode ser
+          desfeita{' '}
+        </p>
       </ButtonDialog.Root>
     </>
   )

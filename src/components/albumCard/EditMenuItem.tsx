@@ -3,6 +3,7 @@
 import UploadImage from '@/components/albumCard/UploadImage'
 import { fetcher } from '@/lib/fetcher'
 import { storage } from '@/lib/firebase'
+import { albumProps } from '@/models/albumProps'
 import { idProps } from '@/models/idProps'
 import { clientEditAlbum } from '@/operations/albums/client-side/editAlbum'
 import { MenuItem } from '@mui/material'
@@ -11,7 +12,6 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { ButtonDialog } from '../buttonDialog/index'
-import { albumProps } from '@/models/albumProps'
 
 export function EditMenuItem({ id }: idProps) {
   const [name, setName] = useState('')
@@ -69,22 +69,28 @@ export function EditMenuItem({ id }: idProps) {
   return (
     <div>
       <MenuItem onClick={handleClick}>Editar</MenuItem>
-      <ButtonDialog.Root handleClick={handleClick} action={handleEditAlbum} open={open} text='Editar Album' uploading={uploading}>
-          <ButtonDialog.Input
-              value={name}
-              placeholder="Nome"
-              state={(e) => setName(e.target.value)}
-            />
-            <ButtonDialog.Input
-              value={description}
-              placeholder="Tom"
-              state={(e) => setDescription(e.target.value)}
-            />
-            <ButtonDialog.SelectSongs setSongIds={setSongIds} songIds={songIds}/>
-            <div>
-              <UploadImage onFileSelect={(file) => setFile(file)} />
-            </div>
-        </ButtonDialog.Root>
-      </div>
+      <ButtonDialog.Root
+        handleClick={handleClick}
+        action={handleEditAlbum}
+        open={open}
+        text="Editar Album"
+        uploading={uploading}
+      >
+        <ButtonDialog.Input
+          value={name}
+          placeholder="Nome"
+          state={(e) => setName(e.target.value)}
+        />
+        <ButtonDialog.Input
+          value={description}
+          placeholder="Tom"
+          state={(e) => setDescription(e.target.value)}
+        />
+        <ButtonDialog.SelectSongs setSongIds={setSongIds} songIds={songIds} />
+        <div>
+          <UploadImage onFileSelect={(file) => setFile(file)} />
+        </div>
+      </ButtonDialog.Root>
+    </div>
   )
 }

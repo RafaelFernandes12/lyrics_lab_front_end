@@ -5,7 +5,6 @@ import { SetStateAction, useState } from 'react'
 import useSWR from 'swr'
 import { SearchBar } from '../searchBar'
 import { useHandleClick } from '../searchBar/useHandleClick'
-import { albumProps } from '@/models/albumProps'
 
 interface searchBarProps {
   songIds: number[]
@@ -32,7 +31,6 @@ export function SelectSongs({ songIds, setSongIds }: searchBarProps) {
     .map((id) => songs.find((data) => data.id === id)?.name)
     .filter((name) => name !== undefined) as string[]
 
-
   const filteredSong = songs.filter((song) =>
     song.name.toLowerCase().includes(search.toLowerCase().trim()),
   )
@@ -42,25 +40,30 @@ export function SelectSongs({ songIds, setSongIds }: searchBarProps) {
 
   return (
     <div>
-      <SearchBar.ButtonInput handleClick={handleClick} title={`${names}`}
-        className='border-2 border-black w-full dark:bg-gray-600'/>
-        <SearchBar.Root setSearch={(e) => setSearch(e.target.value)}
-          style={{ display: open ? 'block' : 'none' }}
-          handleClick={handleClick}
-          searchRef={searchRef}
-        >
-        <div className='pl-2'><span>{selectedNames.join()}</span></div>
+      <SearchBar.ButtonInput
+        handleClick={handleClick}
+        title={`${names}`}
+        className="w-full border-2 border-black dark:bg-gray-600"
+      />
+      <SearchBar.Root
+        setSearch={(e) => setSearch(e.target.value)}
+        style={{ display: open ? 'block' : 'none' }}
+        handleClick={handleClick}
+        searchRef={searchRef}
+      >
+        <div className="pl-2">
+          <span>{selectedNames.join()}</span>
+        </div>
         {filteredSong.length > 0 && (
           <>
-            <SearchBar.Title title='song' />
-            {filteredSong.slice(0, 10).map((songs, i) => (
-                <div key={songs.id} onClick={() => handleSelectChange(songs.id)}>
-                    <SearchBar.SongItem song={songs} search={search} />
-                </div>
+            <SearchBar.Title title="song" />
+            {filteredSong.slice(0, 10).map((songs) => (
+              <div key={songs.id} onClick={() => handleSelectChange(songs.id)}>
+                <SearchBar.SongItem song={songs} search={search} />
+              </div>
             ))}
           </>
         )}
-        
       </SearchBar.Root>
     </div>
   )

@@ -2,7 +2,6 @@
 import CloseIcon from '@mui/icons-material/Close'
 import { DialogContent } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
-import { useState } from 'react'
 
 interface rootProps {
   open: boolean
@@ -13,7 +12,14 @@ interface rootProps {
   uploading?: boolean
 }
 
-export function Root({ open, handleClick , action, text, children, uploading }: rootProps) {
+export function Root({
+  open,
+  handleClick,
+  action,
+  text,
+  children,
+  uploading,
+}: rootProps) {
   return (
     <>
       <Dialog open={open} onClose={handleClick} maxWidth="lg">
@@ -25,9 +31,10 @@ export function Root({ open, handleClick , action, text, children, uploading }: 
           <div className="flex flex-col gap-4 ">{children}</div>
           <div className="flex w-full items-center justify-center gap-2">
             <button
-              onClick={action} 
+              onClick={action}
               className="bg-[#567EBB] p-2 text-white"
-              disabled={uploading}>
+              disabled={uploading}
+            >
               Confirmar
             </button>
             <button onClick={handleClick} className="bg-red-800 p-2 text-white">

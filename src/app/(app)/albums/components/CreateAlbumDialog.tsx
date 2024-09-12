@@ -7,7 +7,7 @@ import { useState } from 'react'
 export function CreateAlbumDialog() {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
-  const {handleClick, open} = ButtonDialog.useOpen()
+  const { handleClick, open } = ButtonDialog.useOpen()
   const router = useRouter()
   function handleCreateAlbum() {
     clientCreateAlbum({ name, description }).then((r) => {
@@ -18,8 +18,13 @@ export function CreateAlbumDialog() {
 
   return (
     <div>
-      <ButtonDialog.Button handleClick={handleClick} text='Criar Música' />
-      <ButtonDialog.Root text="Adicionar Álbum" action={handleCreateAlbum} handleClick={handleClick} open={open}>
+      <ButtonDialog.Button handleClick={handleClick} text="Criar Música" />
+      <ButtonDialog.Root
+        text="Adicionar Álbum"
+        action={handleCreateAlbum}
+        handleClick={handleClick}
+        open={open}
+      >
         <ButtonDialog.Input
           value={name}
           placeholder="Nome"

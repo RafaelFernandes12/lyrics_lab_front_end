@@ -14,12 +14,11 @@ export function EditMenuItem({ id }: idProps) {
   const [name, setName] = useState('')
   const [tone, setTone] = useState('')
   const [albumIds, setAlbumIds] = useState<number[]>([])
-  
-  const {open, handleClick} = ButtonDialog.useOpen()
-  
+
+  const { open, handleClick } = ButtonDialog.useOpen()
+
   const router = useRouter()
-  
-  
+
   const { data: song } = useSWR<songProps>(`/song/${id}`, fetcher)
 
   useEffect(() => {
@@ -41,18 +40,26 @@ export function EditMenuItem({ id }: idProps) {
   return (
     <>
       <MenuItem onClick={handleClick}>Editar</MenuItem>
-        <ButtonDialog.Root handleClick={handleClick} action={handleEditSong} open={open} text='Editar Música'>
-          <ButtonDialog.Input
-              value={name}
-              placeholder="Nome"
-              state={(e) => setName(e.target.value)}
-            />
-            <ButtonDialog.Input
-              value={tone}
-              placeholder="Tom"
-              state={(e) => setTone(e.target.value)}
-            />
-          <ButtonDialog.SelectAlbums setAlbumsIds={setAlbumIds} albumsIds={albumIds}/>
+      <ButtonDialog.Root
+        handleClick={handleClick}
+        action={handleEditSong}
+        open={open}
+        text="Editar Música"
+      >
+        <ButtonDialog.Input
+          value={name}
+          placeholder="Nome"
+          state={(e) => setName(e.target.value)}
+        />
+        <ButtonDialog.Input
+          value={tone}
+          placeholder="Tom"
+          state={(e) => setTone(e.target.value)}
+        />
+        <ButtonDialog.SelectAlbums
+          setAlbumsIds={setAlbumIds}
+          albumsIds={albumIds}
+        />
       </ButtonDialog.Root>
     </>
   )

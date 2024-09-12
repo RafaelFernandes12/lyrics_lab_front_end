@@ -1,9 +1,6 @@
 'use client'
-import { ChangeEvent, RefObject, useCallback, useEffect, useRef, useState } from 'react'
-import { ButtonInput } from './ButtonInput'
+import { ChangeEvent, RefObject } from 'react'
 import { SearchBar } from './SearchBar'
-import { ClassNameValue } from 'tailwind-merge'
-import { useHandleClick } from './useHandleClick'
 
 interface searchBarProps {
   setSearch: (e: ChangeEvent<HTMLInputElement>) => void
@@ -13,15 +10,17 @@ interface searchBarProps {
   handleClick: () => void
 }
 
-export function Root({ setSearch, children, style, searchRef, handleClick }: searchBarProps) {
-
+export function Root({
+  setSearch,
+  children,
+  style,
+  searchRef,
+  handleClick,
+}: searchBarProps) {
   return (
-    <div
-      className="fixed inset-0 z-50 bg-white/20 px-20 py-4"
-      style={style}
-    >
+    <div className="fixed inset-0 z-50 bg-white/20 px-20 py-4" style={style}>
       <div
-        className="mt-2 w-full rounded-lg bg-white dark:bg-black"
+        className="mt-2 w-full rounded-lg bg-white dark:border-2 dark:border-emerald-400 dark:bg-black"
         ref={searchRef}
       >
         <SearchBar handleClick={handleClick} setSearch={setSearch} />
