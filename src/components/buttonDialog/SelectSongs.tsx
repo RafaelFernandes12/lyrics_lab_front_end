@@ -36,14 +36,18 @@ export function SelectSongs({ songIds, setSongIds }: searchBarProps) {
   )
   const { handleClick, open, searchRef } = useHandleClick()
 
-  const names = selectedNames.length === 0 ? 'Pesquisar' : selectedNames.join()
+  const names =
+    selectedNames.length === 0 ? 'Pesquisar' : selectedNames.join(', ')
 
   return (
     <div>
+      <label>
+        <p className="dark:text-black">Músicas</p>
+      </label>
       <SearchBar.ButtonInput
         handleClick={handleClick}
         title={`${names}`}
-        className="w-full border-2 border-black dark:bg-gray-600"
+        className="w-full border-2 border-black"
       />
       <SearchBar.Root
         setSearch={(e) => setSearch(e.target.value)}
@@ -51,12 +55,13 @@ export function SelectSongs({ songIds, setSongIds }: searchBarProps) {
         handleClick={handleClick}
         searchRef={searchRef}
       >
-        <div className="pl-2">
-          <span>{selectedNames.join()}</span>
+        <div className="mb-3 pl-2">
+          {selectedNames.length !== 0 && <p>Músicas selecionadas:</p>}
+          <span>{selectedNames.join(', ')}</span>
         </div>
         {filteredSong.length > 0 && (
           <>
-            <SearchBar.Title title="song" />
+            <SearchBar.Title title="Selecionar músicas" />
             {filteredSong.slice(0, 10).map((songs) => (
               <div key={songs.id} onClick={() => handleSelectChange(songs.id)}>
                 <SearchBar.SongItem song={songs} search={search} />

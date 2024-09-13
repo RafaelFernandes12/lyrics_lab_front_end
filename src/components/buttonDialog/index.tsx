@@ -11,5 +11,5 @@ export const ButtonDialog = {
   SelectAlbums,
   SelectSongs,
   Button,
-  useOpen
+  useOpen,
 }

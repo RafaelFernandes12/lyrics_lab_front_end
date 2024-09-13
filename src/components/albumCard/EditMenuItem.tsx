@@ -6,8 +6,15 @@ import { storage } from '@/lib/firebase'
 import { albumProps } from '@/models/albumProps'
 import { idProps } from '@/models/idProps'
 import { clientEditAlbum } from '@/operations/albums/client-side/editAlbum'
+import EditIcon from '@mui/icons-material/Edit'
+import HideImageIcon from '@mui/icons-material/HideImage'
 import { MenuItem } from '@mui/material'
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytesResumable,
+} from 'firebase/storage'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
@@ -16,12 +23,12 @@ import { ButtonDialog } from '../buttonDialog/index'
 export function EditMenuItem({ id }: idProps) {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
+  const [image, setImage] = useState('')
   const [songIds, setSongIds] = useState<number[]>([])
   const [file, setFile] = useState<File | null>(null)
   const [uploading, setUploading] = useState(false)
-
-  const router = useRouter()
   const { handleClick, open, setOpen } = ButtonDialog.useOpen()
+  const router = useRouter()
 
   const { data: album } = useSWR<albumProps>(`/album/${id}`, fetcher)
 
@@ -29,14 +36,18 @@ export function EditMenuItem({ id }: idProps) {
     if (open && album) {
       setName(album.name)
       setDescription(album.description)
+      setImage(album.image)
+      console.log(album.image)
       setSongIds(album.songs.map((song) => song.id))
     }
   }, [open, album])
+
   const handleEditAlbum = async () => {
     if (!file) {
-      clientEditAlbum({ id, name, description, image: '', songIds }).then(() =>
-        router.refresh(),
-      )
+      clientEditAlbum({ id, name, description, image, songIds }).then(() => {
+        setOpen(false)
+        router.refresh()
+      })
       return
     }
 
@@ -57,23 +68,60 @@ export function EditMenuItem({ id }: idProps) {
       },
       async () => {
         const url = await getDownloadURL(uploadTask.snapshot.ref)
-        clientEditAlbum({ id, name, description, image: url }).then(() =>
-          router.refresh(),
-        )
-        setUploading(false)
-        setOpen(false)
+        clientEditAlbum({ id, name, description, image: url }).then(() => {
+          setUploading(false)
+          setOpen(false)
+          router.refresh()
+        })
       },
     )
   }
 
+  const handleDeleteAlbumImage = async () => {
+    try {
+      if (!album?.image) return
+
+      const decodedPath = decodeURIComponent(
+        album.image.split('/o/')[1].split('?')[0],
+      )
+      const imageRef = ref(storage, decodedPath)
+
+      await deleteObject(imageRef)
+
+      await clientEditAlbum({ id, name, description, image: '', songIds }).then(
+        () => {
+          setUploading(false)
+          setOpen(false)
+          router.refresh()
+        },
+      )
+
+      album.image = ''
+    } catch (error) {
+      console.error('Erro ao deletar a imagem:', error)
+    }
+  }
+
   return (
     <div>
-      <MenuItem onClick={handleClick}>Editar</MenuItem>
+      <MenuItem
+        className="flex items-center gap-3 dark:text-white"
+        onClick={handleClick}
+      >
+        <EditIcon
+          sx={{
+            height: '18px',
+            width: '18px',
+          }}
+        />
+        Editar
+      </MenuItem>
+
       <ButtonDialog.Root
         handleClick={handleClick}
         action={handleEditAlbum}
         open={open}
-        text="Editar Album"
+        text="Editar Álbum"
         uploading={uploading}
       >
         <ButtonDialog.Input
@@ -83,12 +131,23 @@ export function EditMenuItem({ id }: idProps) {
         />
         <ButtonDialog.Input
           value={description}
-          placeholder="Tom"
+          placeholder="Descrição"
           state={(e) => setDescription(e.target.value)}
         />
         <ButtonDialog.SelectSongs setSongIds={setSongIds} songIds={songIds} />
-        <div>
+        <div className="flex flex-col gap-2">
           <UploadImage onFileSelect={(file) => setFile(file)} />
+          {album?.image !== null && (
+            <div>
+              <button
+                onClick={handleDeleteAlbumImage}
+                className="flex items-center gap-2 rounded bg-redButton p-2 text-white"
+              >
+                <HideImageIcon />
+                Remover imagem
+              </button>
+            </div>
+          )}
         </div>
       </ButtonDialog.Root>
     </div>

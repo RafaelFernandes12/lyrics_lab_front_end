@@ -2,6 +2,7 @@
 
 import { idProps } from '@/models/idProps'
 import { clientDeleteSong } from '@/operations/songs/client-side/delete'
+import DeleteIcon from '@mui/icons-material/Delete'
 import { MenuItem } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -18,17 +19,23 @@ export function DeleteMenuItem({ id }: idProps) {
   }
   return (
     <>
-      <MenuItem onClick={handleClick} className="dark:bg-transparent ">
+      <MenuItem className="flex items-center gap-3" onClick={handleClick}>
+        <DeleteIcon
+          sx={{
+            height: '18px',
+            width: '18px',
+          }}
+        />
         Excluir
       </MenuItem>
       <ButtonDialog.Root
         handleClick={handleClick}
         action={handleDeleteSong}
         open={open}
-        text="Deletar Música"
+        text="Excluir Música"
       >
         <p className="dark:text-black">
-          Tem certeza que deseja excluir o álbum? Esta ação não pode ser
+          Tem certeza que deseja excluir a música? Esta ação não pode ser
           desfeita{' '}
         </p>
       </ButtonDialog.Root>

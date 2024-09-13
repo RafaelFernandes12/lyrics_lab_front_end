@@ -20,7 +20,7 @@ export function Root({
   return (
     <div className="fixed inset-0 z-50 bg-white/20 px-20 py-4" style={style}>
       <div
-        className="mt-2 w-full rounded-lg bg-white dark:border-2 dark:border-emerald-400 dark:bg-black"
+        className="mt-2 w-full rounded-lg bg-gray-100  dark:bg-black"
         ref={searchRef}
       >
         <SearchBar handleClick={handleClick} setSearch={setSearch} />

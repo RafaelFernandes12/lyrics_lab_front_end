@@ -3,7 +3,13 @@ import MoreVertIcon from '@mui/icons-material/MoreVert'
 import { IconButton, Menu } from '@mui/material'
 import { ReactNode, useState } from 'react'
 
-export function ThreeDots({ children }: { children: ReactNode }) {
+export function ThreeDots({
+  children,
+  color,
+}: {
+  children: ReactNode
+  color?: string
+}) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
@@ -24,7 +30,7 @@ export function ThreeDots({ children }: { children: ReactNode }) {
         aria-haspopup="true"
         onClick={handleClick}
       >
-        <MoreVertIcon className="text-white" />
+        <MoreVertIcon className={color || 'text-white'} />
       </IconButton>
       <Menu
         id="long-menu"
@@ -34,6 +40,7 @@ export function ThreeDots({ children }: { children: ReactNode }) {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
+        disableScrollLock
       >
         {children}
       </Menu>

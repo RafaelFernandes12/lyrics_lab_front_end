@@ -8,7 +8,7 @@ interface buttonProps {
 export function Button({ handleClick, text }: buttonProps) {
   return (
     <button
-      className="flex items-center gap-2 bg-[#567EBB] p-3"
+      className="flex items-center gap-2 bg-blueButton p-3"
       onClick={handleClick}
     >
       <div className="h-fit w-fit">

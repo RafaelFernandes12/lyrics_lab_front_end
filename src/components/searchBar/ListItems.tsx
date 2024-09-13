@@ -7,6 +7,7 @@ interface albumItemsProps {
   album: albumProps
   search: string
 }
+
 interface songItemsProps {
   song: songProps
   album?: albumProps
@@ -34,6 +35,7 @@ const highlightText = (text: string, highlight: string) => {
     ),
   )
 }
+
 export function Title({ title }: { title: string }) {
   return (
     <li>
@@ -41,6 +43,7 @@ export function Title({ title }: { title: string }) {
     </li>
   )
 }
+
 export function SongItem({ song, album, search }: songItemsProps) {
   return (
     <>
@@ -60,6 +63,7 @@ export function SongItem({ song, album, search }: songItemsProps) {
     </>
   )
 }
+
 export function AlbumItem({ search, album }: albumItemsProps) {
   return (
     <li className="mx-4 mb-1 w-[calc(100%-24px)] truncate rounded-md border-slate-500 p-1 hover:border-[1px] hover:bg-slate-200 hover:p-1.5 dark:hover:bg-slate-900">

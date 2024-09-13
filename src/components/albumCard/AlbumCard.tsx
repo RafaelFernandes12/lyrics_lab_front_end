@@ -43,7 +43,7 @@ export function AlbumCard(props: albumCardProps) {
             })}
           </p>
         </div>
-        <ThreeDots>
+        <ThreeDots color={'text-black'}>
           <EditMenuItem id={props.id} />
           <DeleteMenuItem id={props.id} />
         </ThreeDots>

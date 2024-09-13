@@ -4,15 +4,21 @@ interface inputProps {
   state: (e: ChangeEvent<HTMLInputElement>) => void
   value: string
   placeholder: string
+  type?: string
 }
 
-export function Input({ state, placeholder, value }: inputProps) {
+export function Input({ state, placeholder, value, type }: inputProps) {
   return (
-    <input
-      placeholder={placeholder}
-      onChange={state}
-      value={value}
-      className="rounded-lg border-[1px] border-black p-2 dark:bg-gray-600 dark:text-white"
-    />
+    <div className="flex w-full flex-col">
+      <label>
+        <p className="dark:text-black">{placeholder}</p>
+      </label>
+      <input
+        className="rounded-lg bg-gray-200 p-3"
+        onChange={state}
+        value={value}
+        type={type}
+      />
+    </div>
   )
 }

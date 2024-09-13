@@ -2,9 +2,9 @@
 
 import { userProps } from '@/models/userProps'
 
-import { getUser } from '@/operations/auth/getUser'
 import { login } from '@/operations/auth/login'
 import { logout } from '@/operations/auth/logout'
+import { getUser } from '@/operations/user/getUser'
 import { useRouter } from 'next/navigation'
 import { createContext, ReactNode, useEffect, useState } from 'react'
 

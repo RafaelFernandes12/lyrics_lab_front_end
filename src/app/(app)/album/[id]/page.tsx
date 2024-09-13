@@ -1,12 +1,12 @@
 import logo from '@/assets/logo.svg'
+import { DeleteMenuItem } from '@/components/albumCard/DeleteMenuItem'
+import { EditMenuItem } from '@/components/albumCard/EditMenuItem'
 import { SongCard } from '@/components/songCard/Index'
 import { serverGetAlbum } from '@/operations/albums/server-side/getOne'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import Image from 'next/image'
-import { DeleteIconDialog } from '../components/DeleteIconDialog'
-import { EditIconDialog } from '../components/EditIconDialog'
 import { Thead } from '../components/Thead'
 
 dayjs.extend(relativeTime)
@@ -56,15 +56,13 @@ export default async function Album({ params, searchParams }: albumProps) {
           style={{ objectFit: album?.image ? 'cover' : 'contain' }}
           className={`h-52 w-52 rounded-xl bg-slate-200 ${album?.image ? 'object-cover' : 'object-contain'}`}
         />
-        <div className="flex w-full flex-col justify-between pt-4 max-sm:flex max-sm:flex-col max-sm:items-center">
-          <div>
-            <h1>{album?.name}</h1>
-            <span>{album?.songs.length} músicas</span>
-            <p className="mt-4 w-10/12">{album?.description}</p>
-          </div>
-          <div className="flex items-center gap-4">
-            <EditIconDialog id={params.id} />
-            <DeleteIconDialog id={params.id} />
+        <div className="flex w-full flex-col items-start justify-between py-4">
+          <h1>{album?.name}</h1>
+          <span>{album?.songs.length} músicas</span>
+          <p className="w-10/12">{album?.description}</p>
+          <div className="w-32">
+            <EditMenuItem id={params.id} />
+            <DeleteMenuItem id={params.id} />
           </div>
         </div>
       </section>

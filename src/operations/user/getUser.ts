@@ -1,6 +1,6 @@
 import api from '@/lib/axios'
 import { userProps } from '@/models/userProps'
-import { getToken } from './getToken'
+import { getToken } from '../auth/getToken'
 
 export async function getUser() {
   const token = await getToken()

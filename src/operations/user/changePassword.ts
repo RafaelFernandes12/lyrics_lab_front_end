@@ -1,6 +1,8 @@
+import { SuccessHandler } from '@/helpers/SuccessHandler'
 import api from '@/lib/axios'
-import { getToken } from './getToken'
-import { logout } from './logout'
+import { v4 as uuidv4 } from 'uuid'
+import { getToken } from '../auth/getToken'
+import { logout } from '../auth/logout'
 
 export async function changePassword(
   email: string,
@@ -27,6 +29,7 @@ export async function changePassword(
           },
         )
         .then(() => {
+          SuccessHandler({ id: uuidv4(), message: 'Senha alterada!' })
           logout()
         })
     }

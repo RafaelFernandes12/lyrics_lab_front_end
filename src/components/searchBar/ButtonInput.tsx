@@ -14,14 +14,15 @@ export function ButtonInput({
   return (
     <button
       onClick={handleClick}
-      className={twMerge('flex w-56 items-center gap-2', className)}
+      className={twMerge(
+        'flex w-56 items-center gap-2 border-none bg-gray-200',
+        className,
+      )}
     >
-      <SearchIcon className="dark:text-white" />
-      <input
-        placeholder={title}
-        readOnly
-        className="w-44 bg-transparent placeholder:text-black placeholder:dark:text-white"
-      />
+      <SearchIcon />
+      <p className="w-44 bg-transparent text-start text-black dark:text-gray-400">
+        {title}
+      </p>
     </button>
   )
 }

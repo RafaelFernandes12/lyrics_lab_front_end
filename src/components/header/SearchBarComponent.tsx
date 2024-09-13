@@ -23,7 +23,11 @@ export function SearchBarComponent({ songs, albums }: searchBarProps) {
 
   return (
     <div>
-      <SearchBar.ButtonInput handleClick={handleClick} title="Pesquisar" />
+      <SearchBar.ButtonInput
+        className="bg-transparent dark:text-white dark:placeholder:text-white"
+        handleClick={handleClick}
+        title="Pesquisar"
+      />
       <SearchBar.Root
         setSearch={(e) => setSearch(e.target.value)}
         style={{ display: open ? 'block' : 'none' }}
@@ -49,7 +53,7 @@ export function SearchBarComponent({ songs, albums }: searchBarProps) {
 
         {filteredAlbums.length > 0 && (
           <>
-            <SearchBar.Title title="Albums" />
+            <SearchBar.Title title="Álbuns" />
             {filteredAlbums.slice(0, 5).map((album) => (
               <Link href={`/album/${album.id}`} key={album.id}>
                 <SearchBar.AlbumItem album={album} search={search} />

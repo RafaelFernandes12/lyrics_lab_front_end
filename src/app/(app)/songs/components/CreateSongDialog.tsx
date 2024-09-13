@@ -16,6 +16,7 @@ export function CreateSongDialog() {
   }
   function handleCreateSong() {
     clientCreateSong({ name, tone, albumIds }).then(() => {
+      setOpen(false)
       router.refresh()
     })
   }

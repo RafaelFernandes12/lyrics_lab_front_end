@@ -1,6 +1,7 @@
 'use client'
-import { changePassword } from '@/operations/auth/changePassword'
-import { Dialog, DialogContent, MenuItem } from '@mui/material'
+import { ButtonDialog } from '@/components/buttonDialog'
+import { changePassword } from '@/operations/user/changePassword'
+import { MenuItem } from '@mui/material'
 import { useState } from 'react'
 
 interface editPassItemProps {
@@ -9,14 +10,21 @@ interface editPassItemProps {
 
 export function EditPassItem({ email }: editPassItemProps) {
   const [open, setOpen] = useState(false)
-  const [oldPass, setName] = useState('')
-  const [newPass, setTone] = useState('')
+  const [oldPass, setOldPass] = useState('')
+  const [newPass, setNewPass] = useState('')
 
   function handleClick() {
     setOpen(!open)
   }
 
   function handleEditPass() {
+    const passwordRegex = /^[a-zA-Z0-9]{8,}$/
+    if (!passwordRegex.test(newPass)) {
+      alert(
+        'Senha inválida: a senha deve conter no mínimo 8 caracteres com apenas letras e números',
+      )
+      return
+    }
     changePassword(email, oldPass, newPass)
   }
 
@@ -33,34 +41,25 @@ export function EditPassItem({ email }: editPassItemProps) {
       >
         Alterar a senha
       </MenuItem>
-      <Dialog open={open} onClose={handleClick} maxWidth="lg">
-        <DialogContent className="flex flex-col items-center justify-center gap-4">
-          <h2 className="dark:text-black">Alterar a senha</h2>
-          <div className="flex flex-col gap-4 ">
-            <input
-              placeholder="Senha atual"
-              onChange={(e) => setName(e.target.value)}
-              className="rounded-lg border-[1px] border-black p-2"
-            />
-            <input
-              placeholder="Nova senha"
-              onChange={(e) => setTone(e.target.value)}
-              className="rounded-lg border-[1px] border-black p-2"
-            />
-          </div>
-          <div className="flex w-full items-center justify-center gap-2">
-            <button
-              onClick={handleEditPass}
-              className="bg-blueButton p-2 text-white"
-            >
-              Alterar
-            </button>
-            <button onClick={handleClick} className="bg-red-500 p-2 text-white">
-              Cancelar
-            </button>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <ButtonDialog.Root
+        handleClick={handleClick}
+        action={handleEditPass}
+        open={open}
+        text="Alterar a senha"
+      >
+        <ButtonDialog.Input
+          value={oldPass}
+          type="password"
+          placeholder="Senha atual"
+          state={(e) => setOldPass(e.target.value)}
+        />
+        <ButtonDialog.Input
+          value={newPass}
+          type="password"
+          placeholder="Nova senha"
+          state={(e) => setNewPass(e.target.value)}
+        />
+      </ButtonDialog.Root>
     </>
   )
 }

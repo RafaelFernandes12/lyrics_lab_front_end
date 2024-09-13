@@ -4,12 +4,14 @@ import { fetcher } from '@/lib/fetcher'
 import { idProps } from '@/models/idProps'
 import { songProps } from '@/models/songProps'
 import { clientEditSong } from '@/operations/songs/client-side/editSong'
+import EditIcon from '@mui/icons-material/Edit'
 import { MenuItem } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { v4 as uuidv4 } from 'uuid'
 import { ButtonDialog } from '../buttonDialog/index'
+
 export function EditMenuItem({ id }: idProps) {
   const [name, setName] = useState('')
   const [tone, setTone] = useState('')
@@ -28,18 +30,25 @@ export function EditMenuItem({ id }: idProps) {
       setAlbumIds(song.albums.map((album) => album.id))
     }
   }, [open, song])
-  console.log(song)
+
   function handleEditSong() {
-    clientEditSong({ id, name, tone, albumIds })
-      .then(() => router.refresh())
-      .then(() =>
-        SuccessHandler({ id: uuidv4(), message: 'Música editada com sucesso' }),
-      )
+    clientEditSong({ id, name, tone, albumIds }).then(() => {
+      SuccessHandler({ id: uuidv4(), message: 'Música editada com sucesso' })
+      router.refresh()
+    })
   }
 
   return (
     <>
-      <MenuItem onClick={handleClick}>Editar</MenuItem>
+      <MenuItem className="flex items-center gap-3" onClick={handleClick}>
+        <EditIcon
+          sx={{
+            height: '18px',
+            width: '18px',
+          }}
+        />
+        Editar
+      </MenuItem>
       <ButtonDialog.Root
         handleClick={handleClick}
         action={handleEditSong}
