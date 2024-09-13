@@ -1,3 +1,4 @@
+import { ErrorHandler } from '@/helpers/ErrorHandler'
 import { SuccessHandler } from '@/helpers/SuccessHandler'
 import api from '@/lib/axios'
 import { v4 as uuidv4 } from 'uuid'
@@ -34,6 +35,6 @@ export async function changePassword(
         })
     }
   } catch (error) {
-    console.log(error)
+    ErrorHandler(error, 'Erro ao alterar a senha. Tente novamente mais tarde.')
   }
 }

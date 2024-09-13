@@ -28,6 +28,7 @@ export default function Login() {
               className="rounded-lg bg-gray-200 p-3"
               type="email"
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
           <div className="flex w-full flex-col">
@@ -38,6 +39,7 @@ export default function Login() {
               className="rounded-lg bg-gray-200 p-3"
               type="password"
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
           <button className="mt-3 w-full bg-blueButton" type="submit">

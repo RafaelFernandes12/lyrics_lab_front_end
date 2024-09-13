@@ -9,13 +9,20 @@ import { useState } from 'react'
 export function EditNameItem({ id }: idProps) {
   const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
+  const [error, setError] = useState(false)
   const router = useRouter()
 
   function handleClick() {
     setOpen(!open)
+    setError(false)
   }
 
   async function handleEditName() {
+    if (!name.trim()) {
+      setError(true)
+      return
+    }
+
     await changeName(id, name).then(() => {
       setOpen(false)
       router.refresh()
@@ -47,6 +54,7 @@ export function EditNameItem({ id }: idProps) {
           placeholder="Novo nome"
           state={(e) => setName(e.target.value)}
         />
+        {error && <p className="text-red-500">O nome não pode estar vazio!</p>}
       </ButtonDialog.Root>
     </>
   )

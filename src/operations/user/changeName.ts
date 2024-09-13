@@ -1,8 +1,8 @@
+import { ErrorHandler } from '@/helpers/ErrorHandler'
 import { SuccessHandler } from '@/helpers/SuccessHandler'
 import api from '@/lib/axios'
 import { v4 as uuidv4 } from 'uuid'
 import { getToken } from '../auth/getToken'
-
 
 export async function changeName(id: number, name: string) {
   const token = await getToken()
@@ -24,6 +24,6 @@ export async function changeName(id: number, name: string) {
         return r
       })
   } catch (error) {
-    console.log(error)
+    ErrorHandler(error, 'Falha ao alterar o nome. Tente novamente mais tarde.')
   }
 }

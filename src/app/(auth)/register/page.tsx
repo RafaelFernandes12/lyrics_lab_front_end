@@ -81,6 +81,7 @@ export default function Register() {
                   type="text"
                   onChange={(e) => setName(e.target.value)}
                   disabled={loading}
+                  required
                 />
               </div>
               <div className="flex w-full flex-col">
@@ -92,6 +93,7 @@ export default function Register() {
                   type="email"
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={loading}
+                  required
                 />
               </div>
               <div className="flex w-full flex-col">
@@ -103,6 +105,7 @@ export default function Register() {
                   type="password"
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={loading}
+                  required
                 />
               </div>
               <button
@@ -136,6 +139,7 @@ export default function Register() {
               value={enteredCode}
               onChange={(e) => setEnteredCode(e.target.value)}
               disabled={loading}
+              required
             />
             <button
               className="mt-3 w-52 bg-blueButton"

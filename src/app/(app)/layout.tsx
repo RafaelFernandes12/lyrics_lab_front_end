@@ -11,14 +11,13 @@ export default function AppLayout({
       <main className="m-[6%] my-10 h-fit rounded-md">{children}</main>
       <ToastContainer
         position="top-center"
-        autoClose={2500}
+        autoClose={2000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
         rtl={false}
         pauseOnFocusLoss
         draggable
-        pauseOnHover
         theme="colored"
         limit={1}
       />
