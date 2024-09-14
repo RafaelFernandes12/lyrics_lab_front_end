@@ -1,20 +1,57 @@
 'use client'
+
+import { ErrorHandler } from '@/helpers/ErrorHandler'
+import { storage } from '@/lib/firebase'
+import { albumProps } from '@/models/albumProps'
 import { idProps } from '@/models/idProps'
 import { clientDeleteAlbum } from '@/operations/albums/client-side/delete'
+import { clientGetOneAlbum } from '@/operations/albums/client-side/getOne'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { MenuItem } from '@mui/material'
+import { deleteObject, ref } from 'firebase/storage'
 import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { ButtonDialog } from '../buttonDialog'
 
 export function DeleteMenuItem({ id, color }: idProps) {
+  const [album, setAlbum] = useState<albumProps | null>(null)
+
   const router = useRouter()
   const { open, handleClick } = ButtonDialog.useOpen()
 
-  function handleDeleteAlbum() {
-    clientDeleteAlbum(id).then(() => {
-      router.push('/dashboard')
-      router.refresh()
-    })
+  useEffect(() => {
+    const fetchAlbum = async () => {
+      const fetchedAlbum = await clientGetOneAlbum(id)
+      setAlbum(fetchedAlbum)
+    }
+
+    fetchAlbum()
+  }, [])
+
+  async function handleDeleteAlbum() {
+    try {
+      if (!album?.image) return
+
+      const decodedPath = decodeURIComponent(
+        album.image.split('/o/')[1].split('?')[0],
+      )
+
+      const imageRef = ref(storage, decodedPath)
+
+      await deleteObject(imageRef)
+
+      album.image = ''
+    } catch (error) {
+      ErrorHandler(
+        error,
+        'Falha ao remover imagem. Tente novamente mais tarde.',
+      )
+    } finally {
+      clientDeleteAlbum(id).then(() => {
+        router.push('/dashboard')
+        router.refresh()
+      })
+    }
   }
 
   return (

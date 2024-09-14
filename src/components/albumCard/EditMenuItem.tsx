@@ -1,6 +1,7 @@
 'use client'
 
 import UploadImage from '@/components/albumCard/UploadImage'
+import { AuthContext } from '@/contexts/AuthContext'
 import { ErrorHandler } from '@/helpers/ErrorHandler'
 import { fetcher } from '@/lib/fetcher'
 import { storage } from '@/lib/firebase'
@@ -17,7 +18,7 @@ import {
   uploadBytesResumable,
 } from 'firebase/storage'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { ButtonDialog } from '../buttonDialog/index'
 
@@ -29,7 +30,7 @@ export function EditMenuItem({ id, color }: idProps) {
   const [file, setFile] = useState<File | null>(null)
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState(false)
-
+  const { user } = useContext(AuthContext)
   const { handleClick, open, setOpen } = ButtonDialog.useOpen()
   const router = useRouter()
 
@@ -61,7 +62,7 @@ export function EditMenuItem({ id, color }: idProps) {
 
     setUploading(true)
 
-    const storageRef = ref(storage, `images/${file.name}`)
+    const storageRef = ref(storage, `users/${user?.id}/${album?.id}`)
     const uploadTask = uploadBytesResumable(storageRef, file)
 
     uploadTask.on(
