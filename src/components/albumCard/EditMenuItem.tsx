@@ -1,6 +1,7 @@
 'use client'
 
 import UploadImage from '@/components/albumCard/UploadImage'
+import { ErrorHandler } from '@/helpers/ErrorHandler'
 import { fetcher } from '@/lib/fetcher'
 import { storage } from '@/lib/firebase'
 import { albumProps } from '@/models/albumProps'
@@ -20,13 +21,14 @@ import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { ButtonDialog } from '../buttonDialog/index'
 
-export function EditMenuItem({ id }: idProps) {
+export function EditMenuItem({ id, color }: idProps) {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [image, setImage] = useState('')
   const [songIds, setSongIds] = useState<number[]>([])
   const [file, setFile] = useState<File | null>(null)
   const [uploading, setUploading] = useState(false)
+
   const { handleClick, open, setOpen } = ButtonDialog.useOpen()
   const router = useRouter()
 
@@ -37,7 +39,6 @@ export function EditMenuItem({ id }: idProps) {
       setName(album.name)
       setDescription(album.description)
       setImage(album.image)
-      console.log(album.image)
       setSongIds(album.songs.map((song) => song.id))
     }
   }, [open, album])
@@ -63,7 +64,10 @@ export function EditMenuItem({ id }: idProps) {
         console.log('Upload is ' + progress + '% done')
       },
       (error) => {
-        console.error('Upload failed:', error)
+        ErrorHandler(
+          error,
+          'Falha no carregamento da imagem. Tente novamente mais tarde.',
+        )
         setUploading(false)
       },
       async () => {
@@ -84,6 +88,7 @@ export function EditMenuItem({ id }: idProps) {
       const decodedPath = decodeURIComponent(
         album.image.split('/o/')[1].split('?')[0],
       )
+
       const imageRef = ref(storage, decodedPath)
 
       await deleteObject(imageRef)
@@ -98,14 +103,19 @@ export function EditMenuItem({ id }: idProps) {
 
       album.image = ''
     } catch (error) {
-      console.error('Erro ao deletar a imagem:', error)
+      ErrorHandler(
+        error,
+        'Falha ao remover imagem. Tente novamente mais tarde.',
+      )
     }
   }
 
   return (
     <div>
       <MenuItem
-        className="flex items-center gap-3 dark:text-white"
+        className={
+          color ? `flex items-center gap-3 ${color}` : 'flex items-center gap-3'
+        }
         onClick={handleClick}
       >
         <EditIcon

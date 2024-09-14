@@ -1,5 +1,6 @@
 'use client'
 
+import { ErrorHandler } from '@/helpers/ErrorHandler'
 import { register } from '@/operations/auth/register'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -14,6 +15,8 @@ export default function Register() {
   const [enteredCode, setEnteredCode] = useState('')
   const [step, setStep] = useState('form')
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
   const router = useRouter()
 
   async function handleRegister(e: FormEvent<HTMLFormElement>) {
@@ -21,12 +24,13 @@ export default function Register() {
 
     const passwordRegex = /^[a-zA-Z0-9]{8,}$/
     if (!passwordRegex.test(password)) {
-      alert(
+      setError(
         'Senha inválida: a senha deve conter no mínimo 8 caracteres com apenas letras e números',
       )
       return
     }
 
+    setError('')
     setLoading(true)
 
     const code = Math.floor(100000 + Math.random() * 900000)
@@ -50,7 +54,7 @@ export default function Register() {
 
   async function handleVerifyCode() {
     if (parseInt(enteredCode) !== verificationCode) {
-      alert('Código de verificação inválido.')
+      ErrorHandler(error, 'Código de verificação inválido!')
       return
     }
 
@@ -63,6 +67,7 @@ export default function Register() {
     setEmail('')
     setName('')
     setPassword('')
+    setError('')
   }
 
   return (
@@ -108,6 +113,7 @@ export default function Register() {
                   required
                 />
               </div>
+              {error && <p className="text-red-500">{error}</p>}
               <button
                 className="mt-3 w-full bg-blueButton"
                 type="submit"

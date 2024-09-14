@@ -1,3 +1,4 @@
+import { ErrorHandler } from '@/helpers/ErrorHandler'
 import { SuccessHandler } from '@/helpers/SuccessHandler'
 import api from '@/lib/axios'
 import { getToken } from '@/operations/auth/getToken'
@@ -34,10 +35,7 @@ export async function clientCreateAlbum({
       })
     return response.status === 201
   } catch (error) {
-    console.error(
-      'Failed to create album:',
-      error instanceof Error ? error.message : 'Unknown error',
-    )
+    ErrorHandler(error, 'Falha ao criar o álbum. Tente novamente mais tarde.')
     return false
   }
 }

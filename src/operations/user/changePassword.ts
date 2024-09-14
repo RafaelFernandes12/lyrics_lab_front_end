@@ -35,6 +35,9 @@ export async function changePassword(
         })
     }
   } catch (error) {
-    ErrorHandler(error, 'Erro ao alterar a senha. Tente novamente mais tarde.')
+    ErrorHandler(
+      error,
+      'Erro ao alterar a senha: Verifique os dados e tente novamente.',
+    )
   }
 }

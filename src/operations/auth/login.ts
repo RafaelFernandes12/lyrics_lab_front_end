@@ -6,6 +6,7 @@ export async function login(email: string, password: string) {
     const response = await api.post('auth/login', { email, password })
     const data = response.data
     return data
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     if (error.response?.data?.message === 'Incorrect Email') {
       ErrorHandler(error, 'Email inválido')

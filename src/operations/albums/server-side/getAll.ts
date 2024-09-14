@@ -1,3 +1,4 @@
+import { ErrorHandler } from '@/helpers/ErrorHandler'
 import api from '@/lib/axios'
 import { albumProps } from '@/models/albumProps'
 import { cookies } from 'next/headers'
@@ -17,10 +18,7 @@ export async function serverGetAllAlbums(): Promise<albumProps[]> {
     const filteredData = data.filter((album: albumProps) => !album.isDefault)
     return filteredData as albumProps[]
   } catch (error) {
-    console.error(
-      'Failed to get all albums:',
-      error instanceof Error ? error.message : 'Unknown error',
-    )
+    ErrorHandler(error, 'Falha ao obter álbuns. Tente novamente mais tarde.')
     return []
   }
 }

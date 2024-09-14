@@ -8,6 +8,6 @@ export async function GET() {
   if (token) {
     return NextResponse.json({ token }, { status: 200 })
   } else {
-    return NextResponse.json({ message: 'Token not found' }, { status: 401 })
+    return NextResponse.json({ message: 'Token not found' })
   }
 }

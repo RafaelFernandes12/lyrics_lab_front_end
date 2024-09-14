@@ -1,3 +1,4 @@
+import { ErrorHandler } from '@/helpers/ErrorHandler'
 import api from '@/lib/axios'
 import { songProps } from '@/models/songProps'
 import { cookies } from 'next/headers'
@@ -15,10 +16,7 @@ export async function serverGetAllSongs(): Promise<songProps[]> {
 
     return response.data as songProps[]
   } catch (error) {
-    console.error(
-      'Failed to get all songs:',
-      error instanceof Error ? error.message : 'Unknown error',
-    )
+    ErrorHandler(error, 'Falha ao obter músicas. Tente novamente mais tarde.')
     return []
   }
 }

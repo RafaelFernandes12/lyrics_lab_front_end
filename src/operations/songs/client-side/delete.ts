@@ -1,3 +1,4 @@
+import { ErrorHandler } from '@/helpers/ErrorHandler'
 import { SuccessHandler } from '@/helpers/SuccessHandler'
 import api from '@/lib/axios'
 import { getToken } from '@/operations/auth/getToken'
@@ -23,9 +24,9 @@ export async function clientDeleteSong(id: number): Promise<boolean> {
 
     return response.status === 200
   } catch (error) {
-    console.error(
-      'Failed to delete song:',
-      error instanceof Error ? error.message : 'Unknown error',
+    ErrorHandler(
+      error,
+      'Falha ao excluir a música. Tente novamente mais tarde.',
     )
     return false
   }

@@ -6,7 +6,7 @@ import { MenuItem } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import { ButtonDialog } from '../buttonDialog'
 
-export function DeleteMenuItem({ id }: idProps) {
+export function DeleteMenuItem({ id, color }: idProps) {
   const router = useRouter()
   const { open, handleClick } = ButtonDialog.useOpen()
 
@@ -20,7 +20,9 @@ export function DeleteMenuItem({ id }: idProps) {
   return (
     <div>
       <MenuItem
-        className="flex items-center gap-3 dark:text-white"
+        className={
+          color ? `flex items-center gap-3 ${color}` : 'flex items-center gap-3'
+        }
         onClick={handleClick}
       >
         <DeleteIcon

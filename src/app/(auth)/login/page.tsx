@@ -3,16 +3,27 @@
 import { AuthContext } from '@/contexts/AuthContext'
 import Link from 'next/link'
 import { useContext, useState } from 'react'
+import CircularIndeterminate from '../register/components/CircularIndeterminate'
 
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const { signIn } = useContext(AuthContext)
 
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    signIn({ email, password })
+
+    setLoading(true)
+
+    try {
+      await signIn({ email, password })
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -42,8 +53,16 @@ export default function Login() {
               required
             />
           </div>
-          <button className="mt-3 w-full bg-blueButton" type="submit">
-            <span className="text-white">Entrar</span>
+          <button
+            className="mt-3 w-full bg-blueButton"
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? (
+              <CircularIndeterminate />
+            ) : (
+              <span className="text-white">Entrar</span>
+            )}
           </button>
         </form>
         <p className="mt-3 text-center text-blueButton">Esqueci minha senha</p>

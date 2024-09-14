@@ -1,3 +1,4 @@
+import { ErrorHandler } from '@/helpers/ErrorHandler'
 import api from '@/lib/axios'
 import { getToken } from '@/operations/auth/getToken'
 interface EditSongParams {
@@ -41,10 +42,7 @@ export async function clientEditSong({
 
     return response.status === 200
   } catch (error) {
-    console.error(
-      'Failed to edit song:',
-      error instanceof Error ? error.message : 'Unknown error',
-    )
+    ErrorHandler(error, 'Falha ao editar a música. Tente novamente mais tarde.')
     return false
   }
 }

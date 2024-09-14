@@ -1,3 +1,4 @@
+import { ErrorHandler } from '@/helpers/ErrorHandler'
 import api from '@/lib/axios'
 import { albumProps } from '@/models/albumProps'
 import { cookies } from 'next/headers'
@@ -15,10 +16,7 @@ export async function serverGetAlbum(id: number): Promise<albumProps | null> {
 
     return response.data as albumProps
   } catch (error) {
-    console.error(
-      'Failed to get album:',
-      error instanceof Error ? error.message : 'Unknown error',
-    )
+    ErrorHandler(error, 'Falha ao obter o álbum. Tente novamente mais tarde.')
     return null
   }
 }

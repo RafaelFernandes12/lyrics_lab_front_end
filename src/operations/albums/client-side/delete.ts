@@ -1,3 +1,4 @@
+import { ErrorHandler } from '@/helpers/ErrorHandler'
 import { SuccessHandler } from '@/helpers/SuccessHandler'
 import api from '@/lib/axios'
 import { getToken } from '@/operations/auth/getToken'
@@ -19,10 +20,7 @@ export async function clientDeleteAlbum(id: number): Promise<boolean> {
 
     return response.status === 200
   } catch (error) {
-    console.error(
-      'Failed to delete album:',
-      error instanceof Error ? error.message : 'Unknown error',
-    )
+    ErrorHandler(error, 'Falha ao excluir o álbum. Tente novamente mais tarde.')
     return false
   }
 }

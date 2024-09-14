@@ -1,3 +1,4 @@
+import { ErrorHandler } from '@/helpers/ErrorHandler'
 import api from '@/lib/axios'
 import { getToken } from '@/operations/auth/getToken'
 
@@ -30,10 +31,7 @@ export async function clientEditLyric({
 
     return response.status === 200
   } catch (error) {
-    console.error(
-      'Failed to edit lyric:',
-      error instanceof Error ? error.message : 'Unknown error',
-    )
+    ErrorHandler(error, 'Falha ao editar a música. Tente novamente mais tarde.')
     return false
   }
 }

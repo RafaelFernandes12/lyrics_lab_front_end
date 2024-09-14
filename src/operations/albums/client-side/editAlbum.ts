@@ -1,3 +1,4 @@
+import { ErrorHandler } from '@/helpers/ErrorHandler'
 import { SuccessHandler } from '@/helpers/SuccessHandler'
 import api from '@/lib/axios'
 import { getToken } from '@/operations/auth/getToken'
@@ -42,10 +43,7 @@ export async function clientEditAlbum({
 
     return response.status === 200
   } catch (error) {
-    console.error(
-      'Failed to edit album:',
-      error instanceof Error ? error.message : 'Unknown error',
-    )
+    ErrorHandler(error, 'Falha ao editar o álbum. Tente novamente mais tarde.')
     return false
   }
 }

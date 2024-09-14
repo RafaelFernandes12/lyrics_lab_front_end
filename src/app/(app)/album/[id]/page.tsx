@@ -61,8 +61,8 @@ export default async function Album({ params, searchParams }: albumProps) {
           <span>{album?.songs.length} músicas</span>
           <p className="w-10/12">{album?.description}</p>
           <div className="w-32">
-            <EditMenuItem id={params.id} />
-            <DeleteMenuItem id={params.id} />
+            <EditMenuItem id={params.id} color="text-white" />
+            <DeleteMenuItem id={params.id} color="text-white" />
           </div>
         </div>
       </section>

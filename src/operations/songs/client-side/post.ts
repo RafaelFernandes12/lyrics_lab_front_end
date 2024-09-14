@@ -1,3 +1,4 @@
+import { ErrorHandler } from '@/helpers/ErrorHandler'
 import { SuccessHandler } from '@/helpers/SuccessHandler'
 import api from '@/lib/axios'
 import { getToken } from '@/operations/auth/getToken'
@@ -38,10 +39,7 @@ export async function clientCreateSong({
 
     return response.status === 201
   } catch (error) {
-    console.error(
-      'Failed to create song:',
-      error instanceof Error ? error.message : 'Unknown error',
-    )
+    ErrorHandler(error, 'Falha ao criar a música. Tente novamente mais tarde.')
     return false
   }
 }
