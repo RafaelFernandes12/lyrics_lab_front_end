@@ -28,6 +28,7 @@ export function EditMenuItem({ id, color }: idProps) {
   const [songIds, setSongIds] = useState<number[]>([])
   const [file, setFile] = useState<File | null>(null)
   const [uploading, setUploading] = useState(false)
+  const [error, setError] = useState(false)
 
   const { handleClick, open, setOpen } = ButtonDialog.useOpen()
   const router = useRouter()
@@ -45,8 +46,14 @@ export function EditMenuItem({ id, color }: idProps) {
 
   const handleEditAlbum = async () => {
     if (!file) {
+      if (!name.trim()) {
+        setError(true)
+        return
+      }
+
       clientEditAlbum({ id, name, description, image, songIds }).then(() => {
         setOpen(false)
+        setError(false)
         router.refresh()
       })
       return
@@ -75,6 +82,7 @@ export function EditMenuItem({ id, color }: idProps) {
         clientEditAlbum({ id, name, description, image: url }).then(() => {
           setUploading(false)
           setOpen(false)
+          setError(false)
           router.refresh()
         })
       },
@@ -97,6 +105,7 @@ export function EditMenuItem({ id, color }: idProps) {
         () => {
           setUploading(false)
           setOpen(false)
+          setError(false)
           router.refresh()
         },
       )
@@ -159,6 +168,7 @@ export function EditMenuItem({ id, color }: idProps) {
             </div>
           )}
         </div>
+        {error && <p className="text-red-500">O nome não pode estar vazio!</p>}
       </ButtonDialog.Root>
     </div>
   )

@@ -16,6 +16,7 @@ export function EditMenuItem({ id }: idProps) {
   const [name, setName] = useState('')
   const [tone, setTone] = useState('')
   const [albumIds, setAlbumIds] = useState<number[]>([])
+  const [error, setError] = useState(false)
 
   const { open, handleClick } = ButtonDialog.useOpen()
 
@@ -32,8 +33,14 @@ export function EditMenuItem({ id }: idProps) {
   }, [open, song])
 
   function handleEditSong() {
+    if (!name.trim()) {
+      setError(true)
+      return
+    }
+
     clientEditSong({ id, name, tone, albumIds }).then(() => {
       SuccessHandler({ id: uuidv4(), message: 'Música editada com sucesso' })
+      setError(false)
       router.refresh()
     })
   }
@@ -69,6 +76,7 @@ export function EditMenuItem({ id }: idProps) {
           setAlbumsIds={setAlbumIds}
           albumsIds={albumIds}
         />
+        {error && <p className="text-red-500">O nome não pode estar vazio!</p>}
       </ButtonDialog.Root>
     </>
   )
