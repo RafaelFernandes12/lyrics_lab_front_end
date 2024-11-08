@@ -21,7 +21,7 @@ export function middleware(request: NextRequest) {
     url.pathname !== '/login' &&
     url.pathname !== '/register'
   ) {
-    url.pathname = '/'
+    url.pathname = '/login'
     return NextResponse.redirect(url)
   }
 
