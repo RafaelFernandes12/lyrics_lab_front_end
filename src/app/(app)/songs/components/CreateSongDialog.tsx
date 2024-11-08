@@ -40,10 +40,10 @@ export function CreateSongDialog() {
           placeholder="Tom"
           state={(e) => setTone(e.target.value)}
         />
-        <ButtonDialog.SelectAlbums
+        {/* <ButtonDialog.SelectAlbums
           setAlbumsIds={setAlbumIds}
           albumsIds={albumIds}
-        />
+        /> */}
       </ButtonDialog.Root>
     </div>
   )

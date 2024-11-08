@@ -5,15 +5,9 @@
 </div>
 O lyrics lab é um projeto para compositores de músicas que procuram um lugar para criar e armazenar as suas cifras.
 
-## O Lyrics Lab foi feito em:
-* Next js
-* Typescript 
-* Tailwind css
-* Material UI
-* Axios
-* Firebase
+![](./src/assets/LLvideo.gif)
 
-## Para rodar o projeto é necessario ter instalado na sua máquina:
+### Para rodar o projeto é necessario ter instalado na sua máquina:
 * Node
 * Dotnet
 
@@ -21,7 +15,7 @@ Caso não tenha o node instalado na sua máquina visite esse site: https://nodej
 
 Caso não tenha o dotnet, visite este site: https://learn.microsoft.com/pt-br/dotnet/core/install/windows
 
-## Como rodar localmente
+### Como rodar localmente
 #### **1. Clone o projeto backEnd**
     git clone https://github.com/Ramon-Mateus/Lyrics-Lab-API.git
 
@@ -35,3 +29,11 @@ Caso não tenha o dotnet, visite este site: https://learn.microsoft.com/pt-br/do
     cd lyrics_lab_front_end/
 #### **6. Rode o projeto localmente**
     npm run dev
+
+## O Lyrics Lab foi feito em:
+* Next js
+* Typescript 
+* Tailwind css
+* Material UI
+* Axios
+* Firebase

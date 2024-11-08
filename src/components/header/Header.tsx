@@ -13,7 +13,7 @@ export async function Header() {
     <header
       className={`flex h-[100px] items-center justify-between bg-white px-[4%] dark:bg-headerDark`}
     >
-      <Link href="/">
+      <Link href="/dashboard">
         <svg
           width="96"
           height="50"
