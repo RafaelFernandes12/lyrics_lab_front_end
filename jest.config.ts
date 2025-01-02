@@ -1,18 +1,25 @@
 import type { Config } from 'jest'
 import nextJest from 'next/jest.js'
+import fs from 'fs';
+import path from 'path';
 
 const createJestConfig = nextJest({
-  // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
   dir: './',
 })
 
-// Add any custom config to be passed to Jest
+const coveragePath = path.join(__dirname, 'public', 'coverage');
+
+if (fs.existsSync(coveragePath)) {
+  fs.rmSync(coveragePath, { recursive: true, force: true });
+}
 const config: Config = {
   coverageProvider: 'v8',
   testEnvironment: 'jsdom',
-  // Add more setup options before each test is run
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+  collectCoverage: true,
+  collectCoverageFrom: ['src/**/*.tsx', 'src/**/*.ts'],
+  coverageDirectory: 'public/coverage',
+  coverageReporters: ['json', 'lcov', 'text', 'clover'],
 }
 
-// createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
 export default createJestConfig(config)

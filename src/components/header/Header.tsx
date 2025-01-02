@@ -13,8 +13,9 @@ export async function Header() {
     <header
       className={`flex h-[100px] items-center justify-between bg-white px-[4%] dark:bg-headerDark`}
     >
-      <Link href="/dashboard">
+      <Link href="/dashboard" data-testid='logoLink'>
         <svg
+          data-testid="logo"
           width="96"
           height="50"
           viewBox="0 0 96 50"
