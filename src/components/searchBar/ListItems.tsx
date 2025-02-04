@@ -10,7 +10,7 @@ interface albumItemsProps {
 
 interface songItemsProps {
   song: songProps
-  album?: albumProps
+  album?: albumProps[]
   search: string
 }
 
@@ -45,22 +45,26 @@ export function Title({ title }: { title: string }) {
 }
 
 export function SongItem({ song, album, search }: songItemsProps) {
+  function displayAlbum(albums: albumProps[]) {
+    return albums.map((album: albumProps) => {
+      if (album.isDefault) return;
+      if (albums.at(-1) !== album) return <span key={album.id}>{highlightText(album.name, search)}, </span>
+      return <span key={album.id}>{highlightText(album.name, search)}</span>
+    })
+  }
   return (
-    <>
-      <li
-        key={song.id + (album?.id || 79312391623712)}
-        className="mx-4 mb-1 w-[calc(100%-24px)] truncate rounded-md border-slate-500 p-1 hover:border-[1px] hover:bg-slate-200 hover:p-1.5 dark:hover:bg-slate-900"
-      >
-        <LibraryMusicOutlinedIcon className="mr-2 dark:text-white" />
-        <span key={album?.id}>
-          {!album || album?.isDefault ? '' : highlightText(album.name, search)}
+    <li
+      key={song.id}
+      className="mx-4 mb-1 w-[calc(100%-24px)] truncate rounded-md border-slate-500 p-1 hover:border-[1px] hover:bg-slate-200 hover:p-1.5 dark:hover:bg-slate-900"
+    >
+      <LibraryMusicOutlinedIcon className="mr-2 dark:text-white" />
+      <span>{highlightText(song.name, search)}</span>
+      {album && album.length > 1 && (
+        <span className='ml-1'>
+          [{album && displayAlbum(album)}]
         </span>
-        <span className={`${!album || album?.isDefault ? 'hidden' : ''}`}>
-          /
-        </span>
-        <span>{highlightText(song.name, search)}</span>
-      </li>
-    </>
+      )}
+    </li>
   )
 }
 

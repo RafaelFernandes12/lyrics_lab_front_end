@@ -1,12 +1,13 @@
 import { ErrorHandler } from '@/helpers/ErrorHandler'
 import api from '@/lib/axios'
+import { albumProps } from '@/models/albumProps'
 import { getToken } from '@/operations/auth/getToken'
 interface EditSongParams {
   id: number
   name: string
   lyric?: string
   tone: string
-  albumIds?: number[]
+  albums?: albumProps[]
   bpm?: number
   compass?: string
 }
@@ -16,13 +17,13 @@ export async function clientEditSong({
   name,
   lyric,
   tone,
-  albumIds,
+  albums,
   bpm,
   compass,
 }: EditSongParams): Promise<boolean> {
   try {
     const token = await getToken()
-
+    const albumIds = albums?.map((album) => album.id) || []
     const response = await api.put(
       `/song/${id}`,
       {

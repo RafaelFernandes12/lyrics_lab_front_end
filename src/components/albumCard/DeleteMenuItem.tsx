@@ -17,7 +17,6 @@ export function DeleteMenuItem({ id, color }: idProps) {
   const [album, setAlbum] = useState<albumProps | null>(null)
 
   const router = useRouter()
-  const { open, handleClick } = ButtonDialog.useOpen()
 
   useEffect(() => {
     const fetchAlbum = async () => {
@@ -55,32 +54,33 @@ export function DeleteMenuItem({ id, color }: idProps) {
   }
 
   return (
-    <div>
-      <MenuItem
-        className={
-          color ? `flex items-center gap-3 ${color}` : 'flex items-center gap-3'
-        }
-        onClick={handleClick}
-      >
-        <DeleteIcon
-          sx={{
-            height: '18px',
-            width: '18px',
-          }}
-        />
-        Excluir
-      </MenuItem>
-      <ButtonDialog.Root
-        handleClick={handleClick}
-        action={handleDeleteAlbum}
-        open={open}
-        text="Excluir álbum"
-      >
+
+    <ButtonDialog.Root
+      action={handleDeleteAlbum}
+      text="Excluir álbum"
+      header={
+        <MenuItem
+          className={
+            color ? `flex items-center gap-3 ${color}` : 'flex items-center gap-3'
+          }
+        >
+          <DeleteIcon
+            sx={{
+              height: '18px',
+              width: '18px',
+            }}
+          />
+          Excluir
+        </MenuItem>
+
+      }
+      body={
         <p className="dark:text-black">
           Tem certeza que deseja excluir o álbum? Esta ação não pode ser
           desfeita
         </p>
-      </ButtonDialog.Root>
-    </div>
+      }
+    />
+
   )
 }

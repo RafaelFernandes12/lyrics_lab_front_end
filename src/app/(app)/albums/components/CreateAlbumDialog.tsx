@@ -7,37 +7,38 @@ import { useState } from 'react'
 export function CreateAlbumDialog() {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
-  const { handleClick, open, setOpen } = ButtonDialog.useOpen()
   const router = useRouter()
 
   function handleCreateAlbum() {
     clientCreateAlbum({ name, description }).then((r) => {
       console.log(r)
-      setOpen(false)
       router.refresh()
     })
   }
 
   return (
     <div>
-      <ButtonDialog.Button handleClick={handleClick} text="Criar Álbum" />
       <ButtonDialog.Root
         text="Adicionar Álbum"
         action={handleCreateAlbum}
-        handleClick={handleClick}
-        open={open}
-      >
-        <ButtonDialog.Input
-          value={name}
-          placeholder="Nome"
-          state={(e) => setName(e.target.value)}
-        />
-        <ButtonDialog.Input
-          value={description}
-          placeholder="Descrição"
-          state={(e) => setDescription(e.target.value)}
-        />
-      </ButtonDialog.Root>
+        header={
+          <ButtonDialog.Button text="Criar Álbum" />
+        }
+        body={
+          <>
+            <ButtonDialog.Input
+              value={name}
+              placeholder="Nome"
+              state={(e) => setName(e.target.value)}
+            />
+            <ButtonDialog.Input
+              value={description}
+              placeholder="Descrição"
+              state={(e) => setDescription(e.target.value)}
+            />
+          </>
+        }
+      />
     </div>
   )
 }

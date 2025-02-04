@@ -1,35 +1,30 @@
-import { SongCard } from '@/components/songCard/Index'
-import { serverGetAllSongs } from '@/operations/songs/server-side/getAll'
-import dayjs from 'dayjs'
-import 'dayjs/locale/pt-br'
-import relativeTime from 'dayjs/plugin/relativeTime'
-import { CreateSongDialog } from './components/CreateSongDialog'
-import { Thead } from './components/Thead'
-
-dayjs.extend(relativeTime)
-dayjs.locale('pt-br')
+import { SongCard } from "@/components/songCard/Index";
+import { serverGetAllSongs } from "@/operations/songs/server-side/getAll";
+import { CreateSongDialog } from "./components/CreateSongDialog";
+import { Thead } from "./components/Thead";
+import { ThreeDots } from "@/components/ThreeDots";
 
 export default async function Songs({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const songs = (await serverGetAllSongs()) || []
-  let sortedSongs = songs
+  const songs = (await serverGetAllSongs()) || [];
+  let sortedSongs = songs;
 
-  const sortedByTitle = searchParams.sortedByTitle
-  const sortedByDay = searchParams.sortedByDay
+  const sortedByTitle = searchParams.sortedByTitle;
+  const sortedByDay = searchParams.sortedByDay;
 
-  if (sortedByTitle === 'true') {
-    sortedSongs = songs.sort((a, b) => a.name.localeCompare(b.name))
-  } else if (sortedByTitle === 'false') {
-    sortedSongs = songs.sort((a, b) => b.name.localeCompare(a.name))
-    console.log(sortedSongs)
-  } else if (sortedByDay === 'true') {
-    sortedSongs = songs.sort((a, b) => a.createdAt.localeCompare(b.createdAt))
-  } else if (sortedByDay === 'false') {
-    sortedSongs = songs.sort((a, b) => b.createdAt.localeCompare(a.createdAt))
-    console.log(sortedSongs)
+  if (sortedByTitle === "true") {
+    sortedSongs = songs.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (sortedByTitle === "false") {
+    sortedSongs = songs.sort((a, b) => b.name.localeCompare(a.name));
+    console.log(sortedSongs);
+  } else if (sortedByDay === "true") {
+    sortedSongs = songs.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+  } else if (sortedByDay === "false") {
+    sortedSongs = songs.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    console.log(sortedSongs);
   }
 
   return (
@@ -46,9 +41,9 @@ export default async function Songs({
           <Thead />
           <tbody>
             {sortedSongs.map((song, i) => {
-              let bgColor = ''
-              if (i % 2 === 0) bgColor = '#567EBB'
-              else bgColor = '#606D80'
+              let bgColor = "";
+              if (i % 2 === 0) bgColor = "#567EBB";
+              else bgColor = "#606D80";
 
               return (
                 <tr
@@ -57,34 +52,30 @@ export default async function Songs({
                   style={{ backgroundColor: bgColor }}
                 >
                   <td className="flex items-center py-5">
-                    <SongCard.ThreeDots>
+                    <ThreeDots>
                       <SongCard.EditMenuItem id={song.id} />
                       <SongCard.DeleteMenuItem id={song.id} />
-                    </SongCard.ThreeDots>
-                    <SongCard.Name id={song.id} name={song.name} />
+                    </ThreeDots>
+                    <SongCard.Name song={song} />
                   </td>
                   <td className="py-5 max-sm:hidden">
                     <SongCard.Album
                       className="max-w-6 truncate"
-                      album={song.albums
-                        .filter((album) => !album.isDefault)
-                        .map((album) => album.name)}
+                      albums={song.albums}
                     />
                   </td>
                   <td className="py-5 max-sm:hidden">
-                    <SongCard.Tone tom={song.tone} />
+                    <SongCard.Tone song={song} />
                   </td>
                   <td className=" py-5 pr-4 text-right">
-                    <SongCard.CreatedAt
-                      createdAt={dayjs().to(song.createdAt)}
-                    />
+                    <SongCard.CreatedAt song={song} />
                   </td>
                 </tr>
-              )
+              );
             })}
           </tbody>
         </table>
       )}
     </>
-  )
+  );
 }

@@ -27,6 +27,7 @@
     "firebase": "^10.13.1",
     "formik": "^2.4.6",
     "js-cookie": "^3.0.5",
+    "msw": "^2.7.0",
     "next": "14.2.3",
     "nodemailer": "^6.9.15",
     "nookies": "^2.5.2",
@@ -40,10 +41,12 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.3.0",
     "@rocketseat/eslint-config": "^2.2.2",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
+    "@testing-library/react-hooks": "^8.0.1",
     "@types/jest": "^29.5.14",
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",

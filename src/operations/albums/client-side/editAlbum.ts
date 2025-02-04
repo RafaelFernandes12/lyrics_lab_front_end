@@ -1,6 +1,7 @@
 import { ErrorHandler } from '@/helpers/ErrorHandler'
 import { SuccessHandler } from '@/helpers/SuccessHandler'
 import api from '@/lib/axios'
+import { songProps } from '@/models/songProps'
 import { getToken } from '@/operations/auth/getToken'
 import { v4 as uuidv4 } from 'uuid'
 interface EditAlbumParams {
@@ -8,7 +9,7 @@ interface EditAlbumParams {
   name?: string
   description?: string
   image?: string
-  songIds?: number[]
+  songs?: songProps[]
 }
 
 export async function clientEditAlbum({
@@ -16,11 +17,11 @@ export async function clientEditAlbum({
   name,
   description,
   image,
-  songIds,
+  songs,
 }: EditAlbumParams): Promise<boolean> {
   try {
     const token = await getToken()
-
+    const songIds = songs?.map((song) => song.id) || []
     const response = await api
       .put(
         `/album/${id}`,

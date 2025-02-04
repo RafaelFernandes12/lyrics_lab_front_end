@@ -1,5 +1,6 @@
 import { AlbumCard } from '@/components/albumCard/AlbumCard'
 import { SongCard } from '@/components/songCard/Index'
+import { ThreeDots } from '@/components/ThreeDots'
 import { albumProps } from '@/models/albumProps'
 import { songProps } from '@/models/songProps'
 import { serverGetAllAlbums } from '@/operations/albums/server-side/getAll'
@@ -24,15 +25,15 @@ export default async function Home() {
               return (
                 <SongCard.Root key={song.id}>
                   <div className="flex items-center gap-4">
-                    <SongCard.ThreeDots>
+                    <ThreeDots>
                       <SongCard.EditMenuItem id={song.id} />
                       <SongCard.DeleteMenuItem id={song.id} />
-                    </SongCard.ThreeDots>
+                    </ThreeDots>
                     <div className="flex flex-col">
-                      <SongCard.Name id={song.id} name={song.name} />
+                      <SongCard.Name song={song} />
                       <p>
                         <span className="text-white">Tom: </span>
-                        <SongCard.Tone tom={song.tone} />
+                        <SongCard.Tone song={song} />
                       </p>
                     </div>
                   </div>

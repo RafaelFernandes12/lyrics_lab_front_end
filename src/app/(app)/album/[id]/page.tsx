@@ -3,14 +3,9 @@ import { DeleteMenuItem } from '@/components/albumCard/DeleteMenuItem'
 import { EditMenuItem } from '@/components/albumCard/EditMenuItem'
 import { SongCard } from '@/components/songCard/Index'
 import { serverGetAlbum } from '@/operations/albums/server-side/getOne'
-import dayjs from 'dayjs'
-import 'dayjs/locale/pt-br'
-import relativeTime from 'dayjs/plugin/relativeTime'
 import Image from 'next/image'
 import { Thead } from '../components/Thead'
-
-dayjs.extend(relativeTime)
-dayjs.locale('pt-br')
+import { ThreeDots } from '@/components/ThreeDots'
 
 interface albumProps {
   params: {
@@ -80,18 +75,18 @@ export default async function Album({ params, searchParams }: albumProps) {
                   style={{ backgroundColor: bgColor }}
                 >
                   <td className="flex items-center py-5">
-                    <SongCard.ThreeDots>
+                    <ThreeDots>
                       <SongCard.EditMenuItem id={song.id} />
                       <SongCard.DeleteMenuItem id={song.id} />
-                    </SongCard.ThreeDots>
-                    <SongCard.Name id={song.id} name={song.name} />
+                    </ThreeDots>
+                    <SongCard.Name song={song} />
                   </td>
                   <td className="py-5">
-                    <SongCard.Tone tom={song.tone} />
+                    <SongCard.Tone song={song} />
                   </td>
                   <td className="py-5 pr-4 text-right">
                     <SongCard.CreatedAt
-                      createdAt={dayjs().to(song.createdAt)}
+                      song={song}
                     />
                   </td>
                 </tr>

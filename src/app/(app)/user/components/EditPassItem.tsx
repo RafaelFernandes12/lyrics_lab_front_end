@@ -9,13 +9,11 @@ interface editPassItemProps {
 }
 
 export function EditPassItem({ email }: editPassItemProps) {
-  const [open, setOpen] = useState(false)
   const [oldPass, setOldPass] = useState('')
   const [newPass, setNewPass] = useState('')
   const [error, setError] = useState('')
 
   function handleClick() {
-    setOpen(!open)
     setError('')
   }
 
@@ -49,39 +47,41 @@ export function EditPassItem({ email }: editPassItemProps) {
   }
 
   return (
-    <>
-      <MenuItem
-        sx={{
-          padding: '0px',
-          ':hover': {
-            backgroundColor: 'transparent',
-          },
-        }}
-        onClick={handleClick}
-      >
-        Alterar a senha
-      </MenuItem>
 
-      <ButtonDialog.Root
-        handleClick={handleClick}
-        action={handleEditPass}
-        open={open}
-        text="Alterar a senha"
-      >
-        <ButtonDialog.Input
-          value={oldPass}
-          type="password"
-          placeholder="Senha atual"
-          state={(e) => setOldPass(e.target.value)}
-        />
-        <ButtonDialog.Input
-          value={newPass}
-          type="password"
-          placeholder="Nova senha"
-          state={(e) => setNewPass(e.target.value)}
-        />
-        {error && <p className="text-red-500">{error}</p>}
-      </ButtonDialog.Root>
-    </>
+    <ButtonDialog.Root
+      action={handleEditPass}
+      text="Alterar a senha"
+      header={
+        <MenuItem
+          sx={{
+            padding: '0px',
+            ':hover': {
+              backgroundColor: 'transparent',
+            },
+          }}
+        >
+          Alterar a senha
+        </MenuItem>
+
+      }
+      body={
+        <>
+          <ButtonDialog.Input
+            value={oldPass}
+            type="password"
+            placeholder="Senha atual"
+            state={(e) => setOldPass(e.target.value)}
+          />
+          <ButtonDialog.Input
+            value={newPass}
+            type="password"
+            placeholder="Nova senha"
+            state={(e) => setNewPass(e.target.value)}
+          />
+
+          {error && <p className="text-red-500">{error}</p>}
+        </>
+      }
+    />
   )
 }

@@ -1,11 +1,11 @@
 import { ThreeDots } from '../ThreeDots'
 import { DeleteMenuItem } from './DeleteMenuItem'
 import { EditMenuItem } from './EditMenuItem'
-import { SongCardRoot } from './SongCardRoot'
+import { Root } from './Root'
 import { Album, CreatedAt, Name, Tone } from './SongItems'
 
 export const SongCard = {
-  Root: SongCardRoot,
+  Root,
   Tone,
   Name,
   CreatedAt,

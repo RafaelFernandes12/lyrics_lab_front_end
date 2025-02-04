@@ -1,65 +1,74 @@
+import { albumProps } from '@/models/albumProps'
+import { songProps } from '@/models/songProps'
 import Link from 'next/link'
 import { ClassNameValue, twMerge } from 'tailwind-merge'
+import dayjs from 'dayjs'
+import 'dayjs/locale/pt-br'
+import relativeTime from 'dayjs/plugin/relativeTime'
+
+dayjs.extend(relativeTime)
+dayjs.locale('pt-br')
 
 export function Album({
-  album,
+  albums,
   className,
 }: {
   className?: ClassNameValue
-  album: string[]
+  albums: albumProps[]
 }) {
+  const albumsName = albums.filter((album) => !album.isDefault)
+    .map((album) => album.name)
+
   return (
     <span className={twMerge('truncate font-semibold text-white', className)}>
-      {album.join(', ')}
+      {albumsName.join(', ')}
     </span>
   )
 }
 export function CreatedAt({
-  createdAt,
+  song,
   className,
 }: {
   className?: ClassNameValue
-  createdAt: string
+  song: songProps
 }) {
   return (
     <span className={twMerge('text-semibold truncate text-white', className)}>
-      {createdAt}
+      {dayjs().to(song.createdAt)}
     </span>
   )
 }
 export function Name({
-  id,
-  name,
+  song,
   className,
 }: {
   className?: ClassNameValue
-  id: number
-  name: string
+  song: songProps
 }) {
   return (
-    <Link href={`/song/${id}`}>
+    <Link href={`/song/${song.id}`}>
       <span
         className={twMerge(
           'truncate text-xl font-semibold text-white',
           className,
         )}
       >
-        {name}
+        {song.name}
       </span>
     </Link>
   )
 }
 
 export function Tone({
-  tom,
+  song,
   className,
 }: {
   className?: ClassNameValue
-  tom: string
+  song: songProps
 }) {
   return (
     <span className={twMerge('truncate font-semibold text-white', className)}>
-      {tom}
+      {song.tone}
     </span>
   )
 }

@@ -1,21 +1,17 @@
-import SearchIcon from '@mui/icons-material/Search'
-import { ClassNameValue, twMerge } from 'tailwind-merge'
+import SearchIcon from "@mui/icons-material/Search";
+import { ClassNameValue, twMerge } from "tailwind-merge";
+
 interface buttonInputProps {
-  handleClick: () => void
-  className?: ClassNameValue
-  title: string
+  className?: ClassNameValue;
+  title: string;
 }
 
-export function ButtonInput({
-  handleClick,
-  className,
-  title,
-}: buttonInputProps) {
+export function ButtonInput({ className, title }: buttonInputProps) {
   return (
     <button
-      onClick={handleClick}
+      data-testid="searchButton"
       className={twMerge(
-        'flex w-56 items-center gap-2 border-none bg-gray-200',
+        "flex w-56 items-center gap-2",
         className,
       )}
     >
@@ -24,5 +20,5 @@ export function ButtonInput({
         {title}
       </p>
     </button>
-  )
+  );
 }

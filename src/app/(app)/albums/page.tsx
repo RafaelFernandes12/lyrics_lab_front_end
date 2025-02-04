@@ -2,7 +2,7 @@ import { AlbumCard } from '@/components/albumCard/AlbumCard'
 import { serverGetAllAlbums } from '@/operations/albums/server-side/getAll'
 import { CreateAlbumDialog } from './components/CreateAlbumDialog'
 
-export default async function Alums() {
+export default async function Albums() {
   const albums = (await serverGetAllAlbums()) || []
   return (
     <>

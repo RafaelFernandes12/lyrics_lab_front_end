@@ -1,19 +1,13 @@
 'use client'
 import { fetcher } from '@/lib/fetcher'
 import { songProps } from '@/models/songProps'
-import { SetStateAction, useState } from 'react'
+import { useState } from 'react'
 import useSWR from 'swr'
 import { SearchBar } from '../searchBar'
-import { useHandleClick } from '../searchBar/useHandleClick'
 
-interface searchBarProps {
-  songIds: number[]
-  setSongIds: (value: SetStateAction<number[]>) => void
-}
-
-export function SelectSongs({ songIds, setSongIds }: searchBarProps) {
+export function SelectSongs({ song }: { song: songProps[] }) {
   const [search, setSearch] = useState('')
-
+  const [songIds, setSongIds] = useState(song.map((s) => s.id));
   let { data: songs } = useSWR<songProps[]>('/song', fetcher)
   if (!songs) songs = []
 
@@ -34,7 +28,6 @@ export function SelectSongs({ songIds, setSongIds }: searchBarProps) {
   const filteredSong = songs.filter((song) =>
     song.name.toLowerCase().includes(search.toLowerCase().trim()),
   )
-  const { handleClick, open, searchRef } = useHandleClick()
 
   const names =
     selectedNames.length === 0 ? 'Pesquisar' : selectedNames.join(', ')
@@ -44,32 +37,35 @@ export function SelectSongs({ songIds, setSongIds }: searchBarProps) {
       <label>
         <p className="dark:text-black">Músicas</p>
       </label>
-      <SearchBar.ButtonInput
-        handleClick={handleClick}
-        title={`${names}`}
-        className="w-full border-2 border-black"
-      />
       <SearchBar.Root
         setSearch={(e) => setSearch(e.target.value)}
-        style={{ display: open ? 'block' : 'none' }}
-        handleClick={handleClick}
-        searchRef={searchRef}
-      >
-        <div className="mb-3 pl-2">
-          {selectedNames.length !== 0 && <p>Músicas selecionadas:</p>}
-          <span>{selectedNames.join(', ')}</span>
-        </div>
-        {filteredSong.length > 0 && (
+        header={
+          <div>
+            <SearchBar.ButtonInput
+              title={`${names}`}
+              className="w-full border-2 border-black"
+            />
+          </div>
+        }
+        body={
           <>
-            <SearchBar.Title title="Selecionar músicas" />
-            {filteredSong.slice(0, 10).map((songs) => (
-              <div key={songs.id} onClick={() => handleSelectChange(songs.id)}>
-                <SearchBar.SongItem song={songs} search={search} />
-              </div>
-            ))}
+            <div className="mb-3 pl-2">
+              {selectedNames.length !== 0 && <p>Músicas selecionadas:</p>}
+              <span data-testid='names'>{selectedNames.join(', ')}</span>
+            </div>
+            {filteredSong.length > 0 && (
+              <>
+                <SearchBar.Title title="Selecionar músicas" />
+                {filteredSong.slice(0, 10).map((songs) => (
+                  <div key={songs.id} onClick={() => handleSelectChange(songs.id)}>
+                    <SearchBar.SongItem song={songs} search={search} album={songs.albums} />
+                  </div>
+                ))}
+              </>
+            )}
           </>
-        )}
-      </SearchBar.Root>
+        }
+      />
     </div>
   )
 }
