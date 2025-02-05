@@ -1,5 +1,6 @@
 'use client'
-
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import { fetcher } from '@/lib/fetcher'
 import { urlIdProps } from '@/models/urlIdProps'
 import { clientEditLyric } from '@/operations/songs/client-side/editLyric'
@@ -10,7 +11,7 @@ import { useReactToPrint } from 'react-to-print'
 import useSWR from 'swr'
 import { DrawerComponent } from '../components/DrawerComponent'
 import { RenderText } from '../components/RenderText'
-import { analyzeLine } from '../utils/lineUtils'
+import { analyzeLine } from "../utils/analyzeLine";
 import { regex } from '../utils/regex'
 
 export default function Song({ params }: urlIdProps) {
@@ -29,13 +30,16 @@ export default function Song({ params }: urlIdProps) {
     fontSize: 16,
     lineHeight: 1.1,
   })
-  const preRef = useRef<HTMLPreElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-  const [containerWidth, setContainerWidth] = useState<number>(0)
+  const [containerWidth, setContainerWidth] = useState<number>(600)
 
-  const songLyric: string = song?.lyric || ''
   const songTone: string = song?.tone || ''
-  const lines = songLyric.split('\n')
+  const lines: string[] = song?.lyric.split('\n') || []
+
+  const chordTypeStorage = `chordType/song${params.id}/user${7}}`
+  const chordType =
+    (localStorage.getItem(chordTypeStorage) as keyof typeof regex.chordSets) ||
+    'flatChords'
 
   useEffect(() => {
     if (song) {
@@ -48,6 +52,7 @@ export default function Song({ params }: urlIdProps) {
       })
     }
   }, [song])
+
   useEffect(() => {
     if (containerRef.current) {
       const observer = new ResizeObserver((entries) => {
@@ -79,45 +84,54 @@ export default function Song({ params }: urlIdProps) {
   const handlePrint = useReactToPrint({
     content: () => containerRef.current,
   })
-  const chordTypeStorage = `chordType/song${params.id}/user${7}}`
-  const chordType =
-    (localStorage.getItem(chordTypeStorage) as keyof typeof regex.chordSets) ||
-    'flatChords'
+
+  function replaceChordsInLine(
+    line: string,
+    type: keyof typeof regex.chordSets,
+    options: {
+      shift?: number;
+      oppositeChordType?: keyof typeof regex.chordSets;
+    }
+  ): string {
+    return line.replace(regex.chordRegex, (chord) => {
+      let updatedChord = chord;
+
+      const { isThereAnAorAnEinTheLine } = analyzeLine(line);
+      const baseChord = chord.match(regex.tomUpAndDownRegex);
+
+      if (baseChord && !isThereAnAorAnEinTheLine) {
+        baseChord.forEach((tone) => {
+
+          const index = regex.chordSets[type].indexOf(tone);
+
+          if (index !== -1) {
+            let newChord: string;
+            if (options.shift)
+              newChord =
+                regex.chordSets[type][
+                (index + options.shift + regex.chordSets[type].length) %
+                regex.chordSets[type].length
+                ];
+            else if (options.oppositeChordType) newChord = regex.chordSets[options.oppositeChordType][index];
+            else newChord = tone;
+
+            updatedChord = updatedChord.replace(tone, newChord);
+          }
+        });
+      }
+      return updatedChord;
+    });
+  }
+
   async function handleToneChange(direction: 'up' | 'down') {
     const shift = direction === 'up' ? 1 : -1
-    const newLines = lines.map((line) => {
-      return line.replace(regex.chordRegex, (chord) => {
-        let updatedChord = chord
 
-        const { isLineATabLine, isThereAnAorAnEinTheLine } = analyzeLine(line)
+    const newLines = lines.map((line) =>
+      replaceChordsInLine(line, chordType, { shift })
+    );
 
-        const baseChord = chord.match(regex.tomUpAndDownRegex)
+    const newTone = replaceChordsInLine(songTone, chordType, { shift });
 
-        if (baseChord && !isThereAnAorAnEinTheLine && !isLineATabLine) {
-          baseChord.forEach((cipher) => {
-            const index = regex.chordSets[chordType].indexOf(cipher)
-            if (index !== -1) {
-              const newChord =
-                regex.chordSets[chordType][
-                  (index + shift + regex.chordSets[chordType].length) %
-                    regex.chordSets[chordType].length
-                ]
-              updatedChord = updatedChord.replace(cipher, newChord)
-            }
-          })
-        }
-        return updatedChord
-      })
-    })
-    const newTone = songTone.replace(regex.tomUpAndDownRegex, (tone) => {
-      const index = regex.chordSets[chordType].indexOf(tone)
-      const newTone =
-        regex.chordSets[chordType][
-          (index + shift + regex.chordSets[chordType].length) %
-            regex.chordSets[chordType].length
-        ]
-      return newTone
-    })
     const newLyrics = newLines.join('\n')
     await clientEditLyric({ id: params.id, lyric: newLyrics, tone: newTone })
     await mutate({ name: text.name, lyric: newLyrics, tone: newTone })
@@ -125,8 +139,10 @@ export default function Song({ params }: urlIdProps) {
 
   function handleTextChange(direction: 'up' | 'down') {
     const shift = direction === 'up' ? 1 : -1
+
     const newIndex =
       (textSizeIndex + shift + regex.textSizes.length) % regex.textSizes.length
+
     setTextSizeIndex(newIndex)
     setTextSize({
       fontSize: regex.textSizes[newIndex][0],
@@ -135,39 +151,13 @@ export default function Song({ params }: urlIdProps) {
   }
 
   async function handleChangeChord() {
-    let oppositeChordType = chordType
+    const oppositeChordType = chordType == 'sharpChords' ? 'flatChords' : 'sharpChords'
 
-    if (chordType === 'sharpChords') {
-      oppositeChordType = 'flatChords'
-    }
-    if (chordType === 'flatChords') {
-      oppositeChordType = 'sharpChords'
-    }
-    const newLines = lines.map((line) => {
-      return line.replace(regex.chordRegex, (chord) => {
-        let updatedChord = chord
+    const newLines = lines.map((line) =>
+      replaceChordsInLine(line, chordType, { oppositeChordType })
+    );
 
-        const { isLineATabLine, isThereAnAorAnEinTheLine } = analyzeLine(line)
-        const baseChord = chord.match(regex.tomUpAndDownRegex)
-
-        if (baseChord && !isThereAnAorAnEinTheLine && !isLineATabLine) {
-          baseChord.forEach((cipher) => {
-            const index = regex.chordSets[chordType].indexOf(cipher)
-            if (index !== -1) {
-              const newChord = regex.chordSets[oppositeChordType][index]
-              updatedChord = updatedChord.replace(cipher, newChord)
-            }
-          })
-        }
-        return updatedChord
-      })
-    })
-    const newTone = songTone.replace(regex.tomUpAndDownRegex, (tone) => {
-      const index = regex.chordSets[chordType].indexOf(tone)
-      let newTone = tone
-      if (index !== -1) newTone = regex.chordSets[oppositeChordType][index]
-      return newTone
-    })
+    const newTone = replaceChordsInLine(songTone, chordType, { oppositeChordType });
 
     const newLyrics = newLines.join('\n')
     await clientEditLyric({ id: params.id, lyric: newLyrics, tone: newTone })
@@ -264,6 +254,16 @@ export default function Song({ params }: urlIdProps) {
 
         {isChecked ? (
           <>
+            {/* <ReactQuill value={text.lyrics} */}
+            {/*   onChange={(lyrics) => { */}
+            {/*     setText((prev) => ({ */}
+            {/*       ...prev, */}
+            {/*       lyrics */}
+            {/*     })) */}
+            {/**/}
+            {/*   }} */}
+            {/*   placeholder="Comece aqui" */}
+            {/* /> */}
             <textarea
               onChange={(e) => {
                 setText((prev) => ({
@@ -278,14 +278,14 @@ export default function Song({ params }: urlIdProps) {
             />
           </>
         ) : (
-          <pre className="mt-10" ref={preRef}>
+          <div className="mt-10">
             <RenderText
               lines={text.lyrics}
               fontSize={textSize.fontSize}
               lineHeight={textSize.lineHeight}
               maxWidth={containerWidth}
             />
-          </pre>
+          </div>
         )}
       </div>
     </div>

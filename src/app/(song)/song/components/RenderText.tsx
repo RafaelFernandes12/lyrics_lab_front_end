@@ -1,4 +1,4 @@
-import { analyzeLine } from '../utils/lineUtils'
+import { analyzeLine } from "../utils/analyzeLine"
 // import { modifyLines } from '../utils/modifyLines'
 import { Paragraph, Words } from './Text'
 
@@ -15,6 +15,7 @@ export function RenderText({
   lineHeight,
   maxWidth,
 }: renderTextProps) {
+
   function breakTextIntoLines(text: string, maxCharsPerLine: number) {
     const lines = []
     let start = 0
@@ -44,6 +45,7 @@ export function RenderText({
 
     return lines
   }
+
   function getTextWithinWidth(text: string, maxWidth: number) {
     const lines = text ? text.split('\n') : []
     const fittingText: string[] = []
@@ -52,29 +54,32 @@ export function RenderText({
     for (let i = 0; i < lines.length; i++) {
       const {
         isLineAChordLine: ILine1,
-        isLineEmpty: IEmpty1,
-        isLineATabLine: ITabLine1,
+        isLineEmpty: IEmpty1
       } = analyzeLine(lines[i]) || 'aiyfwdauyfdwiu7atdfi'
+
       const {
         isLineAChordLine: ILine2,
-        isLineEmpty: IEmpty2,
-        isLineATabLine: ITabLine2,
+        isLineEmpty: IEmpty2
       } = analyzeLine(lines[i + 1]) || 'iadgwiaygdioawda'
-      const parameters =
-        ILine1 && !ILine2 && !IEmpty1 && !IEmpty2 && !ITabLine1 && !ITabLine2
-      if (parameters) {
+
+      if (ILine1 && !ILine2 && !IEmpty1 && !IEmpty2) {
+
         let midPoint = 0
         const lineWithChords: string[] = []
         const updatedChars: string[] = []
+
         for (let j = i; j < i + 2; j++) {
           updatedChars.push(...breakTextIntoLines(lines[j], maxCharsPerLine))
           if (j === i) midPoint = updatedChars.length
         }
+
         for (let k = 0; k < midPoint; k++) {
           lineWithChords.push(updatedChars[k])
           lineWithChords.push(updatedChars[k + midPoint])
         }
+
         fittingText.push(...lineWithChords)
+
         if (lineWithChords.length < updatedChars.length) {
           const leftWords = updatedChars.filter(
             (chord) => !lineWithChords.includes(chord),
@@ -93,6 +98,7 @@ export function RenderText({
     }
     return fittingText
   }
+
   const fittingParagraphs =
     maxWidth > 0 ? getTextWithinWidth(lines, maxWidth) : []
 

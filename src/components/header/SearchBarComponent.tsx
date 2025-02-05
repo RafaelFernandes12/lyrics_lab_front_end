@@ -10,7 +10,6 @@ interface searchBarProps {
   albums: albumProps[]
 }
 
-console.log('aqui');
 export function SearchBarComponent({ songs, albums }: searchBarProps) {
   const [search, setSearch] = useState('')
 

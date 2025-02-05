@@ -84,21 +84,22 @@ export function DrawerComponent({
   const chordType = localStorage.getItem(chordTypeStorage)
 
   const isSharpOrFlat = chordType === sharpChords ? sharpChords : flatChords
+  const liStyle = "flex items-center justify-center gap-3 border-b-[1px] border-gray-400 px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-600"
   const drawer = (
     <ul className="flex flex-col dark:bg-black dark:text-white">
-      <li className="flex items-center justify-center gap-3 border-b-[1px] border-gray-400 px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-600">
+      <li className={liStyle}>
         <ListItem
           action={pdfGenerator}
           icon={<PictureAsPdfIcon />}
           text="Gerar PDF"
         />
       </li>
-      <li className="flex items-center justify-center gap-3 border-b-[1px] border-gray-400 px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-600 ">
+      <li className={liStyle}>
         <ListItem action={toneDown} icon={<RemoveIcon />} />
         <span className="p-0 text-sm">Tom</span>
         <ListItem action={toneUp} icon={<AddIcon />} />
       </li>
-      <li className="flex items-center justify-center gap-3 border-b-[1px] border-gray-400 px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-600 ">
+      <li className={liStyle}>
         <ListItem action={textDown} icon={<TextDecreaseIcon />} />
         <span className="p-0 text-sm">Texto</span>
         <ListItem action={textUp} icon={<TextIncreaseIcon />} />

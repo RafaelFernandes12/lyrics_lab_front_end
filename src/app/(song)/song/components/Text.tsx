@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import { ClassNameValue, twMerge } from 'tailwind-merge'
-import { analyzeLine } from '../utils/lineUtils'
+import { analyzeLine } from "../utils/analyzeLine"
 import { regex } from '../utils/regex'
 
 interface paragraphProps {
@@ -15,13 +15,12 @@ interface wordsProps {
   line: string
 }
 export function Words({ line, className }: wordsProps) {
-  const { words, isLineATabLine, isThereAnAorAnEinTheLine } = analyzeLine(line)
+  const { words, isThereAnAorAnEinTheLine } = analyzeLine(line)
   return (
     <>
       {words.map((word, index) => {
         const isChord =
           word.match(regex.chordRegex) &&
-          !isLineATabLine &&
           !isThereAnAorAnEinTheLine
         if (isChord) {
           return (

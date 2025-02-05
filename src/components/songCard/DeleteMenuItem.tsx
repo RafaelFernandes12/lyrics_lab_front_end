@@ -8,7 +8,9 @@ import { useRouter } from "next/navigation";
 import { ButtonDialog } from "../buttonDialog";
 
 export function DeleteMenuItem({ id }: idProps) {
+
   const router = useRouter();
+
   function handleDeleteSong() {
     clientDeleteSong(id).then(() => router.refresh());
   }
