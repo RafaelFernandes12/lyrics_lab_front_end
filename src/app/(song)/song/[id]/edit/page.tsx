@@ -1,8 +1,10 @@
 'use client'
-import { fetcher } from '@/lib/fetcher'
+
 import { TSong, urlIdProps } from '@/models'
-import { clientEditSong } from '@/operations/songs/client-side/editSong'
+import { put } from '@/services/axios'
+import { fetcher } from '@/services/fetcher'
 import EditIcon from '@mui/icons-material/Edit'
+import { getCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import 'react-quill/dist/quill.snow.css'
@@ -48,6 +50,13 @@ export default function EditSong({ params }: urlIdProps) {
 
   if (isLoading) return <div>Carregando...</div>
 
+  async function onEditSong() {
+    const token = (await getCookie('jwt')) || ''
+    put<TSong>(`/song/${id}`, { ...text }, token).then(() =>
+      push(`/song/${id}`),
+    )
+  }
+
   return (
     <div className="flex justify-between max-lg:flex-col">
       <div className="m-auto bg-white p-6 dark:bg-headerDark max-lg:w-full md:min-w-[800px]">
@@ -59,11 +68,7 @@ export default function EditSong({ params }: urlIdProps) {
                 setText((prev) => ({ ...prev, name: e.target.value }))
               }
             />
-            <button
-              onClick={() =>
-                clientEditSong({ id, ...text }).then(() => push(`/song/${id}`))
-              }
-            >
+            <button onClick={() => onEditSong}>
               <EditIcon />
             </button>
           </div>

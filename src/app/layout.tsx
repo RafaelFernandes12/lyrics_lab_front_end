@@ -1,3 +1,4 @@
+import { QueryProvider } from '@/providers/QueryClientProvider'
 import { Poppins } from 'next/font/google'
 import './globals.css'
 
@@ -11,12 +12,14 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="pt-br"
-      className={poppins.variable}
-      style={{ overflow: 'auto' }}
-    >
-      {children}
-    </html>
+    <QueryProvider>
+      <html
+        lang="pt-br"
+        className={poppins.variable}
+        style={{ overflow: 'auto' }}
+      >
+        {children}
+      </html>
+    </QueryProvider>
   )
 }

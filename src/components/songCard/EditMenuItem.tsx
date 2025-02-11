@@ -1,10 +1,12 @@
 'use client'
+
 import { SuccessHandler } from '@/helpers/SuccessHandler'
-import { fetcher } from '@/lib/fetcher'
 import { idProps, TAlbum, TSong } from '@/models'
-import { clientEditSong } from '@/operations/songs/client-side/editSong'
+import { put } from '@/services/axios'
+import { fetcher } from '@/services/fetcher'
 import EditIcon from '@mui/icons-material/Edit'
 import { MenuItem } from '@mui/material'
+import { getCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
@@ -29,12 +31,13 @@ export function EditMenuItem({ id }: idProps) {
     }
   }, [song])
 
-  function handleEditSong() {
+  async function handleEditSong() {
     if (!name.trim()) {
       setError(true)
       return
     }
-    clientEditSong({ id, name, tone, albums }).then(() => {
+    const token = (await getCookie('jwt')) || ''
+    await put<TSong>(`/song/${id}`, { name, tone, albums }, token).then(() => {
       SuccessHandler({ id: uuidv4(), message: 'Música editada com sucesso' })
       setError(false)
       router.refresh()

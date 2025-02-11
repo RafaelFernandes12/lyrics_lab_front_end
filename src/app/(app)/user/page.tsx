@@ -7,24 +7,26 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded'
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded'
 import { useQuery } from '@tanstack/react-query'
+import { getCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'
 import { EditNameItem } from './components/EditNameItem'
 import { EditPassItem } from './components/EditPassItem'
 
-async function fetchUser(): Promise<TUser> {
-  return get<TUser>('/auth/user')
-}
-
-function useUser() {
-  return useQuery({
-    queryKey: ['user'],
-    queryFn: fetchUser,
-  })
-}
-
 export default function User() {
   const router = useRouter()
-  const { data: user, isLoading, error } = useUser()
+
+  const {
+    data: user,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['user'],
+    queryFn: async () => {
+      const token = (await getCookie('jwt')) || ''
+      const response = await get<{ user: TUser }>('/auth/user', token)
+      return response.user
+    },
+  })
 
   if (isLoading) return <p>Carregando...</p>
   if (error || !user) return <p>Erro ao carregar usuário.</p>

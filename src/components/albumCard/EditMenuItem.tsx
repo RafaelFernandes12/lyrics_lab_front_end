@@ -2,15 +2,15 @@
 
 import UploadImage from '@/components/albumCard/UploadImage'
 import { ErrorHandler } from '@/helpers/ErrorHandler'
-import { fetcher } from '@/lib/fetcher'
 import { storage } from '@/lib/firebase'
 import { idProps, TAlbum, TSong, TUser } from '@/models'
-import { clientEditAlbum } from '@/operations/albums/client-side/editAlbum'
-import { get } from '@/services/axios'
+import { get, put } from '@/services/axios'
+import { fetcher } from '@/services/fetcher'
 import EditIcon from '@mui/icons-material/Edit'
 import HideImageIcon from '@mui/icons-material/HideImage'
 import { MenuItem } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
+import { getCookie } from 'cookies-next'
 import {
   deleteObject,
   getDownloadURL,
@@ -22,17 +22,6 @@ import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { ButtonDialog } from '../buttonDialog/index'
 
-async function fetchUser(): Promise<TUser> {
-  return get<TUser>('/auth/user')
-}
-
-function useUser() {
-  return useQuery({
-    queryKey: ['user'],
-    queryFn: fetchUser,
-  })
-}
-
 export function EditMenuItem({ id, color }: idProps) {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
@@ -42,10 +31,17 @@ export function EditMenuItem({ id, color }: idProps) {
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState(false)
   const router = useRouter()
-  const { data: user } = useUser()
+
+  const { data: user } = useQuery({
+    queryKey: ['user'],
+    queryFn: async () => {
+      const token = (await getCookie('jwt')) || ''
+      const response = await get<{ user: TUser }>('/auth/user', token)
+      return response.user
+    },
+  })
 
   const { data: album } = useSWR<TAlbum>(`/album/${id}`, fetcher)
-
   useEffect(() => {
     if (album) {
       setName(album.name)
@@ -62,7 +58,12 @@ export function EditMenuItem({ id, color }: idProps) {
         return
       }
 
-      clientEditAlbum({ id, name, description, image, songs }).then(() => {
+      const token = (await getCookie('jwt')) || ''
+      await put<TAlbum>(
+        `album/${id}`,
+        { id, name, description, image, songs },
+        token,
+      ).then(() => {
         setError(false)
         router.refresh()
       })
@@ -89,7 +90,12 @@ export function EditMenuItem({ id, color }: idProps) {
       },
       async () => {
         const url = await getDownloadURL(uploadTask.snapshot.ref)
-        clientEditAlbum({ id, name, description, image: url }).then(() => {
+        const token = (await getCookie('jwt')) || ''
+        await put<TAlbum>(
+          `album/${id}`,
+          { id, name, description, image: url },
+          token,
+        ).then(() => {
           setUploading(false)
           setError(false)
           router.refresh()
@@ -110,13 +116,16 @@ export function EditMenuItem({ id, color }: idProps) {
 
       await deleteObject(imageRef)
 
-      await clientEditAlbum({ id, name, description, image: '', songs }).then(
-        () => {
-          setUploading(false)
-          setError(false)
-          router.refresh()
-        },
-      )
+      const token = (await getCookie('jwt')) || ''
+      await put<TAlbum>(
+        `album/${id}`,
+        { id, name, description, image: '', songs },
+        token,
+      ).then(() => {
+        setUploading(false)
+        setError(false)
+        router.refresh()
+      })
 
       album.image = ''
     } catch (error) {

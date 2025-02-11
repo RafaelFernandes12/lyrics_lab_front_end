@@ -1,13 +1,16 @@
-import { serverGetAllAlbums } from '@/operations/albums/server-side/getAll'
-import { serverGetAllSongs } from '@/operations/songs/server-side/getAll'
+import { TAlbum, TSong } from '@/models'
+import { get } from '@/services/axios'
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded'
+import { getCookie } from 'cookies-next'
+import { cookies } from 'next/headers'
 import Link from 'next/link'
 import { SearchBarComponent } from './SearchBarComponent'
 import { SwitchTheme } from './SwitchTheme'
 
 export async function Header() {
-  const songs = await serverGetAllSongs()
-  const albums = await serverGetAllAlbums()
+  const token = (await getCookie('jwt', { cookies })) || ''
+  const albums: TAlbum[] = (await get<TAlbum[]>('album', token)) || []
+  const songs: TSong[] = (await get<TSong[]>('song', token)) || []
 
   return (
     <header

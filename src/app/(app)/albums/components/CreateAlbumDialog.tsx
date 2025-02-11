@@ -1,6 +1,9 @@
 'use client'
+
 import { ButtonDialog } from '@/components/buttonDialog/index'
-import { clientCreateAlbum } from '@/operations/albums/client-side/post'
+import { TAlbum } from '@/models'
+import { post } from '@/services/axios'
+import { getCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -9,8 +12,9 @@ export function CreateAlbumDialog() {
   const [description, setDescription] = useState('')
   const router = useRouter()
 
-  function handleCreateAlbum() {
-    clientCreateAlbum({ name, description }).then((r) => {
+  async function handleCreateAlbum() {
+    const token = (await getCookie('jwt')) || ''
+    await post<TAlbum>(`album`, { name, description }, token).then((r) => {
       console.log(r)
       router.refresh()
     })
@@ -21,9 +25,7 @@ export function CreateAlbumDialog() {
       <ButtonDialog.Root
         text="Adicionar Álbum"
         action={handleCreateAlbum}
-        header={
-          <ButtonDialog.Button text="Criar Álbum" />
-        }
+        header={<ButtonDialog.Button text="Criar Álbum" />}
         body={
           <>
             <ButtonDialog.Input

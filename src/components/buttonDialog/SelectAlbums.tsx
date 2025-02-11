@@ -1,6 +1,6 @@
 'use client'
-import { fetcher } from '@/lib/fetcher'
 import { TAlbum } from '@/models'
+import { fetcher } from '@/services/fetcher'
 import { useState } from 'react'
 import useSWR from 'swr'
 import { SearchBar } from '../searchBar'

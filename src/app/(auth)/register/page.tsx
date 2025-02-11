@@ -1,7 +1,7 @@
 'use client'
 
 import { ErrorHandler } from '@/helpers/ErrorHandler'
-import { register } from '@/operations/auth/register'
+import { register } from '@/services/axios'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { FormEvent, useState } from 'react'
