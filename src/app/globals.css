@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  element.style {
+    @apply pr-0 overflow-auto
+  }
+
+  body {
+    @apply mx-12 my-6 max-sm:mx-2;
+    @apply font-sans;
+  }
+
+  section {
+    @apply mb-16;
+  }
+
+  span,
+  p,
+  h1,
+  h2,
+  h3 {
+    @apply text-black dark:text-white
+  }
+
+  h1 {
+    @apply text-3xl max-md:text-2xl font-semibold
+  }
+
+  h2 {
+    @apply text-2xl max-md:text-xl
+  }
+
+  h3 {
+    @apply text-lg max-md:text-base
+  }
+
+  p {
+    @apply text-sm
+  }
+
+  button {
+    @apply rounded-lg p-3;
+  }
+}
