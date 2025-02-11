@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosResponse } from 'axios'
-import { cookies } from 'next/headers'
+import { getCookie } from 'cookies-next'
 
-async function getToken() {
-  const cookieStore = cookies()
-  const token = cookieStore.get('jwt')?.value
+export async function getToken() {
+  const token = getCookie('jwt')
+  console.log('TOKENNNNNN: ', token)
   return token
 }
 
@@ -25,7 +26,6 @@ export async function get<T>(endPoint: string): Promise<T> {
       },
     })
     return response.data
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     throw new Error(error || 'Erro na requisição.')
   }
@@ -44,7 +44,6 @@ export async function post<T>(endPoint: string, body: object): Promise<T> {
       },
     )
     return response.data
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     throw new Error(error || 'Erro na requisição.')
   }
@@ -63,7 +62,6 @@ export async function put<T>(endPoint: string, body: object): Promise<T> {
       },
     )
     return response.data
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     throw new Error(error || 'Erro na requisição.')
   }
@@ -81,7 +79,6 @@ export async function del<T>(endPoint: string, id: string): Promise<T> {
       },
     )
     return response.data
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     throw new Error(error || 'Erro na requisição.')
   }
@@ -95,7 +92,6 @@ export async function login(email: string, password: string) {
     })
     const data = response.data
     return data
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     throw new Error(error || 'Erro ao fazer login.')
   }
@@ -109,7 +105,6 @@ export async function logout() {
 export async function register(name: string, email: string, password: string) {
   try {
     await axiosInstance.post('/auth/register', { name, email, password })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     throw new Error(error || 'Erro ao fazer logout.')
   }
@@ -148,7 +143,6 @@ export async function changeName(id: number, name: string) {
       .then((r) => {
         return r
       })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     throw new Error(
       error || 'Falha ao alterar o nome. Tente novamente mais tarde.',
@@ -183,7 +177,6 @@ export async function changePassword(
           logout()
         })
     }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     throw new Error(
       error || 'Falha ao alterar a senha. Tente novamente mais tarde.',

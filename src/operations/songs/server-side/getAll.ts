@@ -1,6 +1,6 @@
 import { ErrorHandler } from '@/helpers/ErrorHandler'
 import api from '@/lib/axios'
-import { TSong } from '@/models/models'
+import { TSong } from '@/models'
 import { cookies } from 'next/headers'
 
 export async function serverGetAllSongs(): Promise<TSong[]> {

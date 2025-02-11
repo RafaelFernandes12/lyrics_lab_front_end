@@ -1,9 +1,9 @@
-import { TSong, TAlbum } from '@/models/models'
-import Link from 'next/link'
-import { ClassNameValue, twMerge } from 'tailwind-merge'
+import { TAlbum, TSong } from '@/models'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import Link from 'next/link'
+import { ClassNameValue, twMerge } from 'tailwind-merge'
 
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
@@ -15,7 +15,8 @@ export function Album({
   className?: ClassNameValue
   albums: TAlbum[]
 }) {
-  const albumsName = albums.filter((album) => !album.isDefault)
+  const albumsName = albums
+    .filter((album) => !album.isDefault)
     .map((album) => album.name)
 
   return (

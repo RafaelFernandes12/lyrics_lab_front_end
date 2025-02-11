@@ -1,5 +1,5 @@
 import api from '@/lib/axios'
-import { TUser } from '@/models/models'
+import { TUser } from '@/models'
 import { getToken } from '../auth/getToken'
 
 export async function getUser() {

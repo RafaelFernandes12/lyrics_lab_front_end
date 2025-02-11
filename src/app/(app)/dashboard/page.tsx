@@ -1,7 +1,7 @@
 import { AlbumCard } from '@/components/albumCard/AlbumCard'
 import { SongCard } from '@/components/songCard/Index'
 import { ThreeDots } from '@/components/ThreeDots'
-import { TSong, TAlbum } from '@/models/models'
+import { TAlbum, TSong } from '@/models'
 import { serverGetAllAlbums } from '@/operations/albums/server-side/getAll'
 import { serverGetAllSongs } from '@/operations/songs/server-side/getAll'
 

@@ -2,7 +2,7 @@
 
 import { ErrorHandler } from '@/helpers/ErrorHandler'
 import { storage } from '@/lib/firebase'
-import { TAlbum, idProps } from '@/models/models'
+import { TAlbum, idProps } from '@/models'
 import { clientDeleteAlbum } from '@/operations/albums/client-side/delete'
 import { clientGetOneAlbum } from '@/operations/albums/client-side/getOne'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -53,14 +53,15 @@ export function DeleteMenuItem({ id, color }: idProps) {
   }
 
   return (
-
     <ButtonDialog.Root
       action={handleDeleteAlbum}
       text="Excluir álbum"
       header={
         <MenuItem
           className={
-            color ? `flex items-center gap-3 ${color}` : 'flex items-center gap-3'
+            color
+              ? `flex items-center gap-3 ${color}`
+              : 'flex items-center gap-3'
           }
         >
           <DeleteIcon
@@ -71,7 +72,6 @@ export function DeleteMenuItem({ id, color }: idProps) {
           />
           Excluir
         </MenuItem>
-
       }
       body={
         <p className="dark:text-black">
@@ -80,6 +80,5 @@ export function DeleteMenuItem({ id, color }: idProps) {
         </p>
       }
     />
-
   )
 }

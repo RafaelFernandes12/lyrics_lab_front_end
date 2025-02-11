@@ -1,5 +1,5 @@
 'use client'
-import { TSong, TAlbum } from '@/models/models'
+import { TAlbum, TSong } from '@/models'
 import Link from 'next/link'
 import { useState } from 'react'
 import { SearchBar } from '../searchBar'
@@ -32,15 +32,19 @@ export function SearchBarComponent({ songs, albums }: searchBarProps) {
           {filteredSongs.length > 0 && (
             <>
               <SearchBar.Title title="Músicas" />
-              {filteredSongs.slice(0, 4).map((song) =>
-                <Link href={`/song/${song.id}`} key={song.id} data-testid='songLink'>
+              {filteredSongs.slice(0, 4).map((song) => (
+                <Link
+                  href={`/song/${song.id}`}
+                  key={song.id}
+                  data-testid="songLink"
+                >
                   <SearchBar.SongItem
                     album={song.albums}
                     song={song}
                     search={search}
                   />
                 </Link>
-              )}
+              ))}
             </>
           )}
 
@@ -48,7 +52,11 @@ export function SearchBarComponent({ songs, albums }: searchBarProps) {
             <>
               <SearchBar.Title title="Álbuns" />
               {filteredAlbums.slice(0, 5).map((album) => (
-                <Link href={`/album/${album.id}`} key={album.id} data-testid='albumLink'>
+                <Link
+                  href={`/album/${album.id}`}
+                  key={album.id}
+                  data-testid="albumLink"
+                >
                   <SearchBar.AlbumItem album={album} search={search} />
                 </Link>
               ))}

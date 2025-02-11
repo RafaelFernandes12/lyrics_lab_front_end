@@ -1,6 +1,6 @@
 'use client'
 import { ButtonDialog } from '@/components/buttonDialog'
-import { idProps } from '@/models/models'
+import { idProps } from '@/models'
 import { changeName } from '@/operations/user/changeName'
 import { MenuItem } from '@mui/material'
 import { useRouter } from 'next/navigation'
@@ -10,7 +10,6 @@ export function EditNameItem({ id }: idProps) {
   const [name, setName] = useState('')
   const [error, setError] = useState(false)
   const router = useRouter()
-
 
   async function handleEditName() {
     if (!name.trim()) {
@@ -41,13 +40,14 @@ export function EditNameItem({ id }: idProps) {
       }
       body={
         <>
-
           <ButtonDialog.Input
             value={name}
             placeholder="Novo nome"
             state={(e) => setName(e.target.value)}
           />
-          {error && <p className="text-red-500">O nome não pode estar vazio!</p>}
+          {error && (
+            <p className="text-red-500">O nome não pode estar vazio!</p>
+          )}
         </>
       }
     />

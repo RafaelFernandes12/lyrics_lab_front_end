@@ -1,7 +1,7 @@
 import { ErrorHandler } from '@/helpers/ErrorHandler'
 import { SuccessHandler } from '@/helpers/SuccessHandler'
 import api from '@/lib/axios'
-import { TSong } from '@/models/models'
+import { TSong } from '@/models'
 import { getToken } from '@/operations/auth/getToken'
 import { v4 as uuidv4 } from 'uuid'
 interface EditAlbumParams {

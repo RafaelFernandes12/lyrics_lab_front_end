@@ -1,121 +1,131 @@
-"use client";
+'use client'
 
-import UploadImage from "@/components/albumCard/UploadImage";
-import { AuthContext } from "@/contexts/AuthContext";
-import { ErrorHandler } from "@/helpers/ErrorHandler";
-import { fetcher } from "@/lib/fetcher";
-import { storage } from "@/lib/firebase";
-import { TAlbum, idProps } from "@/models/models";
-import { clientEditAlbum } from "@/operations/albums/client-side/editAlbum";
-import EditIcon from "@mui/icons-material/Edit";
-import HideImageIcon from "@mui/icons-material/HideImage";
-import { MenuItem } from "@mui/material";
+import UploadImage from '@/components/albumCard/UploadImage'
+import { ErrorHandler } from '@/helpers/ErrorHandler'
+import { fetcher } from '@/lib/fetcher'
+import { storage } from '@/lib/firebase'
+import { idProps, TAlbum, TSong, TUser } from '@/models'
+import { clientEditAlbum } from '@/operations/albums/client-side/editAlbum'
+import { get } from '@/services/axios'
+import EditIcon from '@mui/icons-material/Edit'
+import HideImageIcon from '@mui/icons-material/HideImage'
+import { MenuItem } from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
 import {
   deleteObject,
   getDownloadURL,
   ref,
   uploadBytesResumable,
-} from "firebase/storage";
-import { useRouter } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
-import useSWR from "swr";
-import { ButtonDialog } from "../buttonDialog/index";
-import { TSong } from "@/models/models";
+} from 'firebase/storage'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import useSWR from 'swr'
+import { ButtonDialog } from '../buttonDialog/index'
+
+async function fetchUser(): Promise<TUser> {
+  return get<TUser>('/auth/user')
+}
+
+function useUser() {
+  return useQuery({
+    queryKey: ['user'],
+    queryFn: fetchUser,
+  })
+}
 
 export function EditMenuItem({ id, color }: idProps) {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [image, setImage] = useState("");
-  const [songs, setSongs] = useState<TSong[]>([]);
-  const [file, setFile] = useState<File | null>(null);
-  const [uploading, setUploading] = useState(false);
-  const [error, setError] = useState(false);
-  const { user } = useContext(AuthContext);
-  const router = useRouter();
+  const [name, setName] = useState('')
+  const [description, setDescription] = useState('')
+  const [image, setImage] = useState('')
+  const [songs, setSongs] = useState<TSong[]>([])
+  const [file, setFile] = useState<File | null>(null)
+  const [uploading, setUploading] = useState(false)
+  const [error, setError] = useState(false)
+  const router = useRouter()
+  const { data: user } = useUser()
 
-  const { data: album } = useSWR<TAlbum>(`/album/${id}`, fetcher);
+  const { data: album } = useSWR<TAlbum>(`/album/${id}`, fetcher)
 
   useEffect(() => {
     if (album) {
-      setName(album.name);
-      setDescription(album.description);
-      setImage(album.image);
-      setSongs(album?.songs || []);
+      setName(album.name)
+      setDescription(album.description)
+      setImage(album.image)
+      setSongs(album?.songs || [])
     }
-  }, [album]);
+  }, [album])
 
   const handleEditAlbum = async () => {
     if (!file) {
       if (!name.trim()) {
-        setError(true);
-        return;
+        setError(true)
+        return
       }
 
       clientEditAlbum({ id, name, description, image, songs }).then(() => {
-        setError(false);
-        router.refresh();
-      });
-      return;
+        setError(false)
+        router.refresh()
+      })
+      return
     }
 
-    setUploading(true);
+    setUploading(true)
 
-    const storageRef = ref(storage, `users/${user?.id}/${album?.id}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
+    const storageRef = ref(storage, `users/${user?.id}/${album?.id}`)
+    const uploadTask = uploadBytesResumable(storageRef, file)
 
     uploadTask.on(
-      "state_changed",
+      'state_changed',
       (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        console.log('Upload is ' + progress + '% done')
       },
       (error) => {
         ErrorHandler(
           error,
-          "Falha no carregamento da imagem. Tente novamente mais tarde.",
-        );
-        setUploading(false);
+          'Falha no carregamento da imagem. Tente novamente mais tarde.',
+        )
+        setUploading(false)
       },
       async () => {
-        const url = await getDownloadURL(uploadTask.snapshot.ref);
+        const url = await getDownloadURL(uploadTask.snapshot.ref)
         clientEditAlbum({ id, name, description, image: url }).then(() => {
-          setUploading(false);
-          setError(false);
-          router.refresh();
-        });
+          setUploading(false)
+          setError(false)
+          router.refresh()
+        })
       },
-    );
-  };
+    )
+  }
 
   const handleDeleteAlbumImage = async () => {
     try {
-      if (!album?.image) return;
+      if (!album?.image) return
 
       const decodedPath = decodeURIComponent(
-        album.image.split("/o/")[1].split("?")[0],
-      );
+        album.image.split('/o/')[1].split('?')[0],
+      )
 
-      const imageRef = ref(storage, decodedPath);
+      const imageRef = ref(storage, decodedPath)
 
-      await deleteObject(imageRef);
+      await deleteObject(imageRef)
 
-      await clientEditAlbum({ id, name, description, image: "", songs }).then(
+      await clientEditAlbum({ id, name, description, image: '', songs }).then(
         () => {
-          setUploading(false);
-          setError(false);
-          router.refresh();
+          setUploading(false)
+          setError(false)
+          router.refresh()
         },
-      );
+      )
 
-      album.image = "";
+      album.image = ''
     } catch (error) {
       ErrorHandler(
         error,
-        "Falha ao remover imagem. Tente novamente mais tarde.",
-      );
+        'Falha ao remover imagem. Tente novamente mais tarde.',
+      )
     }
-  };
+  }
 
   return (
     <ButtonDialog.Root
@@ -127,13 +137,13 @@ export function EditMenuItem({ id, color }: idProps) {
           className={
             color
               ? `flex items-center gap-3 ${color}`
-              : "flex items-center gap-3"
+              : 'flex items-center gap-3'
           }
         >
           <EditIcon
             sx={{
-              height: "18px",
-              width: "18px",
+              height: '18px',
+              width: '18px',
             }}
           />
           Editar
@@ -172,5 +182,5 @@ export function EditMenuItem({ id, color }: idProps) {
         </>
       }
     />
-  );
+  )
 }

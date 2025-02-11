@@ -1,6 +1,6 @@
 import { ErrorHandler } from '@/helpers/ErrorHandler'
 import api from '@/lib/axios'
-import { TAlbum } from '@/models/models'
+import { TAlbum } from '@/models'
 import { cookies } from 'next/headers'
 
 export async function serverGetAlbum(id: number): Promise<TAlbum | null> {

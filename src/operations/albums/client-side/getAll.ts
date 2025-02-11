@@ -1,6 +1,6 @@
 import { ErrorHandler } from '@/helpers/ErrorHandler'
 import api from '@/lib/axios'
-import { TAlbum } from '@/models/models'
+import { TAlbum } from '@/models'
 import { getToken } from '@/operations/auth/getToken'
 
 export async function clientGetAlbums(): Promise<TAlbum[]> {

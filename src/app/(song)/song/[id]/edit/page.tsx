@@ -1,15 +1,13 @@
 'use client'
-import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
 import { fetcher } from '@/lib/fetcher'
-import { urlIdProps } from '@/models/models'
+import { TSong, urlIdProps } from '@/models'
 import { clientEditSong } from '@/operations/songs/client-side/editSong'
+import EditIcon from '@mui/icons-material/Edit'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import 'react-quill/dist/quill.snow.css'
 import useSWR from 'swr'
 import { ClassNameValue, twMerge } from 'tailwind-merge'
-import { useRouter } from 'next/navigation'
-import EditIcon from "@mui/icons-material/Edit";
-import { TSong } from '@/models/models'
 
 type InputProps = {
   text?: string
@@ -54,7 +52,7 @@ export default function EditSong({ params }: urlIdProps) {
     <div className="flex justify-between max-lg:flex-col">
       <div className="m-auto bg-white p-6 dark:bg-headerDark max-lg:w-full md:min-w-[800px]">
         <div className="flex flex-col gap-2">
-          <div className='flex justify-between'>
+          <div className="flex justify-between">
             <Input
               value={text.name}
               onChange={(e) =>
@@ -64,7 +62,8 @@ export default function EditSong({ params }: urlIdProps) {
             <button
               onClick={() =>
                 clientEditSong({ id, ...text }).then(() => push(`/song/${id}`))
-              }>
+              }
+            >
               <EditIcon />
             </button>
           </div>

@@ -1,8 +1,8 @@
 'use client'
 
-import { AuthContext } from '@/contexts/AuthContext'
+import { login } from '@/services/axios'
 import Link from 'next/link'
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import CircularIndeterminate from '../register/components/CircularIndeterminate'
 
 export default function Login() {
@@ -10,15 +10,13 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const { signIn } = useContext(AuthContext)
-
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
     setLoading(true)
 
     try {
-      await signIn({ email, password })
+      await login(email, password)
     } catch (error) {
       console.log(error)
     } finally {
