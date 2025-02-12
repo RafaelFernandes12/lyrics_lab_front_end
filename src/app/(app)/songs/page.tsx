@@ -14,10 +14,10 @@ export default async function Songs({
 }) {
   const token = (await getCookie('jwt', { cookies })) || ''
   const songs: TSong[] = (await get<TSong[]>('song', token)) || []
-  let sortedSongs = songs
 
-  const sortedByTitle = searchParams.sortedByTitle
-  const sortedByDay = searchParams.sortedByDay
+  let sortedSongs = songs
+  const sortedByTitle = searchParams?.sortedByTitle
+  const sortedByDay = searchParams?.sortedByDay
 
   if (sortedByTitle === 'true') {
     sortedSongs = songs.sort((a, b) => a.name.localeCompare(b.name))
@@ -35,7 +35,7 @@ export default async function Songs({
     <>
       <section className="flex items-center justify-between">
         <h1>Músicas</h1>
-        <CreateSongDialog />
+        <CreateSongDialog token={token} />
       </section>
 
       {songs.length === 0 ? (

@@ -3,19 +3,21 @@
 import { ButtonDialog } from '@/components/buttonDialog'
 import { TSong } from '@/models'
 import { post } from '@/services/axios'
-import { getCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-export function CreateSongDialog() {
+interface createSongDialogProps {
+  token: string
+}
+
+export function CreateSongDialog({ token }: createSongDialogProps) {
   const [name, setName] = useState('')
   const [tone, setTone] = useState('')
   const [albumIds, setAlbumIds] = useState<number[]>([])
   const router = useRouter()
 
   async function handleCreateSong() {
-    const token = (await getCookie('jwt')) || ''
-    post<TSong>('/song', { name, tone, albumIds }, token).then(() => {
+    await post<TSong>('/song', { name, tone, albumIds }, token).then(() => {
       router.refresh()
     })
   }

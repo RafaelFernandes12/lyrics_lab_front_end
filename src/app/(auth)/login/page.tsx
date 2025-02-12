@@ -2,6 +2,7 @@
 
 import { login } from '@/services/axios'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import CircularIndeterminate from '../register/components/CircularIndeterminate'
 
@@ -9,6 +10,7 @@ export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -21,6 +23,7 @@ export default function Login() {
       console.log(error)
     } finally {
       setLoading(false)
+      router.push('/dashboard')
     }
   }
 

@@ -7,7 +7,8 @@ export function middleware(request: NextRequest) {
 
   if (
     token &&
-    (url.pathname === '/login' ||
+    (url.pathname === '/' ||
+      url.pathname === '/login' ||
       url.pathname === '/register' ||
       url.pathname === '/coverage/**')
   ) {
@@ -21,7 +22,7 @@ export function middleware(request: NextRequest) {
     url.pathname !== '/register' &&
     url.pathname === '/coverage/**'
   ) {
-    url.pathname = '/login'
+    url.pathname = '/'
     return NextResponse.redirect(url)
   }
 

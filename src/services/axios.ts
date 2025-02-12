@@ -100,7 +100,6 @@ export async function login(email: string, password: string) {
 
 export async function logout() {
   await axiosInstance.post('/auth/logout')
-  window.location.href = '/login'
 }
 
 export async function register(name: string, email: string, password: string) {
