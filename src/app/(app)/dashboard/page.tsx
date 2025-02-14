@@ -1,13 +1,15 @@
 import { AlbumCard } from '@/components/albumCard/AlbumCard'
 import { SongCard } from '@/components/songCard/Index'
 import { ThreeDots } from '@/components/ThreeDots'
-import { TSong, TAlbum } from '@/models/models'
-import { serverGetAllAlbums } from '@/operations/albums/server-side/getAll'
-import { serverGetAllSongs } from '@/operations/songs/server-side/getAll'
+import { TAlbum, TSong } from '@/models'
+import { get } from '@/services/axios'
+import { getCookie } from 'cookies-next/server'
+import { cookies } from 'next/headers'
 
 export default async function Home() {
-  const albums: TAlbum[] = (await serverGetAllAlbums()) || []
-  const songs: TSong[] = (await serverGetAllSongs()) || []
+  const token = (await getCookie('jwt', { cookies })) || ''
+  const albums: TAlbum[] = (await get<TAlbum[]>('album', token)) || []
+  const songs: TSong[] = (await get<TSong[]>('song', token)) || []
 
   return (
     <>

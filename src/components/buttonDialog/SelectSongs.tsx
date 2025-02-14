@@ -1,13 +1,13 @@
 'use client'
-import { fetcher } from '@/lib/fetcher'
-import { TSong } from '@/models/models'
+import { TSong } from '@/models'
+import { fetcher } from '@/services/fetcher'
 import { useState } from 'react'
 import useSWR from 'swr'
 import { SearchBar } from '../searchBar'
 
 export function SelectSongs({ song }: { song: TSong[] }) {
   const [search, setSearch] = useState('')
-  const [songIds, setSongIds] = useState(song.map((s) => s.id));
+  const [songIds, setSongIds] = useState(song.map((s) => s.id))
   let { data: songs } = useSWR<TSong[]>('/song', fetcher)
   if (!songs) songs = []
 
@@ -51,14 +51,21 @@ export function SelectSongs({ song }: { song: TSong[] }) {
           <>
             <div className="mb-3 pl-2">
               {selectedNames.length !== 0 && <p>Músicas selecionadas:</p>}
-              <span data-testid='names'>{selectedNames.join(', ')}</span>
+              <span data-testid="names">{selectedNames.join(', ')}</span>
             </div>
             {filteredSong.length > 0 && (
               <>
                 <SearchBar.Title title="Selecionar músicas" />
                 {filteredSong.slice(0, 10).map((songs) => (
-                  <div key={songs.id} onClick={() => handleSelectChange(songs.id)}>
-                    <SearchBar.SongItem song={songs} search={search} album={songs.albums} />
+                  <div
+                    key={songs.id}
+                    onClick={() => handleSelectChange(songs.id)}
+                  >
+                    <SearchBar.SongItem
+                      song={songs}
+                      search={search}
+                      album={songs.albums}
+                    />
                   </div>
                 ))}
               </>

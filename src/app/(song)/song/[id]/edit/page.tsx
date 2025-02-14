@@ -1,15 +1,15 @@
 'use client'
-import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
-import { fetcher } from '@/lib/fetcher'
-import { urlIdProps } from '@/models/models'
-import { clientEditSong } from '@/operations/songs/client-side/editSong'
+
+import { TSong, urlIdProps } from '@/models'
+import { put } from '@/services/axios'
+import { fetcher } from '@/services/fetcher'
+import EditIcon from '@mui/icons-material/Edit'
+import { getCookie } from 'cookies-next'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import 'react-quill/dist/quill.snow.css'
 import useSWR from 'swr'
 import { ClassNameValue, twMerge } from 'tailwind-merge'
-import { useRouter } from 'next/navigation'
-import EditIcon from "@mui/icons-material/Edit";
-import { TSong } from '@/models/models'
 
 type InputProps = {
   text?: string
@@ -50,21 +50,25 @@ export default function EditSong({ params }: urlIdProps) {
 
   if (isLoading) return <div>Carregando...</div>
 
+  async function onEditSong() {
+    const token = (await getCookie('jwt')) || ''
+    put<TSong>(`/song/${id}`, { ...text }, token).then(() =>
+      push(`/song/${id}`),
+    )
+  }
+
   return (
     <div className="flex justify-between max-lg:flex-col">
       <div className="m-auto bg-white p-6 dark:bg-headerDark max-lg:w-full md:min-w-[800px]">
         <div className="flex flex-col gap-2">
-          <div className='flex justify-between'>
+          <div className="flex justify-between">
             <Input
               value={text.name}
               onChange={(e) =>
                 setText((prev) => ({ ...prev, name: e.target.value }))
               }
             />
-            <button
-              onClick={() =>
-                clientEditSong({ id, ...text }).then(() => push(`/song/${id}`))
-              }>
+            <button onClick={() => onEditSong}>
               <EditIcon />
             </button>
           </div>

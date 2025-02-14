@@ -1,7 +1,8 @@
 'use client'
-import { fetcher } from '@/lib/fetcher'
-import { urlIdProps } from '@/models/models'
-import { clientEditLyric } from '@/operations/songs/client-side/editLyric'
+
+import { fetcher } from '@/services/fetcher'
+import { urlIdProps } from '@/models/index'
+import { put } from '@/services/axios'
 import { useEffect, useRef, useState } from 'react'
 import { useReactToPrint } from 'react-to-print'
 import useSWR from 'swr'
@@ -11,6 +12,7 @@ import { replaceChordsInLine } from "../utils/util";
 import { regex } from '../utils/regex'
 import EditIcon from "@mui/icons-material/Edit";
 import Link from 'next/link'
+import { getCookie } from 'cookies-next'
 
 export default function Song({ params }: urlIdProps) {
   const id = params.id
@@ -82,7 +84,8 @@ export default function Song({ params }: urlIdProps) {
     const tone = replaceChordsInLine(songTone, chordType, { shift });
 
     const lyric = newLines.join('\n')
-    await clientEditLyric({ id, lyric, tone })
+    const token = (await getCookie('jwt')) || ''
+    await put(`/song/${id}`, { id, lyric, tone }, token)
     await mutate({ name: text.name, lyric, tone })
   }
 
@@ -96,7 +99,8 @@ export default function Song({ params }: urlIdProps) {
     const tone = replaceChordsInLine(songTone, chordType, { oppositeChordType });
 
     const lyric = newLines.join('\n')
-    await clientEditLyric({ id, lyric, tone })
+    const token = (await getCookie('jwt')) || ''
+    await put(`/song/${id}`, { id, lyric, tone }, token)
     await mutate({ name: text.name, lyric })
   }
 

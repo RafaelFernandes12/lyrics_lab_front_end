@@ -1,17 +1,19 @@
-"use client";
+'use client'
 
-import { idProps } from "@/models/models";
-import { clientDeleteSong } from "@/operations/songs/client-side/delete";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { MenuItem } from "@mui/material";
-import { useRouter } from "next/navigation";
-import { ButtonDialog } from "../buttonDialog";
+import { idProps, TSong } from '@/models'
+import { del } from '@/services/axios'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { MenuItem } from '@mui/material'
+import { getCookie } from 'cookies-next'
+import { useRouter } from 'next/navigation'
+import { ButtonDialog } from '../buttonDialog'
 
 export function DeleteMenuItem({ id }: idProps) {
-  const router = useRouter();
+  const router = useRouter()
 
-  function handleDeleteSong() {
-    clientDeleteSong(id).then(() => router.refresh());
+  async function handleDeleteSong() {
+    const token = (await getCookie('jwt')) || ''
+    await del<TSong>(`/song`, id, token).then(() => router.refresh())
   }
   return (
     <ButtonDialog.Root
@@ -21,8 +23,8 @@ export function DeleteMenuItem({ id }: idProps) {
         <MenuItem className="flex items-center gap-3">
           <DeleteIcon
             sx={{
-              height: "18px",
-              width: "18px",
+              height: '18px',
+              width: '18px',
             }}
           />
           Excluir
@@ -31,9 +33,9 @@ export function DeleteMenuItem({ id }: idProps) {
       body={
         <p className="dark:text-black">
           Tem certeza que deseja excluir a música? Esta ação não pode ser
-          desfeita{" "}
+          desfeita{' '}
         </p>
       }
     />
-  );
+  )
 }

@@ -5,13 +5,24 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('jwt')?.value || null
   const url = request.nextUrl.clone()
 
-  if (token && (url.pathname === '/login' || url.pathname === '/register' || url.pathname === '/coverage/**')) {
+  if (
+    token &&
+    (url.pathname === '/' ||
+      url.pathname === '/login' ||
+      url.pathname === '/register' ||
+      url.pathname === '/coverage/**')
+  ) {
     url.pathname = '/dashboard'
     return NextResponse.redirect(url)
   }
 
-  if (!token && url.pathname !== '/login' && url.pathname !== '/register' && url.pathname === '/coverage/**') {
-    url.pathname = '/login'
+  if (
+    !token &&
+    url.pathname !== '/login' &&
+    url.pathname !== '/register' &&
+    url.pathname === '/coverage/**'
+  ) {
+    url.pathname = '/'
     return NextResponse.redirect(url)
   }
 

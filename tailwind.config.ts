@@ -11,7 +11,8 @@ const config: Config = {
     extend: {
       colors: {
         redButton: 'rgb(239 68 68)',
-        blueButton: '#567EBB',
+        blueButton: 'rgb(37 99 235)',
+        blueButtonHover: 'rgb(29 78 216)',
         headerDark: 'rgb(53,53,53,33%)',
       },
       fontFamily: {

@@ -2,10 +2,13 @@ import logo from '@/assets/logo.svg'
 import { DeleteMenuItem } from '@/components/albumCard/DeleteMenuItem'
 import { EditMenuItem } from '@/components/albumCard/EditMenuItem'
 import { SongCard } from '@/components/songCard/Index'
-import { serverGetAlbum } from '@/operations/albums/server-side/getOne'
+import { ThreeDots } from '@/components/ThreeDots'
+import { TAlbum } from '@/models'
+import { get } from '@/services/axios'
+import { getCookie } from 'cookies-next'
+import { cookies } from 'next/headers'
 import Image from 'next/image'
 import { Thead } from '../components/Thead'
-import { ThreeDots } from '@/components/ThreeDots'
 
 interface albumProps {
   params: {
@@ -15,7 +18,9 @@ interface albumProps {
 }
 
 export default async function Album({ params, searchParams }: albumProps) {
-  const album = await serverGetAlbum(params.id)
+  const token = (await getCookie('jwt', { cookies })) || ''
+  const album: TAlbum = (await get<TAlbum>(`album/${params.id}`, token)) || []
+
   let sortedSongs = album?.songs
 
   const sortedByTitle = searchParams.sortedByTitle
@@ -85,9 +90,7 @@ export default async function Album({ params, searchParams }: albumProps) {
                     <SongCard.Tone song={song} />
                   </td>
                   <td className="py-5 pr-4 text-right">
-                    <SongCard.CreatedAt
-                      song={song}
-                    />
+                    <SongCard.CreatedAt song={song} />
                   </td>
                 </tr>
               )
