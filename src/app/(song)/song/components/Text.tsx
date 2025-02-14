@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import { ClassNameValue, twMerge } from 'tailwind-merge'
-import { analyzeLine } from "../utils/analyzeLine"
+import { analyzeLine } from "../utils/util"
 import { regex } from '../utils/regex'
 
 interface paragraphProps {

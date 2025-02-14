@@ -81,7 +81,7 @@ export default function EditSong({ params }: urlIdProps) {
               type="number"
               className="w-20 p-1 text-xl"
               text="Bpm: "
-              value={text.bpm.toString()}
+              value={text?.bpm?.toString() || ''}
               onChange={(e) =>
                 setText((prev) => ({ ...prev, bpm: parseInt(e.target.value) }))
               }

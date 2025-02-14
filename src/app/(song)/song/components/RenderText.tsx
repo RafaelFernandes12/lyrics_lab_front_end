@@ -1,5 +1,5 @@
-import { analyzeLine } from "../utils/analyzeLine"
-// import { modifyLines } from '../utils/modifyLines'
+import { regex } from "../utils/regex"
+import { analyzeLine, modifyLines, /* modifyLines */ } from "../utils/util"
 import { Paragraph, Words } from './Text'
 
 interface renderTextProps {
@@ -131,7 +131,7 @@ export function RenderText({
   //             <Strong
   //               fontSize={fontSize}
   //               lineHeight={lineHeight}
-  //               line={part.slice(2, -2)} // Removing *_ and _*
+  //              line={part.slice(2, -2)} // Removing *_ and _*
   //             />
   //           </i>
   //         )
@@ -196,13 +196,57 @@ export function RenderText({
   //   template.push(content)
   // }
 
+  const test = fittingParagraphs.map((line) => {
+    const { words } = analyzeLine(line)
+    return words.map(word => {
+
+      const { bold, italic, underline } = modifyLines(word)
+      const arr: string[] = []
+      if (bold) {
+        console.log(word)
+        arr.push(word)
+      }
+      if (italic) {
+        console.log(word)
+        arr.push(word)
+      } if (underline) {
+        console.log(word)
+        arr.push(word)
+      }
+      return arr
+    })
+  })
+  console.log(test)
   return (
     <>
       {fittingParagraphs.map((line, i) => {
+        const { words, isThereAnAorAnEinTheLine } = analyzeLine(line)
         return (
-          <Paragraph fontSize={fontSize} lineHeight={lineHeight} key={i}>
-            <Words line={line} />
-          </Paragraph>
+          <p key={i}
+            className='whitespace-pre-wrap font-mono'
+            style={{ fontSize, lineHeight }}
+          >
+            {words.map((word, index) => {
+              const isChord =
+                word.match(regex.chordRegex) &&
+                !isThereAnAorAnEinTheLine
+              if (isChord) {
+                return (
+                  <b
+                    key={index}
+                    className='font-semibold text-blue-700 dark:text-blue-500'
+                  >
+                    {word}{' '}
+                  </b>
+                )
+              }
+              return (
+                <span key={index}>
+                  {word}{' '}
+                </span>
+              )
+            })}
+          </p>
         )
       })}
     </>
