@@ -19,7 +19,7 @@ interface drawerComponentProps {
   pdfGenerator: () => void
   sharpChord: () => void
   flatChord: () => void
-  songId: number
+  songId: string
 }
 interface listProps {
   action: () => void
@@ -84,7 +84,8 @@ export function DrawerComponent({
   const chordType = localStorage.getItem(chordTypeStorage)
 
   const isSharpOrFlat = chordType === sharpChords ? sharpChords : flatChords
-  const liStyle = "flex items-center justify-center gap-3 border-b-[1px] border-gray-400 px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-600"
+  const liStyle =
+    'flex items-center justify-center gap-3 border-b-[1px] border-gray-400 px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-600'
   const drawer = (
     <ul className="flex flex-col dark:bg-black dark:text-white">
       <li className={liStyle}>

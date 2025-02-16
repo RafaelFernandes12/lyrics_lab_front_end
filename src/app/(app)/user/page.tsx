@@ -27,7 +27,7 @@ export default function User() {
       return response.user
     },
   })
-
+  console.log(user)
   if (isLoading) return <p>Carregando...</p>
   if (error || !user) return <p>Erro ao carregar usuário.</p>
 

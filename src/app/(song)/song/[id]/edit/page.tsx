@@ -5,7 +5,7 @@ import { put } from '@/services/axios'
 import { fetcher } from '@/services/fetcher'
 import EditIcon from '@mui/icons-material/Edit'
 import { getCookie } from 'cookies-next'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import 'react-quill/dist/quill.snow.css'
 import useSWR from 'swr'
@@ -30,8 +30,8 @@ function Input({ text, className, ...rest }: InputProps) {
 
 type data = Omit<TSong, 'id' | 'createdAt' | 'albums'>
 
-export default function EditSong({ params }: urlIdProps) {
-  const id = params.id
+export default function EditSong() {
+  const { id } = useParams<{ id: string }>()
   const { push } = useRouter()
   const { data, isLoading } = useSWR<data>(`/song/${id}`, fetcher)
   const [text, setText] = useState<data>({
@@ -51,7 +51,7 @@ export default function EditSong({ params }: urlIdProps) {
   if (isLoading) return <div>Carregando...</div>
 
   async function onEditSong() {
-    const token = (await getCookie('jwt')) || ''
+    const token = (await getToken()) || ''
     put<TSong>(`/song/${id}`, { ...text }, token).then(() =>
       push(`/song/${id}`),
     )
@@ -100,16 +100,6 @@ export default function EditSong({ params }: urlIdProps) {
             />
           </div>
         </div>
-        {/* <ReactQuill value={text.lyrics} */}
-        {/*   onChange={(lyrics) => { */}
-        {/*     setText((prev) => ({ */}
-        {/*       ...prev, */}
-        {/*       lyrics */}
-        {/*     })) */}
-        {/**/}
-        {/*   }} */}
-        {/*   placeholder="Comece aqui" */}
-        {/* /> */}
         <textarea
           onChange={(e) => {
             setText((prev) => ({

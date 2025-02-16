@@ -1,30 +1,30 @@
-import { regex } from "./regex";
+import { regex } from './regex'
 
 export function analyzeLine(line: string) {
-  const safeLine = line || "";
-  const words = safeLine.split(" ");
+  const safeLine = line || ''
+  const words = safeLine.split(' ')
 
   const isLineAChordLine = words.every(
-    (word) => regex.chordRegex.test(word) || word === "",
-  );
+    (word) => regex.chordRegex.test(word) || word === '',
+  )
 
-  const isInsideStars = regex.insideStarsRegex.test(safeLine);
-  const isInsideUndersafeLine = regex.insideUnderlineRegex.test(safeLine);
+  const isInsideStars = regex.insideStarsRegex.test(safeLine)
+  const isInsideUndersafeLine = regex.insideUnderlineRegex.test(safeLine)
 
-  const isLineEmpty = words.every((word) => word === "");
-  const lenMatchAorE = safeLine.match(regex.AorERegex);
-  const lenMatchNoChord = safeLine.match(regex.noChordRegex);
+  const isLineEmpty = words.every((word) => word === '')
+  const lenMatchAorE = safeLine.match(regex.AorERegex)
+  const lenMatchNoChord = safeLine.match(regex.noChordRegex)
 
-  const matchChordRegex = safeLine.match(regex.chordRegex);
+  const matchChordRegex = safeLine.match(regex.chordRegex)
 
   const isThereAnAorAnEinTheLine = !!(
     regex.AorERegex.test(safeLine) &&
     (matchChordRegex ? matchChordRegex.length < 2 : false) &&
     regex.noChordRegex.test(safeLine)
-  );
+  )
 
-  const isLineInsideStars = /\*.*\*/gm.test(safeLine);
-  const isLineInsideUndersafeLine = /_.*_/gm.test(safeLine);
+  const isLineInsideStars = /\*.*\*/gm.test(safeLine)
+  const isLineInsideUndersafeLine = /_.*_/gm.test(safeLine)
 
   return {
     words,
@@ -35,45 +35,45 @@ export function analyzeLine(line: string) {
     isInsideUndersafeLine,
     isLineInsideStars,
     isLineInsideUndersafeLine,
-  };
+  }
 }
 
 export function replaceChordsInLine(
   line: string,
   type: keyof typeof regex.chordSets,
   options: {
-    shift?: number;
-    oppositeChordType?: keyof typeof regex.chordSets;
+    shift?: number
+    oppositeChordType?: keyof typeof regex.chordSets
   },
 ): string {
   return line.replace(regex.chordRegex, (chord) => {
-    let updatedChord = chord;
+    let updatedChord = chord
 
-    const { isThereAnAorAnEinTheLine } = analyzeLine(line);
-    const baseChord = chord.match(regex.tomUpAndDownRegex);
+    const { isThereAnAorAnEinTheLine } = analyzeLine(line)
+    const baseChord = chord.match(regex.tomUpAndDownRegex)
 
     if (baseChord && !isThereAnAorAnEinTheLine) {
       baseChord.forEach((tone) => {
-        const index = regex.chordSets[type].indexOf(tone);
+        const index = regex.chordSets[type].indexOf(tone)
 
         if (index !== -1) {
-          let newChord: string;
+          let newChord: string
           if (options.shift)
             newChord =
               regex.chordSets[type][
-              (index + options.shift + regex.chordSets[type].length) %
-              regex.chordSets[type].length
-              ];
+                (index + options.shift + regex.chordSets[type].length) %
+                  regex.chordSets[type].length
+              ]
           else if (options.oppositeChordType)
-            newChord = regex.chordSets[options.oppositeChordType][index];
-          else newChord = tone;
+            newChord = regex.chordSets[options.oppositeChordType][index]
+          else newChord = tone
 
-          updatedChord = updatedChord.replace(tone, newChord);
+          updatedChord = updatedChord.replace(tone, newChord)
         }
-      });
+      })
     }
-    return updatedChord;
-  });
+    return updatedChord
+  })
 }
 
 export function modifyLines(part: string) {
@@ -85,5 +85,5 @@ export function modifyLines(part: string) {
     bold,
     italic,
     underline,
-  };
+  }
 }

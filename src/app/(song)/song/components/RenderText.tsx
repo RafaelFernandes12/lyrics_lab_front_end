@@ -1,5 +1,5 @@
-import { regex } from "../utils/regex"
-import { analyzeLine, modifyLines, /* modifyLines */ } from "../utils/util"
+import { regex } from '../utils/regex'
+import { analyzeLine, modifyLines /* modifyLines */ } from '../utils/util'
 import { Paragraph, Words } from './Text'
 
 interface renderTextProps {
@@ -15,7 +15,6 @@ export function RenderText({
   lineHeight,
   maxWidth,
 }: renderTextProps) {
-
   function breakTextIntoLines(text: string, maxCharsPerLine: number) {
     const lines = []
     let start = 0
@@ -52,18 +51,13 @@ export function RenderText({
     const maxCharsPerLine = Math.floor(maxWidth / (fontSize * 0.6))
 
     for (let i = 0; i < lines.length; i++) {
-      const {
-        isLineAChordLine: ILine1,
-        isLineEmpty: IEmpty1
-      } = analyzeLine(lines[i]) || 'aiyfwdauyfdwiu7atdfi'
+      const { isLineAChordLine: ILine1, isLineEmpty: IEmpty1 } =
+        analyzeLine(lines[i]) || 'aiyfwdauyfdwiu7atdfi'
 
-      const {
-        isLineAChordLine: ILine2,
-        isLineEmpty: IEmpty2
-      } = analyzeLine(lines[i + 1]) || 'iadgwiaygdioawda'
+      const { isLineAChordLine: ILine2, isLineEmpty: IEmpty2 } =
+        analyzeLine(lines[i + 1]) || 'iadgwiaygdioawda'
 
       if (ILine1 && !ILine2 && !IEmpty1 && !IEmpty2) {
-
         let midPoint = 0
         const lineWithChords: string[] = []
         const updatedChars: string[] = []
@@ -198,8 +192,7 @@ export function RenderText({
 
   const test = fittingParagraphs.map((line) => {
     const { words } = analyzeLine(line)
-    return words.map(word => {
-
+    return words.map((word) => {
       const { bold, italic, underline } = modifyLines(word)
       const arr: string[] = []
       if (bold) {
@@ -209,7 +202,8 @@ export function RenderText({
       if (italic) {
         console.log(word)
         arr.push(word)
-      } if (underline) {
+      }
+      if (underline) {
         console.log(word)
         arr.push(word)
       }
@@ -222,29 +216,25 @@ export function RenderText({
       {fittingParagraphs.map((line, i) => {
         const { words, isThereAnAorAnEinTheLine } = analyzeLine(line)
         return (
-          <p key={i}
-            className='whitespace-pre-wrap font-mono'
+          <p
+            key={i}
+            className="whitespace-pre-wrap font-mono"
             style={{ fontSize, lineHeight }}
           >
             {words.map((word, index) => {
               const isChord =
-                word.match(regex.chordRegex) &&
-                !isThereAnAorAnEinTheLine
+                word.match(regex.chordRegex) && !isThereAnAorAnEinTheLine
               if (isChord) {
                 return (
                   <b
                     key={index}
-                    className='font-semibold text-blue-700 dark:text-blue-500'
+                    className="font-semibold text-blue-700 dark:text-blue-500"
                   >
                     {word}{' '}
                   </b>
                 )
               }
-              return (
-                <span key={index}>
-                  {word}{' '}
-                </span>
-              )
+              return <span key={index}>{word} </span>
             })}
           </p>
         )

@@ -18,7 +18,7 @@ export function Input({ state, placeholder, value, type }: inputProps) {
         onChange={state}
         value={value}
         type={type}
-        data-testid='input'
+        data-testid="input"
       />
     </div>
   )
