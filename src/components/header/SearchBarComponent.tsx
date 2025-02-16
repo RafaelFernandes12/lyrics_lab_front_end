@@ -3,15 +3,27 @@ import { TAlbum, TSong } from '@/models'
 import Link from 'next/link'
 import { useState } from 'react'
 import { SearchBar } from '../searchBar'
+import { getToken } from '@/services/getToken'
+import { useQuery } from '@tanstack/react-query'
+import { get } from '@/services/axios'
 
-interface searchBarProps {
-  songs: TSong[]
-  albums: TAlbum[]
-}
-
-export function SearchBarComponent({ songs, albums }: searchBarProps) {
+export function SearchBarComponent() {
   const [search, setSearch] = useState('')
 
+  const { data: songs = [] } = useQuery({
+    queryKey: ['song'],
+    queryFn: async () => {
+      const token = (await getToken()) || ''
+      return await get<TSong[]>('song', token)
+    },
+  })
+  const { data: albums = [] } = useQuery({
+    queryKey: ['song'],
+    queryFn: async () => {
+      const token = (await getToken()) || ''
+      return await get<TAlbum[]>('album', token)
+    },
+  })
   const filteredSongs = songs.filter((song) =>
     song.name.toLowerCase().includes(search.toLowerCase().trim()),
   )

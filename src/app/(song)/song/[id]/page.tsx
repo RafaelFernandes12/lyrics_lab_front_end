@@ -16,15 +16,19 @@ import { getToken } from '@/services/getToken'
 
 export default function Song() {
   const { id } = useParams<{ id: string }>()
-
-  const { data: song, refetch } = useQuery({
-    queryKey: ['song'],
+  const {
+    data: song,
+    refetch,
+    isLoading,
+  } = useQuery({
+    queryKey: ['song', id],
     queryFn: async () => {
       const token = (await getToken()) || ''
-      return await get<TSong>(`/song/${id}`, token)
+      return await get<TSong>(`song/${id}`, token)
     },
   })
-
+  console.log(id)
+  console.log(song)
   const [text, setText] = useState({
     name: '',
     tone: '',
@@ -139,39 +143,43 @@ export default function Song() {
         sharpChord={() => handleChangeChord()}
         songId={id}
       />
-      <div
-        ref={containerRef}
-        className="m-auto bg-white p-6 dark:bg-headerDark max-lg:w-full md:min-w-[800px]"
-      >
-        <div className="mb-2 flex flex-col gap-2">
-          <div className="flex justify-between">
-            <h1>{song?.name}</h1>
-            <Link href={`${id}/edit`}>
-              <EditIcon />
-            </Link>
+      {isLoading ? (
+        <div>Carregando...</div>
+      ) : (
+        <div
+          ref={containerRef}
+          className="m-auto bg-white p-6 dark:bg-headerDark max-lg:w-full md:min-w-[800px]"
+        >
+          <div className="mb-2 flex flex-col gap-2">
+            <div className="flex justify-between">
+              <h1>{song?.name}</h1>
+              <Link href={`${id}/edit`}>
+                <EditIcon />
+              </Link>
+            </div>
+            <h3 className="text-base">
+              Tom:{' '}
+              <b className="text-blue-700 dark:text-blue-500">{song?.tone}</b>
+            </h3>
+            {song?.compass && (
+              <span className="whitespace-pre-wrap">
+                Compasso: {song?.compass}
+              </span>
+            )}
+            {song?.bpm && (
+              <span className="whitespace-pre-wrap">Bpm: {song?.bpm}</span>
+            )}
           </div>
-          <h3 className="text-base">
-            Tom:{' '}
-            <b className="text-blue-700 dark:text-blue-500">{song?.tone}</b>
-          </h3>
-          {song?.compass && (
-            <span className="whitespace-pre-wrap">
-              Compasso: {song?.compass}
-            </span>
-          )}
-          {song?.bpm && (
-            <span className="whitespace-pre-wrap">Bpm: {song?.bpm}</span>
-          )}
+          <div className="mt-10">
+            <RenderText
+              lines={text.lyric}
+              fontSize={textSize.fontSize}
+              lineHeight={textSize.lineHeight}
+              maxWidth={containerWidth}
+            />
+          </div>
         </div>
-        <div className="mt-10">
-          <RenderText
-            lines={text.lyric}
-            fontSize={textSize.fontSize}
-            lineHeight={textSize.lineHeight}
-            maxWidth={containerWidth}
-          />
-        </div>
-      </div>
+      )}
     </div>
   )
 }

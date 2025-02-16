@@ -1,23 +1,27 @@
+'use client'
 import { SongCard } from '@/components/songCard/Index'
 import { ThreeDots } from '@/components/ThreeDots'
 import { TSong } from '@/models'
 import { get } from '@/services/axios'
-import { getCookie } from 'cookies-next'
-import { cookies } from 'next/headers'
 import { CreateSongDialog } from './components/CreateSongDialog'
 import { Thead } from './components/Thead'
+import { useSearchParams } from 'next/navigation'
+import { useQuery } from '@tanstack/react-query'
+import { getToken } from '@/services/getToken'
 
-export default async function Songs({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined }
-}) {
-  const token = (await getCookie('jwt', { cookies })) || ''
-  const songs: TSong[] = (await get<TSong[]>('song', token)) || []
+export default function Songs() {
+  const searchParams = useSearchParams()
+  const { data: songs = [] } = useQuery({
+    queryKey: ['song'],
+    queryFn: async () => {
+      const token = (await getToken()) || ''
+      return await get<TSong[]>('song', token)
+    },
+  })
 
   let sortedSongs = songs
-  const sortedByTitle = searchParams?.sortedByTitle
-  const sortedByDay = searchParams?.sortedByDay
+  const sortedByTitle = searchParams.get('sortedByTitle')
+  const sortedByDay = searchParams.get('sortedByDay')
 
   if (sortedByTitle === 'true') {
     sortedSongs = songs.sort((a, b) => a.name.localeCompare(b.name))
@@ -35,7 +39,7 @@ export default async function Songs({
     <>
       <section className="flex items-center justify-between">
         <h1>Músicas</h1>
-        <CreateSongDialog token={token} />
+        <CreateSongDialog />
       </section>
 
       {songs.length === 0 ? (

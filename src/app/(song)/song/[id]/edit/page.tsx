@@ -1,14 +1,14 @@
 'use client'
 
-import { TSong, urlIdProps } from '@/models'
-import { put } from '@/services/axios'
-import { fetcher } from '@/services/fetcher'
+import { ErrorHandler } from '@/helpers/ErrorHandler'
+import { TSong } from '@/models'
+import { get, put } from '@/services/axios'
+import { getToken } from '@/services/getToken'
 import EditIcon from '@mui/icons-material/Edit'
-import { getCookie } from 'cookies-next'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import 'react-quill/dist/quill.snow.css'
-import useSWR from 'swr'
 import { ClassNameValue, twMerge } from 'tailwind-merge'
 
 type InputProps = {
@@ -33,7 +33,6 @@ type data = Omit<TSong, 'id' | 'createdAt' | 'albums'>
 export default function EditSong() {
   const { id } = useParams<{ id: string }>()
   const { push } = useRouter()
-  const { data, isLoading } = useSWR<data>(`/song/${id}`, fetcher)
   const [text, setText] = useState<data>({
     name: '',
     tone: '',
@@ -42,20 +41,37 @@ export default function EditSong() {
     compass: '',
   })
 
+  const { data, isLoading } = useQuery({
+    queryKey: ['song', id],
+    queryFn: async () => {
+      const token = (await getToken()) || ''
+      return await get<TSong>(`/song/${id}`, token)
+    },
+  })
+
+  const { mutate } = useMutation({
+    mutationFn: async () => {
+      const token = (await getToken()) || ''
+      return await put(`/song/${id}`, { ...text }, token)
+    },
+    onSuccess: () => {
+      push(`/song/${id}`)
+    },
+    onError: () => {
+      ErrorHandler('Erro ao arquivar ativo.')
+    },
+  })
+
   useEffect(() => {
     if (data) {
       setText({ ...data })
     }
   }, [data])
 
-  if (isLoading) return <div>Carregando...</div>
+  console.log(data)
+  console.log(text)
 
-  async function onEditSong() {
-    const token = (await getToken()) || ''
-    put<TSong>(`/song/${id}`, { ...text }, token).then(() =>
-      push(`/song/${id}`),
-    )
-  }
+  if (isLoading) return <div>Carregando...</div>
 
   return (
     <div className="flex justify-between max-lg:flex-col">
@@ -68,7 +84,7 @@ export default function EditSong() {
                 setText((prev) => ({ ...prev, name: e.target.value }))
               }
             />
-            <button onClick={() => onEditSong}>
+            <button onClick={() => mutate()}>
               <EditIcon />
             </button>
           </div>
@@ -93,7 +109,7 @@ export default function EditSong() {
             <Input
               className="w-20 p-1 text-xl"
               text="Compasso: "
-              value={text.compass}
+              value={text.compass || ''}
               onChange={(e) =>
                 setText((prev) => ({ ...prev, compass: e.target.value }))
               }
@@ -107,7 +123,7 @@ export default function EditSong() {
               lyric: e.target.value,
             }))
           }}
-          value={text.lyric}
+          value={text.lyric || ''}
           className="mt-10 h-[1200px] w-full resize-none rounded-sm bg-slate-100 p-1 font-mono text-sm outline-none max-sm:w-full"
           placeholder="Comece aqui"
           spellCheck={false}

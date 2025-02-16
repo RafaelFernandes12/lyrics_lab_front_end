@@ -11,13 +11,16 @@ import Image from 'next/image'
 import { Thead } from '../components/Thead'
 
 interface albumProps {
-  params: {
+  params: Promise<{
     id: number
-  }
-  searchParams: { [key: string]: string | string[] | undefined }
+  }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
-export default async function Album({ params, searchParams }: albumProps) {
+export default async function Album({
+  params,
+  searchParams,
+}: Promise<albumProps>) {
   const token = (await getCookie('jwt', { cookies })) || ''
   const album: TAlbum = (await get<TAlbum>(`album/${params.id}`, token)) || []
 
