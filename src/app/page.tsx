@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { AuthHeader } from '@/components/header/AuthHeader'
 import Link from 'next/link'
 
@@ -24,6 +25,13 @@ export default function Home() {
             </button>
           </Link>
         </div>
+=======
+export default function Home() {
+  return (
+    <body>
+      <main>
+        <h1 className="text-black">Landing page</h1>
+>>>>>>> main
       </main>
     </body>
   )

@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { regex } from '../utils/regex'
 import { analyzeLine, modifyLines /* modifyLines */ } from '../utils/util'
+=======
+import { analyzeLine } from "../utils/analyzeLine"
+// import { modifyLines } from '../utils/modifyLines'
+>>>>>>> main
 import { Paragraph, Words } from './Text'
 
 interface renderTextProps {
@@ -15,6 +20,10 @@ export function RenderText({
   lineHeight,
   maxWidth,
 }: renderTextProps) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
   function breakTextIntoLines(text: string, maxCharsPerLine: number) {
     const lines = []
     let start = 0
@@ -51,6 +60,7 @@ export function RenderText({
     const maxCharsPerLine = Math.floor(maxWidth / (fontSize * 0.6))
 
     for (let i = 0; i < lines.length; i++) {
+<<<<<<< HEAD
       const { isLineAChordLine: ILine1, isLineEmpty: IEmpty1 } =
         analyzeLine(lines[i]) || 'aiyfwdauyfdwiu7atdfi'
 
@@ -58,6 +68,20 @@ export function RenderText({
         analyzeLine(lines[i + 1]) || 'iadgwiaygdioawda'
 
       if (ILine1 && !ILine2 && !IEmpty1 && !IEmpty2) {
+=======
+      const {
+        isLineAChordLine: ILine1,
+        isLineEmpty: IEmpty1
+      } = analyzeLine(lines[i]) || 'aiyfwdauyfdwiu7atdfi'
+
+      const {
+        isLineAChordLine: ILine2,
+        isLineEmpty: IEmpty2
+      } = analyzeLine(lines[i + 1]) || 'iadgwiaygdioawda'
+
+      if (ILine1 && !ILine2 && !IEmpty1 && !IEmpty2) {
+
+>>>>>>> main
         let midPoint = 0
         const lineWithChords: string[] = []
         const updatedChars: string[] = []
@@ -125,7 +149,11 @@ export function RenderText({
   //             <Strong
   //               fontSize={fontSize}
   //               lineHeight={lineHeight}
+<<<<<<< HEAD
   //              line={part.slice(2, -2)} // Removing *_ and _*
+=======
+  //               line={part.slice(2, -2)} // Removing *_ and _*
+>>>>>>> main
   //             />
   //           </i>
   //         )
@@ -190,6 +218,7 @@ export function RenderText({
   //   template.push(content)
   // }
 
+<<<<<<< HEAD
   const test = fittingParagraphs.map((line) => {
     const { words } = analyzeLine(line)
     return words.map((word) => {
@@ -237,6 +266,15 @@ export function RenderText({
               return <span key={index}>{word} </span>
             })}
           </p>
+=======
+  return (
+    <>
+      {fittingParagraphs.map((line, i) => {
+        return (
+          <Paragraph fontSize={fontSize} lineHeight={lineHeight} key={i}>
+            <Words line={line} />
+          </Paragraph>
+>>>>>>> main
         )
       })}
     </>

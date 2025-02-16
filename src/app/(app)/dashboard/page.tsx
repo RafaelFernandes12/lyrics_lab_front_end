@@ -1,6 +1,7 @@
 import { AlbumCard } from '@/components/albumCard/AlbumCard'
 import { SongCard } from '@/components/songCard/Index'
 import { ThreeDots } from '@/components/ThreeDots'
+<<<<<<< HEAD
 import { TAlbum, TSong } from '@/models'
 import { get } from '@/services/axios'
 import { getCookie } from 'cookies-next/server'
@@ -10,6 +11,16 @@ export default async function Home() {
   const token = (await getCookie('jwt', { cookies })) || ''
   const albums: TAlbum[] = (await get<TAlbum[]>('album', token)) || []
   const songs: TSong[] = (await get<TSong[]>('song', token)) || []
+=======
+import { albumProps } from '@/models/albumProps'
+import { songProps } from '@/models/songProps'
+import { serverGetAllAlbums } from '@/operations/albums/server-side/getAll'
+import { serverGetAllSongs } from '@/operations/songs/server-side/getAll'
+
+export default async function Home() {
+  const albums: albumProps[] = (await serverGetAllAlbums()) || []
+  const songs: songProps[] = (await serverGetAllSongs()) || []
+>>>>>>> main
 
   return (
     <>

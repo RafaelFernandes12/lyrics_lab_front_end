@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { TAlbum, CreatedAt, Name, Tone } from "@/components/songCard/SongItems";
+=======
+import { Album, CreatedAt, Name, Tone } from "@/components/songCard/SongItems";
+>>>>>>> main
 import { songs, albums } from "@/mocks/mocks";
 import { render, screen } from "@testing-library/react";
 import dayjs from "dayjs";

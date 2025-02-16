@@ -1,15 +1,29 @@
+<<<<<<< HEAD
 import { TAlbum, TSong } from '@/models'
+=======
+import { albumProps } from '@/models/albumProps'
+import { songProps } from '@/models/songProps'
+>>>>>>> main
 import LibraryBooksOutlinedIcon from '@mui/icons-material/LibraryBooksOutlined'
 import LibraryMusicOutlinedIcon from '@mui/icons-material/LibraryMusicOutlined'
 
 interface albumItemsProps {
+<<<<<<< HEAD
   album: TAlbum
+=======
+  album: albumProps
+>>>>>>> main
   search: string
 }
 
 interface songItemsProps {
+<<<<<<< HEAD
   song: TSong
   album?: TAlbum[]
+=======
+  song: songProps
+  album?: albumProps[]
+>>>>>>> main
   search: string
 }
 
@@ -44,11 +58,18 @@ export function Title({ title }: { title: string }) {
 }
 
 export function SongItem({ song, album, search }: songItemsProps) {
+<<<<<<< HEAD
   function displayAlbum(albums: TAlbum[]) {
     return albums.map((album: TAlbum) => {
       if (album.isDefault) return
       if (albums.at(-1) !== album)
         return <span key={album.id}>{highlightText(album.name, search)}, </span>
+=======
+  function displayAlbum(albums: albumProps[]) {
+    return albums.map((album: albumProps) => {
+      if (album.isDefault) return;
+      if (albums.at(-1) !== album) return <span key={album.id}>{highlightText(album.name, search)}, </span>
+>>>>>>> main
       return <span key={album.id}>{highlightText(album.name, search)}</span>
     })
   }
@@ -60,7 +81,13 @@ export function SongItem({ song, album, search }: songItemsProps) {
       <LibraryMusicOutlinedIcon className="mr-2 dark:text-white" />
       <span>{highlightText(song.name, search)}</span>
       {album && album.length > 1 && (
+<<<<<<< HEAD
         <span className="ml-1">[{album && displayAlbum(album)}]</span>
+=======
+        <span className='ml-1'>
+          [{album && displayAlbum(album)}]
+        </span>
+>>>>>>> main
       )}
     </li>
   )

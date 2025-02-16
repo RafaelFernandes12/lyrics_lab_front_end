@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { QueryProvider } from '@/providers/QueryClientProvider'
+=======
+import { AuthProvider } from '@/contexts/AuthContext'
+>>>>>>> main
 import { Poppins } from 'next/font/google'
 import './globals.css'
 
@@ -12,7 +16,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
+<<<<<<< HEAD
     <QueryProvider>
+=======
+    <AuthProvider>
+>>>>>>> main
       <html
         lang="pt-br"
         className={poppins.variable}
@@ -20,6 +28,10 @@ export default function RootLayout({
       >
         {children}
       </html>
+<<<<<<< HEAD
     </QueryProvider>
+=======
+    </AuthProvider>
+>>>>>>> main
   )
 }

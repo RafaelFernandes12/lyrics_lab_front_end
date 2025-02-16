@@ -19,7 +19,11 @@ interface drawerComponentProps {
   pdfGenerator: () => void
   sharpChord: () => void
   flatChord: () => void
+<<<<<<< HEAD
   songId: string
+=======
+  songId: number
+>>>>>>> main
 }
 interface listProps {
   action: () => void
@@ -84,8 +88,12 @@ export function DrawerComponent({
   const chordType = localStorage.getItem(chordTypeStorage)
 
   const isSharpOrFlat = chordType === sharpChords ? sharpChords : flatChords
+<<<<<<< HEAD
   const liStyle =
     'flex items-center justify-center gap-3 border-b-[1px] border-gray-400 px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-600'
+=======
+  const liStyle = "flex items-center justify-center gap-3 border-b-[1px] border-gray-400 px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-600"
+>>>>>>> main
   const drawer = (
     <ul className="flex flex-col dark:bg-black dark:text-white">
       <li className={liStyle}>
@@ -105,7 +113,11 @@ export function DrawerComponent({
         <span className="p-0 text-sm">Texto</span>
         <ListItem action={textUp} icon={<TextIncreaseIcon />} />
       </li>
+<<<<<<< HEAD
       <li className="flex items-center justify-center gap-3 px-6 py-4 hover:bg-slate-300 dark:hover:bg-slate-600">
+=======
+      <li className="flex items-center justify-center gap-3 px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-600">
+>>>>>>> main
         <IconButton
           id="long-button"
           onClick={handleClick}
@@ -137,7 +149,11 @@ export function DrawerComponent({
   return (
     <>
       <div className="dark:text-black">
+<<<<<<< HEAD
         <div className="bg-white max-lg:hidden">{drawer}</div>
+=======
+        <div className="max-lg:hidden">{drawer}</div>
+>>>>>>> main
         <div>
           <button
             color="inherit"

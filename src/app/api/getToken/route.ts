@@ -2,7 +2,11 @@ import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
 export async function GET() {
+<<<<<<< HEAD
   const cookieStore = await cookies()
+=======
+  const cookieStore = cookies()
+>>>>>>> main
   const token = cookieStore.get('jwt')?.value
 
   if (token) {

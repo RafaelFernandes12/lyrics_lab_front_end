@@ -2,6 +2,7 @@
 
 import { ErrorHandler } from '@/helpers/ErrorHandler'
 import { storage } from '@/lib/firebase'
+<<<<<<< HEAD
 import { TAlbum, idProps } from '@/models'
 import { del, get } from '@/services/axios'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -26,6 +27,32 @@ export function DeleteMenuItem({ id, color }: idProps) {
       setAlbum(response)
     },
   })
+=======
+import { albumProps } from '@/models/albumProps'
+import { idProps } from '@/models/idProps'
+import { clientDeleteAlbum } from '@/operations/albums/client-side/delete'
+import { clientGetOneAlbum } from '@/operations/albums/client-side/getOne'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { MenuItem } from '@mui/material'
+import { deleteObject, ref } from 'firebase/storage'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { ButtonDialog } from '../buttonDialog'
+
+export function DeleteMenuItem({ id, color }: idProps) {
+  const [album, setAlbum] = useState<albumProps | null>(null)
+
+  const router = useRouter()
+
+  useEffect(() => {
+    const fetchAlbum = async () => {
+      const fetchedAlbum = await clientGetOneAlbum(id)
+      setAlbum(fetchedAlbum)
+    }
+
+    fetchAlbum()
+  }, [])
+>>>>>>> main
 
   async function handleDeleteAlbum() {
     try {
@@ -46,8 +73,12 @@ export function DeleteMenuItem({ id, color }: idProps) {
         'Falha ao remover imagem. Tente novamente mais tarde.',
       )
     } finally {
+<<<<<<< HEAD
       const token = (await getCookie('jwt')) || ''
       await del<TAlbum>(`/album/`, id, token).then(() => {
+=======
+      clientDeleteAlbum(id).then(() => {
+>>>>>>> main
         router.push('/dashboard')
         router.refresh()
       })
@@ -55,15 +86,23 @@ export function DeleteMenuItem({ id, color }: idProps) {
   }
 
   return (
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
     <ButtonDialog.Root
       action={handleDeleteAlbum}
       text="Excluir álbum"
       header={
         <MenuItem
           className={
+<<<<<<< HEAD
             color
               ? `flex items-center gap-3 ${color}`
               : 'flex items-center gap-3'
+=======
+            color ? `flex items-center gap-3 ${color}` : 'flex items-center gap-3'
+>>>>>>> main
           }
         >
           <DeleteIcon
@@ -74,6 +113,10 @@ export function DeleteMenuItem({ id, color }: idProps) {
           />
           Excluir
         </MenuItem>
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
       }
       body={
         <p className="dark:text-black">
@@ -82,5 +125,9 @@ export function DeleteMenuItem({ id, color }: idProps) {
         </p>
       }
     />
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
   )
 }

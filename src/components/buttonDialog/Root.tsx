@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 'use client'
 import CloseIcon from '@mui/icons-material/Close'
 import { DialogContent } from '@mui/material'
@@ -18,6 +19,28 @@ export function Root(props: rootProps) {
     setOpen(!open)
   }
   if (!open) return <div onClick={handleClick}>{props.header}</div>
+=======
+"use client";
+import CloseIcon from "@mui/icons-material/Close";
+import { DialogContent } from "@mui/material";
+import Dialog from "@mui/material/Dialog";
+import { useState } from "react";
+
+interface rootProps {
+  text: string;
+  action: () => void;
+  header: React.ReactNode;
+  body: React.ReactNode;
+  uploading?: boolean;
+}
+
+export function Root(props: rootProps) {
+  const [open, setOpen] = useState(false);
+  function handleClick() {
+    setOpen(!open);
+  }
+  if (!open) return <div onClick={handleClick}>{props.header}</div>;
+>>>>>>> main
   return (
     <Dialog open={open} onClose={handleClick} maxWidth="lg">
       <DialogContent className="flex flex-col items-center justify-center gap-4">
@@ -33,7 +56,11 @@ export function Root(props: rootProps) {
             className="bg-blueButton p-2 text-white"
             disabled={props.uploading}
           >
+<<<<<<< HEAD
             {props.uploading ? 'Carregando...' : 'Confirmar'}
+=======
+            {props.uploading ? "Carregando..." : "Confirmar"}
+>>>>>>> main
           </button>
           <button onClick={handleClick} className="bg-redButton p-2 text-white">
             Cancelar
@@ -41,5 +68,9 @@ export function Root(props: rootProps) {
         </div>
       </DialogContent>
     </Dialog>
+<<<<<<< HEAD
   )
+=======
+  );
+>>>>>>> main
 }

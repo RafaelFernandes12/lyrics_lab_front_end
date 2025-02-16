@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import MenuIcon from '@mui/icons-material/Menu'
 import WbSunnyIcon from '@mui/icons-material/WbSunny'

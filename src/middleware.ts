@@ -5,6 +5,7 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('jwt')?.value || null
   const url = request.nextUrl.clone()
 
+<<<<<<< HEAD
   if (
     token &&
     (url.pathname === '/' ||
@@ -12,10 +13,14 @@ export function middleware(request: NextRequest) {
       url.pathname === '/register' ||
       url.pathname === '/coverage/**')
   ) {
+=======
+  if (token && (url.pathname === '/login' || url.pathname === '/register' || url.pathname === '/coverage/**')) {
+>>>>>>> main
     url.pathname = '/dashboard'
     return NextResponse.redirect(url)
   }
 
+<<<<<<< HEAD
   if (
     !token &&
     url.pathname !== '/login' &&
@@ -23,6 +28,10 @@ export function middleware(request: NextRequest) {
     url.pathname === '/coverage/**'
   ) {
     url.pathname = '/'
+=======
+  if (!token && url.pathname !== '/login' && url.pathname !== '/register' && url.pathname === '/coverage/**') {
+    url.pathname = '/login'
+>>>>>>> main
     return NextResponse.redirect(url)
   }
 

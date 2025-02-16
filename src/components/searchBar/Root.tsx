@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 'use client'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import ClearIcon from '@mui/icons-material/Clear'
@@ -14,6 +15,24 @@ export function Root({ setSearch, body, header }: searchBarProps) {
   const searchRef = useRef<HTMLDivElement>(null)
 
   const handleClick = () => setOpen(!open)
+=======
+"use client";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import ClearIcon from "@mui/icons-material/Clear";
+import SearchIcon from "@mui/icons-material/Search";
+
+interface searchBarProps {
+  setSearch: (e: ChangeEvent<HTMLInputElement>) => void;
+  body: React.ReactNode;
+  header: React.ReactNode;
+}
+
+export function Root({ setSearch, body, header }: searchBarProps) {
+  const [open, setOpen] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  const handleClick = () => setOpen(!open);
+>>>>>>> main
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -22,17 +41,30 @@ export function Root({ setSearch, body, header }: searchBarProps) {
         !searchRef.current.contains(event.target as Node)
       ) {
         if (open) {
+<<<<<<< HEAD
           handleClick()
+=======
+          handleClick();
+>>>>>>> main
         }
       }
     }
 
+<<<<<<< HEAD
     document.addEventListener('mousedown', handleClickOutside)
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [handleClick, open])
+=======
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [handleClick, open]);
+>>>>>>> main
 
   return (
     <div>
@@ -62,5 +94,9 @@ export function Root({ setSearch, body, header }: searchBarProps) {
         </div>
       )}
     </div>
+<<<<<<< HEAD
   )
+=======
+  );
+>>>>>>> main
 }
