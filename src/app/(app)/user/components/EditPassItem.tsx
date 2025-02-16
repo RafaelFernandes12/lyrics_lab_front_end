@@ -1,7 +1,15 @@
 'use client'
+<<<<<<< HEAD
+
+import { ButtonDialog } from '@/components/buttonDialog'
+import { changePassword } from '@/services/axios'
+import { MenuItem } from '@mui/material'
+import { getCookie } from 'cookies-next'
+=======
 import { ButtonDialog } from '@/components/buttonDialog'
 import { changePassword } from '@/operations/user/changePassword'
 import { MenuItem } from '@mui/material'
+>>>>>>> main
 import { useState } from 'react'
 
 interface editPassItemProps {
@@ -13,11 +21,15 @@ export function EditPassItem({ email }: editPassItemProps) {
   const [newPass, setNewPass] = useState('')
   const [error, setError] = useState('')
 
+<<<<<<< HEAD
+  async function handleEditPass() {
+=======
   function handleClick() {
     setError('')
   }
 
   function handleEditPass() {
+>>>>>>> main
     const passwordRegex = /^[a-zA-Z0-9]{8,}$/
 
     if (!oldPass.trim()) {
@@ -43,11 +55,20 @@ export function EditPassItem({ email }: editPassItemProps) {
     }
 
     setError('')
+<<<<<<< HEAD
+
+    const token = (await getCookie('jwt')) || ''
+    changePassword(email, oldPass, newPass, token)
+  }
+
+  return (
+=======
     changePassword(email, oldPass, newPass)
   }
 
   return (
 
+>>>>>>> main
     <ButtonDialog.Root
       action={handleEditPass}
       text="Alterar a senha"
@@ -62,7 +83,10 @@ export function EditPassItem({ email }: editPassItemProps) {
         >
           Alterar a senha
         </MenuItem>
+<<<<<<< HEAD
+=======
 
+>>>>>>> main
       }
       body={
         <>

@@ -1,9 +1,29 @@
 import { AlbumCard } from '@/components/albumCard/AlbumCard'
+<<<<<<< HEAD
+import { TAlbum } from '@/models'
+import { get } from '@/services/axios'
+import { getCookie } from 'cookies-next'
+import { cookies } from 'next/headers'
+import { CreateAlbumDialog } from './components/CreateAlbumDialog'
+
+export default async function Albums() {
+  let albums: TAlbum[] = []
+
+  try {
+    const token = (await getCookie('jwt', { cookies })) || ''
+    const data = await get<TAlbum[]>('/album', token)
+    albums = data.filter((album: TAlbum) => !album.isDefault)
+  } catch (error) {
+    console.error('Falha ao obter álbuns. Tente novamente mais tarde.', error)
+  }
+
+=======
 import { serverGetAllAlbums } from '@/operations/albums/server-side/getAll'
 import { CreateAlbumDialog } from './components/CreateAlbumDialog'
 
 export default async function Albums() {
   const albums = (await serverGetAllAlbums()) || []
+>>>>>>> main
   return (
     <>
       <section className="flex items-center justify-between">

@@ -9,7 +9,19 @@ const validChords = [
   "E",
   "F",
   "G",
+<<<<<<< HEAD
+  "_A_",
+  "*A*",
+  "~A~",
+  "_A",
+  "A_",
+  "*A",
+  "A*",
+  "A~",
+  "~A",
+=======
 
+>>>>>>> main
   // Sharp and Flat Chords
   "A#",
   "C#",

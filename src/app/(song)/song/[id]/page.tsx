@@ -1,42 +1,51 @@
-'use client'
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import { fetcher } from '@/lib/fetcher'
-import { urlIdProps } from '@/models/urlIdProps'
-import { clientEditLyric } from '@/operations/songs/client-side/editLyric'
-import { clientEditSong } from '@/operations/songs/client-side/editSong'
-import { FormControlLabel, FormGroup, Switch } from '@mui/material'
-import { useCallback, useEffect, useRef, useState } from 'react'
+"use client"
+
+import { get, put } from '@/services/axios'
+import { useEffect, useRef, useState } from 'react'
 import { useReactToPrint } from 'react-to-print'
-import useSWR from 'swr'
 import { DrawerComponent } from '../components/DrawerComponent'
 import { RenderText } from '../components/RenderText'
-import { analyzeLine } from "../utils/analyzeLine";
+import { replaceChordsInLine } from '../utils/util'
 import { regex } from '../utils/regex'
+import EditIcon from '@mui/icons-material/Edit'
+import Link from 'next/link'
+import { useParams } from 'next/navigation'
+import { useQuery } from '@tanstack/react-query'
+import { TSong } from '@/models'
+import { getToken } from '@/services/getToken'
 
-export default function Song({ params }: urlIdProps) {
-  const { data: song, mutate } = useSWR(`/song/${params.id}`, fetcher)
+export default function Song() {
+  const { id } = useParams<{ id: string }>()
 
-  const [isChecked, setIsChecked] = useState(false)
+  const { data: song, refetch } = useQuery({
+    queryKey: ['song'],
+    queryFn: async () => {
+      const token = (await getToken()) || ''
+      return await get<TSong>(`/song/${id}`, token)
+    },
+  })
+
   const [text, setText] = useState({
     name: '',
-    tone: 'Comece aqui',
-    lyrics: '',
+    tone: '',
+    lyric: '',
     bpm: 0,
     compass: '',
   })
-  const [textSizeIndex, setTextSizeIndex] = useState(6)
+
   const [textSize, setTextSize] = useState({
     fontSize: 16,
     lineHeight: 1.1,
+    index: 6,
   })
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerWidth, setContainerWidth] = useState<number>(600)
 
+  const songLyric: string = song?.lyric || ''
   const songTone: string = song?.tone || ''
-  const lines: string[] = song?.lyric.split('\n') || []
+  const lines: string[] = songLyric.split('\n') || []
 
-  const chordTypeStorage = `chordType/song${params.id}/user${7}}`
+  const chordTypeStorage = `chordType/song${id}/user${7}}`
   const chordType =
     (localStorage.getItem(chordTypeStorage) as keyof typeof regex.chordSets) ||
     'flatChords'
@@ -46,12 +55,12 @@ export default function Song({ params }: urlIdProps) {
       setText({
         name: song.name,
         tone: song.tone,
-        lyrics: song.lyric,
-        bpm: song.bpm,
-        compass: song.compass,
+        lyric: songLyric,
+        bpm: song.bpm ? song.bpm : 0,
+        compass: song.compass ? song.compass : '',
       })
     }
-  }, [song])
+  }, [song, songLyric])
 
   useEffect(() => {
     if (containerRef.current) {
@@ -68,100 +77,54 @@ export default function Song({ params }: urlIdProps) {
     }
   }, [])
 
-  const handleToggle = useCallback(async () => {
-    setIsChecked((prev) => !prev)
-    await clientEditSong({
-      id: params.id,
-      name: text.name,
-      lyric: text.lyrics,
-      tone: text.tone,
-      bpm: text.bpm,
-      compass: text.compass,
-    })
-    await mutate({ name: text.name, lyric: text.lyrics, tone: text.tone })
-  }, [params.id, text, mutate])
-
   const handlePrint = useReactToPrint({
     content: () => containerRef.current,
   })
-
-  function replaceChordsInLine(
-    line: string,
-    type: keyof typeof regex.chordSets,
-    options: {
-      shift?: number;
-      oppositeChordType?: keyof typeof regex.chordSets;
-    }
-  ): string {
-    return line.replace(regex.chordRegex, (chord) => {
-      let updatedChord = chord;
-
-      const { isThereAnAorAnEinTheLine } = analyzeLine(line);
-      const baseChord = chord.match(regex.tomUpAndDownRegex);
-
-      if (baseChord && !isThereAnAorAnEinTheLine) {
-        baseChord.forEach((tone) => {
-
-          const index = regex.chordSets[type].indexOf(tone);
-
-          if (index !== -1) {
-            let newChord: string;
-            if (options.shift)
-              newChord =
-                regex.chordSets[type][
-                (index + options.shift + regex.chordSets[type].length) %
-                regex.chordSets[type].length
-                ];
-            else if (options.oppositeChordType) newChord = regex.chordSets[options.oppositeChordType][index];
-            else newChord = tone;
-
-            updatedChord = updatedChord.replace(tone, newChord);
-          }
-        });
-      }
-      return updatedChord;
-    });
-  }
 
   async function handleToneChange(direction: 'up' | 'down') {
     const shift = direction === 'up' ? 1 : -1
 
     const newLines = lines.map((line) =>
-      replaceChordsInLine(line, chordType, { shift })
-    );
+      replaceChordsInLine(line, chordType, { shift }),
+    )
 
-    const newTone = replaceChordsInLine(songTone, chordType, { shift });
+    const tone = replaceChordsInLine(songTone, chordType, { shift })
 
-    const newLyrics = newLines.join('\n')
-    await clientEditLyric({ id: params.id, lyric: newLyrics, tone: newTone })
-    await mutate({ name: text.name, lyric: newLyrics, tone: newTone })
+    const lyric = newLines.join('\n')
+    const token = (await getToken()) || ''
+    await put(`/song/${id}`, { id, lyric, tone }, token)
+    refetch()
+  }
+
+  async function handleChangeChord() {
+    const oppositeChordType =
+      chordType === 'sharpChords' ? 'flatChords' : 'sharpChords'
+
+    const newLines = lines.map((line) =>
+      replaceChordsInLine(line, chordType, { oppositeChordType }),
+    )
+
+    const tone = replaceChordsInLine(songTone, chordType, {
+      oppositeChordType,
+    })
+
+    const lyric = newLines.join('\n')
+    const token = (await getToken()) || ''
+    await put(`/song/${id}`, { id, lyric, tone }, token)
+    refetch()
   }
 
   function handleTextChange(direction: 'up' | 'down') {
     const shift = direction === 'up' ? 1 : -1
 
     const newIndex =
-      (textSizeIndex + shift + regex.textSizes.length) % regex.textSizes.length
+      (textSize.index + shift + regex.textSizes.length) % regex.textSizes.length
 
-    setTextSizeIndex(newIndex)
     setTextSize({
       fontSize: regex.textSizes[newIndex][0],
       lineHeight: regex.textSizes[newIndex][1],
+      index: newIndex,
     })
-  }
-
-  async function handleChangeChord() {
-    const oppositeChordType = chordType == 'sharpChords' ? 'flatChords' : 'sharpChords'
-
-    const newLines = lines.map((line) =>
-      replaceChordsInLine(line, chordType, { oppositeChordType })
-    );
-
-    const newTone = replaceChordsInLine(songTone, chordType, { oppositeChordType });
-
-    const newLyrics = newLines.join('\n')
-    await clientEditLyric({ id: params.id, lyric: newLyrics, tone: newTone })
-    await mutate({ name: text.name, lyric: newLyrics })
   }
 
   return (
@@ -174,119 +137,40 @@ export default function Song({ params }: urlIdProps) {
         textDown={() => handleTextChange('down')}
         flatChord={() => handleChangeChord()}
         sharpChord={() => handleChangeChord()}
-        songId={params.id}
+        songId={id}
       />
       <div
         ref={containerRef}
         className="m-auto bg-white p-6 dark:bg-headerDark max-lg:w-full md:min-w-[800px]"
       >
-        {isChecked ? (
-          <div className="flex flex-col gap-2">
-            <input
-              className="bg-slate-100 p-2 text-3xl"
-              value={text.name}
-              onChange={(e) => {
-                setText((prev) => ({
-                  ...prev,
-                  name: e.target.value,
-                }))
-              }}
-            />
-            <div>
-              <span>Tom: </span>
-              <input
-                className="bg-slate-100 p-1 text-xl"
-                value={text.tone}
-                onChange={(e) => {
-                  setText((prev) => ({
-                    ...prev,
-                    tone: e.target.value,
-                  }))
-                }}
-              />
-            </div>
-            <div className="flex gap-4">
-              <span>Bpm: </span>
-              <input
-                className="w-20 bg-slate-100 p-1"
-                value={text.bpm}
-                onChange={(e) => {
-                  setText((prev) => ({
-                    ...prev,
-                    bpm: parseInt(e.target.value),
-                  }))
-                }}
-              />
-              <span>Compasso: </span>
-              <input
-                className="w-20 bg-slate-100 p-1"
-                value={text.compass}
-                onChange={(e) => {
-                  setText((prev) => ({
-                    ...prev,
-                    compass: e.target.value,
-                  }))
-                }}
-              />
-            </div>
-          </div>
-        ) : (
-          <div className="mb-2 flex flex-col gap-2">
+        <div className="mb-2 flex flex-col gap-2">
+          <div className="flex justify-between">
             <h1>{song?.name}</h1>
-            <h3 className="text-base">
-              Tom:{' '}
-              <b className="text-blue-700 dark:text-blue-500">{song?.tone}</b>
-            </h3>
-            <span
-              className={`whitespace-pre-wrap ${!song?.compass && !song?.bpm ? 'hidden' : ''}`}
-            >
-              Compasso: {song?.compass} BPM: {song?.bpm}
+            <Link href={`${id}/edit`}>
+              <EditIcon />
+            </Link>
+          </div>
+          <h3 className="text-base">
+            Tom:{' '}
+            <b className="text-blue-700 dark:text-blue-500">{song?.tone}</b>
+          </h3>
+          {song?.compass && (
+            <span className="whitespace-pre-wrap">
+              Compasso: {song?.compass}
             </span>
-          </div>
-        )}
-        <FormGroup>
-          <FormControlLabel
-            onClick={handleToggle}
-            control={<Switch />}
-            label="Edição"
+          )}
+          {song?.bpm && (
+            <span className="whitespace-pre-wrap">Bpm: {song?.bpm}</span>
+          )}
+        </div>
+        <div className="mt-10">
+          <RenderText
+            lines={text.lyric}
+            fontSize={textSize.fontSize}
+            lineHeight={textSize.lineHeight}
+            maxWidth={containerWidth}
           />
-        </FormGroup>
-
-        {isChecked ? (
-          <>
-            {/* <ReactQuill value={text.lyrics} */}
-            {/*   onChange={(lyrics) => { */}
-            {/*     setText((prev) => ({ */}
-            {/*       ...prev, */}
-            {/*       lyrics */}
-            {/*     })) */}
-            {/**/}
-            {/*   }} */}
-            {/*   placeholder="Comece aqui" */}
-            {/* /> */}
-            <textarea
-              onChange={(e) => {
-                setText((prev) => ({
-                  ...prev,
-                  lyrics: e.target.value,
-                }))
-              }}
-              value={text.lyrics}
-              className="mt-10 h-[1200px] w-full resize-none rounded-sm bg-slate-100 p-1 font-mono text-sm outline-none max-sm:w-full"
-              placeholder="Comece aqui"
-              spellCheck={false}
-            />
-          </>
-        ) : (
-          <div className="mt-10">
-            <RenderText
-              lines={text.lyrics}
-              fontSize={textSize.fontSize}
-              lineHeight={textSize.lineHeight}
-              maxWidth={containerWidth}
-            />
-          </div>
-        )}
+        </div>
       </div>
     </div>
   )
