@@ -1,15 +1,20 @@
 'use client'
 import { TSong } from '@/models'
-import { fetcher } from '@/services/fetcher'
+import { get } from '@/services/axios'
+import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
-import useSWR from 'swr'
 import { SearchBar } from '../searchBar'
 
 export function SelectSongs({ song }: { song: TSong[] }) {
   const [search, setSearch] = useState('')
   const [songIds, setSongIds] = useState(song.map((s) => s.id))
-  let { data: songs } = useSWR<TSong[]>('/song', fetcher)
-  if (!songs) songs = []
+
+  const { data: songs = [] } = useQuery({
+    queryKey: ['song'],
+    queryFn: async () => {
+      return await get<TSong[]>('song')
+    },
+  })
 
   const handleSelectChange = (songsId: number) => {
     setSongIds((prev) => {

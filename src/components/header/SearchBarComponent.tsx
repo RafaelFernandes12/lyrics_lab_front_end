@@ -1,11 +1,11 @@
 'use client'
+
 import { TAlbum, TSong } from '@/models'
+import { get } from '@/services/axios'
+import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useState } from 'react'
 import { SearchBar } from '../searchBar'
-import { getToken } from '@/services/getToken'
-import { useQuery } from '@tanstack/react-query'
-import { get } from '@/services/axios'
 
 export function SearchBarComponent() {
   const [search, setSearch] = useState('')
@@ -13,23 +13,24 @@ export function SearchBarComponent() {
   const { data: songs = [] } = useQuery({
     queryKey: ['song'],
     queryFn: async () => {
-      const token = (await getToken()) || ''
-      return await get<TSong[]>('song', token)
+      return await get<TSong[]>('song')
     },
   })
+
   const { data: albums = [] } = useQuery({
     queryKey: ['song'],
     queryFn: async () => {
-      const token = (await getToken()) || ''
-      return await get<TAlbum[]>('album', token)
+      return await get<TAlbum[]>('album')
     },
   })
+
   const filteredSongs = songs.filter((song) =>
     song.name.toLowerCase().includes(search.toLowerCase().trim()),
   )
   const filteredAlbums = albums.filter((album) =>
     album.name.toLowerCase().includes(search.toLowerCase().trim()),
   )
+
   return (
     <SearchBar.Root
       setSearch={(e) => setSearch(e.target.value)}

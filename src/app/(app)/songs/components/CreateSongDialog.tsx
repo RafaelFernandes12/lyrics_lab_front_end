@@ -3,7 +3,6 @@
 import { ButtonDialog } from '@/components/buttonDialog'
 import { TSong } from '@/models'
 import { post } from '@/services/axios'
-import { getToken } from '@/services/getToken'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -14,9 +13,8 @@ export function CreateSongDialog() {
   const router = useRouter()
 
   async function handleCreateSong() {
-    const token = (await getToken()) || ''
 
-    await post<TSong>('/song', { name, tone, albumIds }, token).then(() => {
+    await post<TSong>('/song', { name, tone, albumIds }).then(() => {
       router.refresh()
     })
   }

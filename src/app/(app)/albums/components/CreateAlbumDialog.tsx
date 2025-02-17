@@ -3,7 +3,6 @@
 import { ButtonDialog } from '@/components/buttonDialog/index'
 import { TAlbum } from '@/models'
 import { post } from '@/services/axios'
-import { getToken } from '@/services/getToken'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -13,8 +12,7 @@ export function CreateAlbumDialog() {
   const router = useRouter()
 
   async function handleCreateAlbum() {
-    const token = (await getToken()) || ''
-    await post<TAlbum>(`album`, { name, description }, token).then((r) => {
+    await post<TAlbum>(`album`, { name, description }).then((r) => {
       console.log(r)
       router.refresh()
     })

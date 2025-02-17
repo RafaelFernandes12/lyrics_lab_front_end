@@ -3,7 +3,6 @@
 import { ButtonDialog } from '@/components/buttonDialog'
 import { changePassword } from '@/services/axios'
 import { MenuItem } from '@mui/material'
-import { getCookie } from 'cookies-next'
 import { useState } from 'react'
 
 interface editPassItemProps {
@@ -42,8 +41,7 @@ export function EditPassItem({ email }: editPassItemProps) {
 
     setError('')
 
-    const token = (await getCookie('jwt')) || ''
-    changePassword(email, oldPass, newPass, token)
+    changePassword(email, oldPass, newPass)
   }
 
   return (

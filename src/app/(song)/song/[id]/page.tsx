@@ -1,18 +1,17 @@
 'use client'
 
+import { TSong } from '@/models'
 import { get, put } from '@/services/axios'
+import EditIcon from '@mui/icons-material/Edit'
+import { useQuery } from '@tanstack/react-query'
+import Link from 'next/link'
+import { useParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { useReactToPrint } from 'react-to-print'
 import { DrawerComponent } from '../components/DrawerComponent'
 import { RenderText } from '../components/RenderText'
-import { replaceChordsInLine } from '../utils/util'
 import { regex } from '../utils/regex'
-import EditIcon from '@mui/icons-material/Edit'
-import Link from 'next/link'
-import { useParams } from 'next/navigation'
-import { useQuery } from '@tanstack/react-query'
-import { TSong } from '@/models'
-import { getToken } from '@/services/getToken'
+import { replaceChordsInLine } from '../utils/util'
 
 export default function Song() {
   const { id } = useParams<{ id: string }>()
@@ -23,8 +22,7 @@ export default function Song() {
   } = useQuery({
     queryKey: ['song', id],
     queryFn: async () => {
-      const token = (await getToken()) || ''
-      return await get<TSong>(`song/${id}`, token)
+      return await get<TSong>(`song/${id}`)
     },
   })
   console.log(id)
@@ -95,8 +93,7 @@ export default function Song() {
     const tone = replaceChordsInLine(songTone, chordType, { shift })
 
     const lyric = newLines.join('\n')
-    const token = (await getToken()) || ''
-    await put(`/song/${id}`, { id, lyric, tone }, token)
+    await put(`/song/${id}`, { id, lyric, tone })
     refetch()
   }
 
@@ -113,8 +110,7 @@ export default function Song() {
     })
 
     const lyric = newLines.join('\n')
-    const token = (await getToken()) || ''
-    await put(`/song/${id}`, { id, lyric, tone }, token)
+    await put(`/song/${id}`, { id, lyric, tone })
     refetch()
   }
 

@@ -7,7 +7,6 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded'
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded'
 import { useQuery } from '@tanstack/react-query'
-import { getCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'
 import { EditNameItem } from './components/EditNameItem'
 import { EditPassItem } from './components/EditPassItem'
@@ -22,8 +21,7 @@ export default function User() {
   } = useQuery({
     queryKey: ['user'],
     queryFn: async () => {
-      const token = (await getCookie('jwt')) || ''
-      const response = await get<{ user: TUser }>('/auth/user', token)
+      const response = await get<{ user: TUser }>('/auth/user')
       return response.user
     },
   })

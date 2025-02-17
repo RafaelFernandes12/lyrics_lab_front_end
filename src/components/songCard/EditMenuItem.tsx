@@ -2,14 +2,12 @@
 
 import { SuccessHandler } from '@/helpers/SuccessHandler'
 import { idProps, TAlbum, TSong } from '@/models'
-import { put } from '@/services/axios'
-import { fetcher } from '@/services/fetcher'
+import { get, put } from '@/services/axios'
 import EditIcon from '@mui/icons-material/Edit'
 import { MenuItem } from '@mui/material'
-import { getCookie } from 'cookies-next'
+import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import useSWR from 'swr'
 import { v4 as uuidv4 } from 'uuid'
 import { ButtonDialog } from '../buttonDialog/index'
 
@@ -21,7 +19,12 @@ export function EditMenuItem({ id }: idProps) {
 
   const router = useRouter()
 
-  const { data: song } = useSWR<TSong>(`/song/${id}`, fetcher)
+  const { data: song } = useQuery({
+    queryKey: ['song', id],
+    queryFn: async () => {
+      return await get<TSong>(`song/${id}`)
+    },
+  })
 
   useEffect(() => {
     if (song) {
@@ -36,8 +39,7 @@ export function EditMenuItem({ id }: idProps) {
       setError(true)
       return
     }
-    const token = (await getCookie('jwt')) || ''
-    await put<TSong>(`/song/${id}`, { name, tone, albums }, token).then(() => {
+    await put<TSong>(`/song/${id}`, { name, tone, albums }).then(() => {
       SuccessHandler({ id: uuidv4(), message: 'Música editada com sucesso' })
       setError(false)
       router.refresh()

@@ -4,7 +4,6 @@ import { idProps, TSong } from '@/models'
 import { del } from '@/services/axios'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { MenuItem } from '@mui/material'
-import { getCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'
 import { ButtonDialog } from '../buttonDialog'
 
@@ -12,8 +11,7 @@ export function DeleteMenuItem({ id }: idProps) {
   const router = useRouter()
 
   async function handleDeleteSong() {
-    const token = (await getCookie('jwt')) || ''
-    await del<TSong>(`/song`, id, token).then(() => router.refresh())
+    await del<TSong>(`/song`, id).then(() => router.refresh())
   }
   return (
     <ButtonDialog.Root

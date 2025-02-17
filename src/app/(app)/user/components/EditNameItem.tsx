@@ -4,7 +4,6 @@ import { ButtonDialog } from '@/components/buttonDialog'
 import { idProps } from '@/models'
 import { changeName } from '@/services/axios'
 import { MenuItem } from '@mui/material'
-import { getCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -18,8 +17,7 @@ export function EditNameItem({ id }: idProps) {
       setError(true)
       return
     }
-    const token = (await getCookie('jwt')) || ''
-    await changeName(id, name, token).then(() => {
+    await changeName(id, name).then(() => {
       router.refresh()
     })
   }

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosResponse } from 'axios'
+import { getToken } from './getToken'
 
 const detectBaseUrl = (): string => {
   return process.env.BASE_URL_API || 'http://localhost:5214/api'
@@ -10,8 +11,9 @@ export const axiosInstance = axios.create({
   withCredentials: true,
 })
 
-export async function get<T>(endPoint: string, token: string): Promise<T> {
+export async function get<T>(endPoint: string): Promise<T> {
   try {
+    const token = (await getToken()) || ''
     const response: AxiosResponse<T> = await axiosInstance.get<T>(endPoint, {
       headers: {
         Authorization: token ? `${token}` : undefined,
@@ -26,9 +28,9 @@ export async function get<T>(endPoint: string, token: string): Promise<T> {
 export async function post<T>(
   endPoint: string,
   body: object,
-  token: string,
 ): Promise<T> {
   try {
+    const token = (await getToken()) || ''
     const response: AxiosResponse<T> = await axiosInstance.post<T>(
       endPoint,
       body,
@@ -47,9 +49,9 @@ export async function post<T>(
 export async function put<T>(
   endPoint: string,
   body: object,
-  token: string,
 ): Promise<T> {
   try {
+    const token = (await getToken()) || ''
     const response: AxiosResponse<T> = await axiosInstance.put<T>(
       endPoint,
       body,
@@ -68,9 +70,9 @@ export async function put<T>(
 export async function del<T>(
   endPoint: string,
   id: number,
-  token: string,
 ): Promise<T> {
   try {
+    const token = (await getToken()) || ''
     const response: AxiosResponse<T> = await axiosInstance.delete<T>(
       `${endPoint}/${id}`,
       {
@@ -94,7 +96,7 @@ export async function login(email: string, password: string) {
     const data = response.data
     return data
   } catch (error: any) {
-    throw new Error(error || 'Erro ao fazer login.')
+    throw new Error(error || 'Erro na requisição.')
   }
 }
 
@@ -106,12 +108,13 @@ export async function register(name: string, email: string, password: string) {
   try {
     await axiosInstance.post('/auth/register', { name, email, password })
   } catch (error: any) {
-    throw new Error(error || 'Erro ao fazer logout.')
+    throw new Error(error || 'Erro na requisição.')
   }
 }
 
-export async function changeName(id: number, name: string, token: string) {
+export async function changeName(id: number, name: string) {
   try {
+    const token = (await getToken()) || ''
     await axiosInstance
       .put(
         `/user/${id}`,
@@ -127,7 +130,7 @@ export async function changeName(id: number, name: string, token: string) {
       })
   } catch (error: any) {
     throw new Error(
-      error || 'Falha ao alterar o nome. Tente novamente mais tarde.',
+      error || 'Erro na requisição.',
     )
   }
 }
@@ -136,10 +139,10 @@ export async function changePassword(
   email: string,
   oldPass: string,
   newPass: string,
-  token: string,
 ) {
   const password = oldPass
   try {
+    const token = (await getToken()) || ''
     const response = await axiosInstance.post('auth/login', { email, password })
     const data = response.data
 
@@ -161,7 +164,7 @@ export async function changePassword(
     }
   } catch (error: any) {
     throw new Error(
-      error || 'Falha ao alterar a senha. Tente novamente mais tarde.',
+      error || 'Erro na requisição.',
     )
   }
 }

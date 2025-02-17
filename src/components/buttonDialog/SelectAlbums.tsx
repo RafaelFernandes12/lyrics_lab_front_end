@@ -1,15 +1,21 @@
 'use client'
+
 import { TAlbum } from '@/models'
-import { fetcher } from '@/services/fetcher'
+import { get } from '@/services/axios'
+import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
-import useSWR from 'swr'
 import { SearchBar } from '../searchBar'
 
 export function SelectAlbums({ albums }: { albums: TAlbum[] }) {
   const [search, setSearch] = useState('')
   const [albumsIds, setAlbumsIds] = useState(albums.map((album) => album.id))
 
-  const { data: album } = useSWR<TAlbum[]>('/album', fetcher)
+  const { data: albumList } = useQuery({
+    queryKey: ['album'],
+    queryFn: async () => {
+      return await get<TAlbum[]>(`album`)
+    },
+  })
 
   const handleSelectChange = (albumId: number) => {
     setAlbumsIds((prev) => {
@@ -21,11 +27,12 @@ export function SelectAlbums({ albums }: { albums: TAlbum[] }) {
   const selectedNames = albumsIds
     .map(
       (id) =>
-        (album || []).find((data) => data.id === id && !data.isDefault)?.name,
+        (albumList || []).find((data) => data.id === id && !data.isDefault)
+          ?.name,
     )
     .filter((name) => name !== undefined) as string[]
 
-  const filteredAlbums = (album || []).filter(
+  const filteredAlbums = (albumList || []).filter(
     (album) =>
       album.name.toLowerCase().includes(search.toLowerCase().trim()) &&
       !album.isDefault,

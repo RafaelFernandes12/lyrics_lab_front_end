@@ -1,21 +1,20 @@
 'use client'
+
 import { SongCard } from '@/components/songCard/Index'
 import { ThreeDots } from '@/components/ThreeDots'
 import { TSong } from '@/models'
 import { get } from '@/services/axios'
+import { useQuery } from '@tanstack/react-query'
+import { useSearchParams } from 'next/navigation'
 import { CreateSongDialog } from './components/CreateSongDialog'
 import { Thead } from './components/Thead'
-import { useSearchParams } from 'next/navigation'
-import { useQuery } from '@tanstack/react-query'
-import { getToken } from '@/services/getToken'
 
 export default function Songs() {
   const searchParams = useSearchParams()
   const { data: songs = [] } = useQuery({
     queryKey: ['song'],
     queryFn: async () => {
-      const token = (await getToken()) || ''
-      return await get<TSong[]>('song', token)
+      return await get<TSong[]>('song')
     },
   })
 

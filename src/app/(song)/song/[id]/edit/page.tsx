@@ -3,7 +3,6 @@
 import { ErrorHandler } from '@/helpers/ErrorHandler'
 import { TSong } from '@/models'
 import { get, put } from '@/services/axios'
-import { getToken } from '@/services/getToken'
 import EditIcon from '@mui/icons-material/Edit'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useParams, useRouter } from 'next/navigation'
@@ -44,15 +43,13 @@ export default function EditSong() {
   const { data, isLoading } = useQuery({
     queryKey: ['song', id],
     queryFn: async () => {
-      const token = (await getToken()) || ''
-      return await get<TSong>(`/song/${id}`, token)
+      return await get<TSong>(`/song/${id}`)
     },
   })
 
   const { mutate } = useMutation({
     mutationFn: async () => {
-      const token = (await getToken()) || ''
-      return await put(`/song/${id}`, { ...text }, token)
+      return await put(`/song/${id}`, { ...text })
     },
     onSuccess: () => {
       push(`/song/${id}`)

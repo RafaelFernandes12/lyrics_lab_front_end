@@ -4,24 +4,14 @@ import { NextResponse } from 'next/server'
 export function middleware(request: NextRequest) {
   const token = request.cookies.get('jwt')?.value || null
   const url = request.nextUrl.clone()
+  const publicRoutes = ['/', '/login', '/register']
 
-  if (
-    token &&
-    (url.pathname === '/' ||
-      url.pathname === '/login' ||
-      url.pathname === '/register' ||
-      url.pathname === '/coverage/**')
-  ) {
+  if (token && publicRoutes.includes(url.pathname)) {
     url.pathname = '/dashboard'
     return NextResponse.redirect(url)
   }
 
-  if (
-    !token &&
-    url.pathname !== '/login' &&
-    url.pathname !== '/register' &&
-    url.pathname === '/coverage/**'
-  ) {
+  if (!token && !publicRoutes.includes(url.pathname)) {
     url.pathname = '/'
     return NextResponse.redirect(url)
   }

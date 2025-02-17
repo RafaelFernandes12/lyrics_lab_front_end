@@ -1,3 +1,5 @@
+'use client'
+
 import logo from '@/assets/logo.svg'
 import { DeleteMenuItem } from '@/components/albumCard/DeleteMenuItem'
 import { EditMenuItem } from '@/components/albumCard/EditMenuItem'
@@ -5,29 +7,26 @@ import { SongCard } from '@/components/songCard/Index'
 import { ThreeDots } from '@/components/ThreeDots'
 import { TAlbum } from '@/models'
 import { get } from '@/services/axios'
-import { getCookie } from 'cookies-next'
-import { cookies } from 'next/headers'
+import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
+import { useParams, useSearchParams } from 'next/navigation'
 import { Thead } from '../components/Thead'
 
-interface albumProps {
-  params: Promise<{
-    id: number
-  }>
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-}
+export default function Album() {
+  const { id } = useParams<{ id: string }>()
+  const searchParams = useSearchParams()
 
-export default async function Album({
-  params,
-  searchParams,
-}: Promise<albumProps>) {
-  const token = (await getCookie('jwt', { cookies })) || ''
-  const album: TAlbum = (await get<TAlbum>(`album/${params.id}`, token)) || []
+  const { data: album, isLoading } = useQuery({
+    queryKey: ['album', id],
+    queryFn: async () => {
+      return await get<TAlbum>(`album/${id}`)
+    },
+  })
 
   let sortedSongs = album?.songs
 
-  const sortedByTitle = searchParams.sortedByTitle
-  const sortedByDay = searchParams.sortedByDay
+  const sortedByTitle = searchParams.get('sortedByTitle')
+  const sortedByDay = searchParams.get('sortedByDay')
 
   if (sortedByTitle === 'true') {
     sortedSongs = album?.songs.sort((a, b) => a.name.localeCompare(b.name))
@@ -48,6 +47,9 @@ export default async function Album({
     )
     console.log(sortedSongs)
   }
+
+  if (isLoading) return <p>Carregando álbum...</p>
+
   return (
     <>
       <section className="flex w-full gap-7 max-sm:flex-col max-sm:text-center">
@@ -64,8 +66,8 @@ export default async function Album({
           <span>{album?.songs.length} músicas</span>
           <p className="w-10/12">{album?.description}</p>
           <div className="w-32">
-            <EditMenuItem id={params.id} color="text-white" />
-            <DeleteMenuItem id={params.id} color="text-white" />
+            <EditMenuItem id={parseInt(id)} color="text-white" />
+            <DeleteMenuItem id={parseInt(id)} color="text-white" />
           </div>
         </div>
       </section>
