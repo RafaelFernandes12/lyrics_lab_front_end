@@ -96,10 +96,7 @@ export function RenderText({
   const fittingParagraphs =
     maxWidth > 0 ? getTextWithinWidth(lines, maxWidth) : []
 
-  const paragraphs: JSX.Element[][] = []
-  const test: JSX.Element[][] = []
-
-  const teste = fittingParagraphs.map((line) => {
+  const paragraphs = fittingParagraphs.map((line) => {
     let newLine = line
     const { isThereAnAorAnEinTheLine } = analyzeLine(line)
 
@@ -124,45 +121,10 @@ export function RenderText({
 
     return newLine
   })
-  console.log(teste)
-
-  fittingParagraphs.forEach((line) => {
-    const words = line.split(' ')
-    const { isThereAnAorAnEinTheLine } = analyzeLine(line)
-    const paragraph: JSX.Element[] = []
-
-    for (const word of words) {
-      const { bold, italic, underline } = analyzeLine(word)
-
-      const cleanedWord = word
-        .replace(/\*/g, '')
-        .replace(/_/g, '')
-        .replace(/~/g, '')
-
-      let styledWord: JSX.Element = <>{cleanedWord}</>
-
-      if (underline) styledWord = <u>{styledWord}</u>
-      if (italic) styledWord = <em>{styledWord}</em>
-      if (bold) styledWord = <strong>{styledWord}</strong>
-
-      const isChord = word.match(regex.chordRegex) && !isThereAnAorAnEinTheLine
-      if (isChord) {
-        styledWord = (
-          <b className="font-semibold text-blue-700 dark:text-blue-500">
-            {styledWord}{' '}
-          </b>
-        )
-      }
-
-      paragraph.push(styledWord)
-    }
-
-    paragraphs.push(paragraph)
-  })
 
   return (
     <>
-      {teste.map((text, index) => (
+      {paragraphs.map((text, index) => (
         <div
           key={index}
           className="whitespace-pre-wrap font-mono"
