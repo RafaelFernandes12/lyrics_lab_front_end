@@ -65,9 +65,6 @@ export default function EditSong() {
     }
   }, [data])
 
-  console.log(data)
-  console.log(text)
-
   if (isLoading) return <div>Carregando...</div>
 
   return (

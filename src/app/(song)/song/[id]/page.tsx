@@ -13,6 +13,7 @@ import { RenderText } from '../components/RenderText'
 import { regex } from '../utils/regex'
 import { replaceChordsInLine } from '../utils/util'
 
+
 export default function Song() {
   const { id } = useParams<{ id: string }>()
   const {
@@ -25,8 +26,7 @@ export default function Song() {
       return await get<TSong>(`song/${id}`)
     },
   })
-  console.log(id)
-  console.log(song)
+
   const [text, setText] = useState({
     name: '',
     tone: '',
@@ -64,6 +64,7 @@ export default function Song() {
     }
   }, [song, songLyric])
 
+
   useEffect(() => {
     if (containerRef.current) {
       const observer = new ResizeObserver((entries) => {
@@ -79,9 +80,11 @@ export default function Song() {
     }
   }, [])
 
+
   const handlePrint = useReactToPrint({
     content: () => containerRef.current,
   })
+
 
   async function handleToneChange(direction: 'up' | 'down') {
     const shift = direction === 'up' ? 1 : -1

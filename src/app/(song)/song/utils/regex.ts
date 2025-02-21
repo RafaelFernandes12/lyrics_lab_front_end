@@ -1,4 +1,4 @@
-export const chordSets = {
+const chordSets = {
   sharpChords: [
     'A',
     'A#',
@@ -28,16 +28,16 @@ const textSizes = [
   [24, 1.4],
   [26, 1.5],
 ]
-export const chordRegex =
-  /(?:\s|^|[_*~])[A-G](#|b)?(maj|min|dim|aug|sus|m|M|add|7|maj7|m7|7M)?(\d+)?(\/[A-G](#|b)?(maj|min|dim|aug|sus|m|M|add|7|maj7|m7|7M)?(\d+)?)*(?:\s|$|[_*~])/g
-export const noChordRegex = /\b(?![A-G])\w+\b/g
+const chordRegex =
+  /(?:\s|^)[A-G](#|b)?(maj|min|dim|aug|sus|m|M|add|7|maj7|m7|7M)?(\d+)?(\/[A-G](#|b)?(maj|min|dim|aug|sus|m|M|add|7|maj7|m7|7M)?(\d+)?)*(?:\s|$)/g
+const noChordRegex = /\b(?![A-G])\w+\b/g
 
-export const AorERegex = /\b[AE](m)?\b(?![/#])/g
-export const tomUpAndDownRegex = /[A-G](#|b)?/g
+const AorERegex = /\b[AE](m)?\b(?![/#])/g
+const tomUpAndDownRegex = /[A-G](#|b)?/g
 
-export const insideSymbolsRegex = /(?<=\[|\(|\{_).*(?=\]|\)|\}_)/gm
-export const insideStarsRegex = /(?<=\*).*(?=\*)/gm
-export const insideUnderlineRegex = /(?<=_).*(?=_)/gm
+const bold = /\*((?:[^*]|\*{2})*?)\*(?!\*)/g
+const italic = /_((?:[^_]|__)*?)_(?!_)/g
+const underline = /~((?:[^~]|~~)*?)~(?!~)/g
 
 export const regex = {
   chordSets,
@@ -46,6 +46,7 @@ export const regex = {
   noChordRegex,
   AorERegex,
   tomUpAndDownRegex,
-  insideStarsRegex,
-  insideUnderlineRegex,
+  bold,
+  italic,
+  underline,
 }
