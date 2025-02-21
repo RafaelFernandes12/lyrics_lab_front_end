@@ -1,6 +1,5 @@
 'use client'
 
-import { SuccessHandler } from '@/helpers/SuccessHandler'
 import { idProps, TAlbum, TSong } from '@/models'
 import { get, put } from '@/services/axios'
 import EditIcon from '@mui/icons-material/Edit'
@@ -40,7 +39,7 @@ export function EditMenuItem({ id }: idProps) {
       return
     }
     await put<TSong>(`/song/${id}`, { name, tone, albums }).then(() => {
-      SuccessHandler({ id: uuidv4(), message: 'Música editada com sucesso' })
+      console.log({ id: uuidv4(), message: 'Música editada com sucesso' })
       setError(false)
       router.refresh()
     })

@@ -1,12 +1,12 @@
+import GenericCreate from '@/components/genericCreate/GenericCreate'
 import { AlbumList } from './components/AlbumList'
-import { CreateAlbumDialog } from './components/CreateAlbumDialog'
 
-export default async function Albums() {
+export default function Albums() {
   return (
     <div>
       <section className="flex items-center justify-between">
         <h1>Álbuns</h1>
-        <CreateAlbumDialog />
+        <GenericCreate title={'Álbum'} type="album" />
       </section>
       <section>
         <AlbumList />

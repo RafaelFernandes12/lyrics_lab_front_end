@@ -21,16 +21,12 @@ export function AlbumList() {
       ) : (
         <div className="grid w-full grid-cols-5 gap-4 max-2xl:grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:flex max-sm:flex-col max-sm:items-center">
           {albums.slice(0, 5).map((album) => {
-            const songsNames = album.songs.flatMap((song) => {
-              return song.name
-            })
             return (
               <AlbumCard
                 id={album.id}
                 key={album.id}
                 name={album.name}
                 image={album.image}
-                songs={songsNames}
               />
             )
           })}

@@ -6,9 +6,13 @@ import { SwitchTheme } from './SwitchTheme'
 export function Header() {
   return (
     <header
-      className={`flex h-[100px] items-center justify-between bg-white px-[4%] dark:bg-headerDark`}
+      className={`flex h-[80px] items-center justify-between bg-white px-[4%] dark:bg-headerDark`}
     >
-      <Link href="/dashboard" data-testid="logoLink">
+      <Link
+        href="/dashboard"
+        data-testid="logoLink"
+        className="flex w-fit items-center justify-start gap-4"
+      >
         <svg
           data-testid="logo"
           width="96"
@@ -33,8 +37,9 @@ export function Header() {
             className="fill-black dark:fill-white"
           />
         </svg>
+        <h1 className="italic">Lyrics Lab</h1>
       </Link>
-      <div className="flex w-full justify-end">
+      <div className="flex w-fit justify-end">
         <ul className="flex items-center gap-16 text-xl max-md:hidden">
           <li>
             <Link href="/songs">
@@ -54,7 +59,7 @@ export function Header() {
           <SwitchTheme />
           <Link href="/user">
             <PersonRoundedIcon
-              sx={{ width: 60, height: 60 }}
+              sx={{ width: 40, height: 40 }}
               className="dark:text-white max-md:hidden"
             />
           </Link>

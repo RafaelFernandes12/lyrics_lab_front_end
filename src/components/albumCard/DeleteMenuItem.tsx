@@ -1,9 +1,8 @@
 'use client'
 
-import { ErrorHandler } from '@/helpers/ErrorHandler'
-import { storage } from '@/lib/firebase'
 import { TAlbum, idProps } from '@/models'
 import { del, get } from '@/services/axios'
+import { storage } from '@/services/firebase'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { MenuItem } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
@@ -35,10 +34,7 @@ export function DeleteMenuItem({ id, color }: idProps) {
 
       album.image = ''
     } catch (error) {
-      ErrorHandler(
-        error,
-        'Falha ao remover imagem. Tente novamente mais tarde.',
-      )
+      console.log(error, 'Falha ao remover imagem. Tente novamente mais tarde.')
     } finally {
       await del<TAlbum>(`/album/`, id).then(() => {
         router.push('/dashboard')

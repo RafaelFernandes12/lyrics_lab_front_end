@@ -1,6 +1,5 @@
 'use client'
 
-import { ErrorHandler } from '@/helpers/ErrorHandler'
 import { TSong } from '@/models'
 import { get, put } from '@/services/axios'
 import EditIcon from '@mui/icons-material/Edit'
@@ -55,7 +54,7 @@ export default function EditSong() {
       push(`/song/${id}`)
     },
     onError: () => {
-      ErrorHandler('Erro ao arquivar ativo.')
+      console.log('Erro')
     },
   })
 

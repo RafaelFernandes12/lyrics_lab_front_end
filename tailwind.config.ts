@@ -10,7 +10,6 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        redButton: 'rgb(239 68 68)',
         blueButton: 'rgb(37 99 235)',
         blueButtonHover: 'rgb(29 78 216)',
         headerDark: 'rgb(53,53,53,33%)',

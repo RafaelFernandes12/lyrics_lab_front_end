@@ -39,8 +39,4 @@
   p {
     @apply text-sm
   }
-
-  button {
-    @apply rounded-lg p-3;
-  }
 }

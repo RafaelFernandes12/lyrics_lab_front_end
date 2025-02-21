@@ -1,9 +1,11 @@
 import { QueryProvider } from '@/providers/QueryClientProvider'
+import '@ant-design/v5-patch-for-react-19'
 import { Poppins } from 'next/font/google'
 import './globals.css'
 
 const poppins = Poppins({
-  weight: ['400', '600', '700'],
+  weight: ['300', '400', '500', '600', '700', '800', '900'],
+  style: ['normal', 'italic'],
   subsets: ['latin'],
   variable: '--font-poppins',
 })

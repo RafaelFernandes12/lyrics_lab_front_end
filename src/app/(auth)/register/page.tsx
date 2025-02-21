@@ -1,6 +1,5 @@
 'use client'
 
-import { ErrorHandler } from '@/helpers/ErrorHandler'
 import { register } from '@/services/axios'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -54,7 +53,6 @@ export default function Register() {
 
   async function handleVerifyCode() {
     if (parseInt(enteredCode) !== verificationCode) {
-      ErrorHandler(error, 'Código de verificação inválido!')
       return
     }
 

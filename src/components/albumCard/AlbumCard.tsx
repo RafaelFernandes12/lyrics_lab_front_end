@@ -1,53 +1,34 @@
 import logo from '@/assets/logo.svg'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ThreeDots } from '../ThreeDots'
-import { DeleteMenuItem } from './DeleteMenuItem'
-import { EditMenuItem } from './EditMenuItem'
 
 interface albumCardProps {
   id: number
   name: string
   image: string | null
-  songs: string[]
 }
 
 export function AlbumCard(props: albumCardProps) {
   return (
-    <div className="flex h-[285px] w-[240px] flex-col gap-2 rounded-xl bg-slate-200 p-5 dark:bg-headerDark">
-      <Link href={`/album/${props.id}`}>
-        <Image
-          src={props.image || logo}
-          alt="example"
-          width={200}
-          height={180}
-          style={{ objectFit: props.image ? 'cover' : 'contain' }}
-          className={`m-auto h-[180px] w-[200px] flex-col rounded-xl bg-white ${props.image ? 'object-cover' : 'object-contain'}`}
-        />
-      </Link>
-
-      <div className="flex w-full items-center justify-between">
-        <div className="w-10/12">
-          <p className="truncate text-xl font-semibold">{props.name}</p>
-          <p className="truncate text-sm">
-            {props.songs.map((song, index) => {
-              if (props.songs.indexOf(song, index) !== props.songs.length - 1) {
-                return (
-                  <span key={index}>
-                    {song}
-                    <span>, </span>
-                  </span>
-                )
-              }
-              return <span key={index}>{song}</span>
-            })}
-          </p>
+    <Link
+      href={`/album/${props.id}`}
+      className="block h-[240px] w-[200px] transition-transform duration-200 hover:scale-105"
+    >
+      <div className="flex flex-col items-center space-y-2 rounded-lg">
+        <div className="flex h-[180px] w-[200px] items-center justify-center bg-gray-200">
+          <Image
+            src={props.image || logo}
+            alt={props.name}
+            width={140}
+            height={120}
+            className="object-contain"
+            style={{ objectFit: props.image ? 'cover' : 'contain' }}
+          />
         </div>
-        <ThreeDots color={'dark:text-white'}>
-          <EditMenuItem id={props.id} />
-          <DeleteMenuItem id={props.id} />
-        </ThreeDots>
+        <p className="w-full truncate text-left text-xl font-semibold">
+          {props.name}
+        </p>
       </div>
-    </div>
+    </Link>
   )
 }

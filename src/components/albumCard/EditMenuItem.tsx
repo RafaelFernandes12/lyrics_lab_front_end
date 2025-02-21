@@ -1,10 +1,9 @@
 'use client'
 
 import UploadImage from '@/components/albumCard/UploadImage'
-import { ErrorHandler } from '@/helpers/ErrorHandler'
-import { storage } from '@/lib/firebase'
 import { idProps, TAlbum, TSong, TUser } from '@/models'
 import { get, put } from '@/services/axios'
+import { storage } from '@/services/firebase'
 import EditIcon from '@mui/icons-material/Edit'
 import HideImageIcon from '@mui/icons-material/HideImage'
 import { MenuItem } from '@mui/material'
@@ -84,7 +83,7 @@ export function EditMenuItem({ id, color }: idProps) {
         console.log('Upload is ' + progress + '% done')
       },
       (error) => {
-        ErrorHandler(
+        console.log(
           error,
           'Falha no carregamento da imagem. Tente novamente mais tarde.',
         )
@@ -132,10 +131,7 @@ export function EditMenuItem({ id, color }: idProps) {
 
       album.image = ''
     } catch (error) {
-      ErrorHandler(
-        error,
-        'Falha ao remover imagem. Tente novamente mais tarde.',
-      )
+      console.log(error, 'Falha ao remover imagem. Tente novamente mais tarde.')
     }
   }
 
@@ -180,7 +176,7 @@ export function EditMenuItem({ id, color }: idProps) {
               <div>
                 <button
                   onClick={handleDeleteAlbumImage}
-                  className="flex items-center gap-2 rounded bg-redButton p-2 text-white"
+                  className="bg-redButton flex items-center gap-2 rounded p-2 text-white"
                 >
                   <HideImageIcon />
                   Remover imagem
