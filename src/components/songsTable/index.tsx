@@ -3,6 +3,7 @@
 import { TSong } from '@/models'
 import { del } from '@/services/axios'
 import { CaretDownOutlined } from '@ant-design/icons'
+import { message } from 'antd'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -60,11 +61,11 @@ export const SongsTable = ({ isAlbumView, songs, onSuccess }: Props) => {
   const onRemove = async (id: number) => {
     if (!isAlbumView) {
       try {
-        await del<TSong>('/song', id).then(() => {
-          onSuccess()
-        })
+        await del<TSong>('/song', id)
+        onSuccess()
+        message.success('Música removida com sucesso!')
       } catch (error) {
-        console.error('Error deleting songs:', error)
+        message.error('Erro ao remover música.')
       }
     } // else { remove from album }
   }

@@ -1,6 +1,7 @@
 'use client'
 
 import { register } from '@/services/axios'
+import { message } from 'antd'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { FormEvent, useState } from 'react'
@@ -14,28 +15,26 @@ export default function Register() {
   const [enteredCode, setEnteredCode] = useState('')
   const [step, setStep] = useState('form')
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
 
   const router = useRouter()
 
   async function handleRegister(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
-    const passwordRegex = /^[a-zA-Z0-9]{8,}$/
-    if (!passwordRegex.test(password)) {
-      setError(
-        'Senha inválida: a senha deve conter no mínimo 8 caracteres com apenas letras e números',
-      )
-      return
-    }
-
-    setError('')
-    setLoading(true)
-
-    const code = Math.floor(100000 + Math.random() * 900000)
-    setVerificationCode(code)
-
     try {
+      const passwordRegex = /^[a-zA-Z0-9]{8,}$/
+      if (!passwordRegex.test(password)) {
+        message.error(
+          'Senha inválida: a senha deve conter no mínimo 8 caracteres com apenas letras e números',
+        )
+        return
+      }
+
+      setLoading(true)
+
+      const code = Math.floor(100000 + Math.random() * 900000)
+      setVerificationCode(code)
+
       await fetch('/api/sendVerificationEmail', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -43,21 +42,27 @@ export default function Register() {
       })
 
       setStep('verify')
+      message.success('Email de verificação enviado com sucesso!')
     } catch (error) {
-      console.error('Erro ao enviar email de verificação:', error)
-      alert('Erro ao enviar o email de verificação. Tente novamente.')
+      message.error('Erro ao enviar o email de verificação. Tente novamente.')
     } finally {
       setLoading(false)
     }
   }
 
   async function handleVerifyCode() {
-    if (parseInt(enteredCode) !== verificationCode) {
-      return
-    }
+    try {
+      if (parseInt(enteredCode) !== verificationCode) {
+        message.error('Código de verificação incorreto.')
+        return
+      }
 
-    await register(name, email, password)
-    router.push('/login')
+      await register(name, email, password)
+      router.push('/login')
+      message.success('Registro realizado com sucesso!')
+    } catch (error) {
+      message.error('Erro ao verificar código.')
+    }
   }
 
   function handleBackToForm() {
@@ -65,7 +70,6 @@ export default function Register() {
     setEmail('')
     setName('')
     setPassword('')
-    setError('')
   }
 
   return (
@@ -111,9 +115,8 @@ export default function Register() {
                   required
                 />
               </div>
-              {error && <p className="text-red-500">{error}</p>}
               <button
-                className="bg-primaria mt-3 w-full"
+                className="mt-3 w-full bg-primaria"
                 type="submit"
                 disabled={loading}
               >
@@ -146,14 +149,14 @@ export default function Register() {
               required
             />
             <button
-              className="bg-primaria mt-3 w-52"
+              className="mt-3 w-52 bg-primaria"
               onClick={handleVerifyCode}
               disabled={loading}
             >
               <span className="text-white">Verificar código</span>
             </button>
             <button
-              className="text-primaria mt-3"
+              className="mt-3 text-primaria"
               onClick={handleBackToForm}
               disabled={loading}
             >

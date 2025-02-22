@@ -3,6 +3,7 @@
 import { TAlbum, TSong } from '@/models'
 import { post } from '@/services/axios'
 import { PlusOutlined } from '@ant-design/icons'
+import { message } from 'antd'
 import { useRouter } from 'next/navigation'
 
 interface Props {
@@ -18,9 +19,12 @@ export default function GenericCreate({ title, type }: Props) {
       const response = await post<TAlbum | TSong>(`/${type}`, {
         name: 'Sem título',
       })
+      message.success(
+        `Criou ${type === 'album' ? 'álbum' : 'música'} com sucesso!`,
+      )
       router.push(`/${type}/${response.id.toString()}`)
     } catch (error) {
-      console.log(error)
+      message.error(`Erro ao criar ${type === 'album' ? 'álbum' : 'música'}.`)
     }
   }
 

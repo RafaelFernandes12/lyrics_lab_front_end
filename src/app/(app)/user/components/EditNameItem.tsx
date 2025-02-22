@@ -4,6 +4,7 @@ import { ButtonDialog } from '@/components/buttonDialog'
 import { idProps } from '@/models'
 import { changeName } from '@/services/axios'
 import { MenuItem } from '@mui/material'
+import { message } from 'antd'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -13,13 +14,17 @@ export function EditNameItem({ id }: idProps) {
   const router = useRouter()
 
   async function handleEditName() {
-    if (!name.trim()) {
-      setError(true)
-      return
-    }
-    await changeName(id, name).then(() => {
+    try {
+      if (!name.trim()) {
+        setError(true)
+        return
+      }
+      await changeName(id, name)
       router.refresh()
-    })
+      message.success('Nome alterado com sucesso!')
+    } catch (error) {
+      message.error('Erro ao alterar o nome.')
+    }
   }
 
   return (

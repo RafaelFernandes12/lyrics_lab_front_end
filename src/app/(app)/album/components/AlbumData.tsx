@@ -5,14 +5,13 @@ import { ConfirmModal } from '@/components/confirmModal'
 import { SongsTable } from '@/components/songsTable'
 import { TAlbum } from '@/models'
 import { del, get } from '@/services/axios'
+import { storage } from '@/services/firebase'
 import { useQuery } from '@tanstack/react-query'
+import { message } from 'antd'
+import { deleteObject, ref } from 'firebase/storage'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import { AlbumForm } from './AlbumForm'
-
-import { storage } from '@/services/firebase'
-
-import { deleteObject, ref } from 'firebase/storage'
 
 export const AlbumData = () => {
   const { id } = useParams<{ id: string }>()
@@ -46,8 +45,9 @@ export const AlbumData = () => {
 
       router.push('/dashboard')
       router.refresh()
+      message.success('Álbum removido com sucesso!')
     } catch (error) {
-      console.log(error, 'Falha ao remover álbum. Tente novamente mais tarde.')
+      message.error('Falha ao remover álbum. Tente novamente mais tarde.')
     }
   }
 
