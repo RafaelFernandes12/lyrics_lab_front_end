@@ -55,7 +55,7 @@ export default function Login() {
             />
           </div>
           <button
-            className="mt-3 w-full bg-blueButton"
+            className="bg-primaria mt-3 w-full"
             type="submit"
             disabled={loading}
           >
@@ -66,10 +66,10 @@ export default function Login() {
             )}
           </button>
         </form>
-        <p className="mt-3 text-center text-blueButton">Esqueci minha senha</p>
+        <p className="text-primaria mt-3 text-center">Esqueci minha senha</p>
         <p className="mt-3 text-center">
           Não tem uma conta?{' '}
-          <Link className="text-blueButton" href="/register">
+          <Link className="text-primaria" href="/register">
             Cadastre-se!
           </Link>
         </p>

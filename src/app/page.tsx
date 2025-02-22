@@ -19,7 +19,7 @@ export default function Home() {
             </button>
           </Link>
           <Link href="/register">
-            <button className="bg-blueButton text-white hover:bg-blueButtonHover">
+            <button className="bg-primaria hover:bg-primariaHover text-white">
               Cadastre-se
             </button>
           </Link>

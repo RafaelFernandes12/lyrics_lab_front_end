@@ -10,9 +10,10 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        blueButton: 'rgb(37 99 235)',
-        blueButtonHover: 'rgb(29 78 216)',
-        headerDark: 'rgb(53,53,53,33%)',
+        primaria: 'rgb(37 99 235)',
+        primariaHover: 'rgb(29 78 216)',
+        secundaria: '#316EBD',
+        headerDark: '#1F1F1F',
       },
       fontFamily: {
         sans: ['var(--font-poppins)', 'sans-serif'],

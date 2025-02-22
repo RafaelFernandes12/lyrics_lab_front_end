@@ -30,12 +30,12 @@ export function Root(props: rootProps) {
           <button
             onClick={props.action}
             data-testid="actionButton"
-            className="bg-blueButton p-2 text-white"
+            className="bg-primaria p-2 text-white"
             disabled={props.uploading}
           >
             {props.uploading ? 'Carregando...' : 'Confirmar'}
           </button>
-          <button onClick={handleClick} className="bg-redButton p-2 text-white">
+          <button onClick={handleClick} className="bg-gray-200 p-2 text-white">
             Cancelar
           </button>
         </div>

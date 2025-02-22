@@ -9,10 +9,10 @@ import HideImageIcon from '@mui/icons-material/HideImage'
 import { MenuItem } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import {
-  deleteObject,
-  getDownloadURL,
-  ref,
-  uploadBytesResumable,
+    deleteObject,
+    getDownloadURL,
+    ref,
+    uploadBytesResumable,
 } from 'firebase/storage'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -176,7 +176,7 @@ export function EditMenuItem({ id, color }: idProps) {
               <div>
                 <button
                   onClick={handleDeleteAlbumImage}
-                  className="bg-redButton flex items-center gap-2 rounded p-2 text-white"
+                  className="flex items-center gap-2 rounded bg-gray-200 p-2 text-white"
                 >
                   <HideImageIcon />
                   Remover imagem

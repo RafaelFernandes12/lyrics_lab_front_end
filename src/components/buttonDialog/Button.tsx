@@ -6,7 +6,7 @@ interface buttonProps {
 
 export function Button({ text }: buttonProps) {
   return (
-    <button className="flex items-center gap-2 bg-blueButton p-3">
+    <button className="bg-primaria flex items-center gap-2 p-3">
       <div className="h-fit w-fit">
         <AddIcon className="text-white" data-testid="addIcon" />
       </div>

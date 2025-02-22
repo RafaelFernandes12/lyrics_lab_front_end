@@ -10,7 +10,7 @@ interface SongCardProps {
 export function SongCard({ song }: SongCardProps) {
   return (
     <Link href={`/song/${song.id}`}>
-      <div className="flex w-10/12 items-center rounded bg-blueButton px-3 py-4 hover:bg-blueButtonHover">
+      <div className="bg-primaria hover:bg-primariaHover flex w-10/12 items-center rounded px-3 py-4">
         <Image
           src={logo}
           alt="logo"

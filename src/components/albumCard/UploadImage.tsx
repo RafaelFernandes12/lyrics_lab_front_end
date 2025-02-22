@@ -38,7 +38,7 @@ const UploadImage = ({
       />
       <button
         onClick={handleButtonClick}
-        className="flex items-center gap-2 rounded bg-blueButton p-2 text-white"
+        className="bg-primaria flex items-center gap-2 rounded p-2 text-white"
       >
         <ImageIcon />
         Escolher imagem

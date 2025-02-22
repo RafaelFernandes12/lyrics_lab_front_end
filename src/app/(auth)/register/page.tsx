@@ -113,7 +113,7 @@ export default function Register() {
               </div>
               {error && <p className="text-red-500">{error}</p>}
               <button
-                className="mt-3 w-full bg-blueButton"
+                className="bg-primaria mt-3 w-full"
                 type="submit"
                 disabled={loading}
               >
@@ -126,7 +126,7 @@ export default function Register() {
             </form>
             <p className="mt-3 text-center">
               Já tem uma conta?{'         '}
-              <Link className="text-blueButton" href="/login">
+              <Link className="text-primaria" href="/login">
                 Acesse sua conta!
               </Link>
             </p>
@@ -146,14 +146,14 @@ export default function Register() {
               required
             />
             <button
-              className="mt-3 w-52 bg-blueButton"
+              className="bg-primaria mt-3 w-52"
               onClick={handleVerifyCode}
               disabled={loading}
             >
               <span className="text-white">Verificar código</span>
             </button>
             <button
-              className="mt-3 text-blueButton"
+              className="text-primaria mt-3"
               onClick={handleBackToForm}
               disabled={loading}
             >
