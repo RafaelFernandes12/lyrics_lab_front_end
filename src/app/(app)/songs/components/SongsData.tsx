@@ -1,6 +1,6 @@
 'use client'
 
-import { SongsTable } from '@/components/songsTable/SongsTable'
+import { SongsTable } from '@/components/songsTable'
 import { TSong } from '@/models'
 import { get } from '@/services/axios'
 import { useQuery } from '@tanstack/react-query'

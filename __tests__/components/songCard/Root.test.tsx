@@ -1,4 +1,4 @@
-import { Root } from '@/components/songCard/SongCard'
+import { Root } from '@/components/songCard'
 import { render, screen } from '@testing-library/react'
 
 describe('SongCardRoot Component', () => {

@@ -33,7 +33,7 @@ const showPromiseConfirm = ({ title, description, onConfirm }: Props) => {
 export const ConfirmModal = ({ title, description, onConfirm }: Props) => (
   <button
     onClick={() => showPromiseConfirm({ title, description, onConfirm })}
-    className="flex items-center rounded-md bg-transparent p-2 text-black hover:bg-gray-200 dark:text-white dark:hover:bg-slate-600"
+    className="flex items-center rounded-md bg-gray-200 p-2 text-black hover:bg-gray-300 dark:text-white dark:hover:bg-slate-600"
   >
     <DeleteFilled style={{ fontSize: '20px' }} />{' '}
   </button>

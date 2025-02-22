@@ -6,6 +6,7 @@ import { CaretDownOutlined } from '@ant-design/icons'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import Link from 'next/link'
 import { useState } from 'react'
 import { ConfirmModal } from '../confirmModal'
 
@@ -71,37 +72,39 @@ export const SongsTable = ({ isAlbumView, songs, onSuccess }: Props) => {
   return (
     <div className="flex w-full justify-center">
       <div className="w-full dark:text-white">
-        <div className="flex items-center justify-between p-4">
+        <div className="mb-2 flex items-center justify-between px-4">
           <div
             onClick={() => handleSort('name')}
-            className="flex-1 cursor-pointer text-left"
+            className="w-full cursor-pointer text-left"
           >
             Título <CaretDownOutlined />
           </div>
-          <div className="flex-1 text-left">Álbum</div>
+          <div className="w-full text-center">Álbum</div>
           <div
             onClick={() => handleSort('createdAt')}
-            className="flex-1 cursor-pointer text-left"
+            className="mr-10 w-full cursor-pointer text-right"
           >
             Adicionado <CaretDownOutlined />
           </div>
-          <div className="w-10"></div>
         </div>
 
         {sortedData.map((item, index) => (
           <div key={item.key} className="mb-2 flex w-full items-center gap-2">
-            <div
-              className={`flex flex-1 items-center p-4 text-white ${
-                index % 2 === 0 ? 'bg-secundaria' : 'bg-gray-400'
+            <Link
+              href={`/song/${item.key}`}
+              className={`flex w-full items-center p-4 text-white ${
+                index % 2 === 0
+                  ? 'bg-secundaria hover:bg-primariaHover'
+                  : 'bg-gray-400 hover:bg-gray-500'
               } rounded-md`}
             >
-              <div className="flex-1 text-left">{item.name}</div>
-              <div className="flex-1 text-left">{item.album}</div>
-              <div className="flex-1 text-left">
+              <div className="w-full text-left font-semibold">{item.name}</div>
+              <div className="w-full text-center">{item.album}</div>
+              <div className="w-full text-right">
                 {dayjs(item.createdAt).fromNow()}
               </div>
-            </div>
-            <div className="flex w-8 justify-center">
+            </Link>
+            <div className="flex w-9 justify-center">
               <ConfirmModal
                 title={'Tem certeza de que deseja excluir essa música?'}
                 description={'Essa ação não pode ser desfeita.'}

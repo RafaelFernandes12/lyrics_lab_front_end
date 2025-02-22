@@ -1,6 +1,6 @@
 'use client'
 
-import { AlbumCard } from '@/components/albumCard/AlbumCard'
+import { AlbumCard } from '@/components/albumCard'
 import { TAlbum } from '@/models'
 import { get } from '@/services/axios'
 import { useQuery } from '@tanstack/react-query'

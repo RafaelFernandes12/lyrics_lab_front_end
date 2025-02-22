@@ -25,10 +25,7 @@ export async function get<T>(endPoint: string): Promise<T> {
   }
 }
 
-export async function post<T>(
-  endPoint: string,
-  body: object,
-): Promise<T> {
+export async function post<T>(endPoint: string, body: object): Promise<T> {
   try {
     const token = (await getToken()) || ''
     const response: AxiosResponse<T> = await axiosInstance.post<T>(
@@ -46,10 +43,7 @@ export async function post<T>(
   }
 }
 
-export async function put<T>(
-  endPoint: string,
-  body: object,
-): Promise<T> {
+export async function put<T>(endPoint: string, body: object): Promise<T> {
   try {
     const token = (await getToken()) || ''
     const response: AxiosResponse<T> = await axiosInstance.put<T>(
@@ -67,10 +61,7 @@ export async function put<T>(
   }
 }
 
-export async function del<T>(
-  endPoint: string,
-  id: number,
-): Promise<T> {
+export async function del<T>(endPoint: string, id: number): Promise<T> {
   try {
     const token = (await getToken()) || ''
     const response: AxiosResponse<T> = await axiosInstance.delete<T>(
@@ -129,9 +120,7 @@ export async function changeName(id: number, name: string) {
         return r
       })
   } catch (error: any) {
-    throw new Error(
-      error || 'Erro na requisição.',
-    )
+    throw new Error(error || 'Erro na requisição.')
   }
 }
 
@@ -163,8 +152,6 @@ export async function changePassword(
         })
     }
   } catch (error: any) {
-    throw new Error(
-      error || 'Erro na requisição.',
-    )
+    throw new Error(error || 'Erro na requisição.')
   }
 }

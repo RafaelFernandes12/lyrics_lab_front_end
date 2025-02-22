@@ -1,6 +1,6 @@
 'use client'
 
-import { SongCard } from '@/components/songCard/SongCard'
+import { SongCard } from '@/components/songCard'
 import { TSong } from '@/models'
 import { get } from '@/services/axios'
 import { useQuery } from '@tanstack/react-query'

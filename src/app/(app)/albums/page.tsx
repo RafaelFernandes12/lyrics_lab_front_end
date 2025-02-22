@@ -1,4 +1,4 @@
-import GenericCreate from '@/components/genericCreate/GenericCreate'
+import GenericCreate from '@/components/genericCreate'
 import { AlbumList } from './components/AlbumList'
 
 export default function Albums() {

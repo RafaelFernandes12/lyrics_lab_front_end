@@ -1,5 +1,5 @@
 import dashSection from '@/assets/section.svg'
-import GenericCreate from '@/components/genericCreate/GenericCreate'
+import GenericCreate from '@/components/genericCreate'
 import Image from 'next/image'
 import { AlbumList } from './components/AlbumList'
 import { SongList } from './components/SongList'

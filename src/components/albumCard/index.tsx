@@ -15,15 +15,23 @@ export function AlbumCard(props: albumCardProps) {
       className="block h-[240px] w-[200px] transition-transform duration-200 hover:scale-105"
     >
       <div className="flex flex-col items-center space-y-2 rounded-lg">
-        <div className="flex h-[180px] w-[200px] items-center justify-center bg-gray-200">
-          <Image
-            src={props.image || logo}
-            alt={props.name}
-            width={140}
-            height={120}
-            className="object-contain"
-            style={{ objectFit: props.image ? 'cover' : 'contain' }}
-          />
+        <div
+          className="flex h-[180px] w-[200px] items-center justify-center overflow-hidden rounded-lg bg-gray-200"
+          style={{
+            background: props.image
+              ? `center / cover no-repeat url(${props.image})`
+              : undefined,
+          }}
+        >
+          {!props.image && (
+            <Image
+              src={logo}
+              alt={props.name}
+              width={140}
+              height={120}
+              className="object-contain"
+            />
+          )}
         </div>
         <p className="w-full truncate text-left text-xl font-semibold">
           {props.name}
