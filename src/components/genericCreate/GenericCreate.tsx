@@ -30,13 +30,17 @@ export default function GenericCreate({ title, type }: Props) {
   }
 
   return (
-    <Button
-      type="primary"
-      icon={<PlusOutlined />}
-      loading={loading}
-      onClick={handleCreate}
-    >
-      {`Criar ${title}`}
-    </Button>
+    <div>
+      <Button
+        type="primary"
+        className="!bg-primaria hover:!bg-primariaHover"
+        icon={<PlusOutlined style={{ color: 'white' }} />}
+        loading={loading}
+        onClick={handleCreate}
+        size="large"
+      >
+        <p className="!font-semibold !text-white ">{`Criar ${title}`}</p>
+      </Button>
+    </div>
   )
 }

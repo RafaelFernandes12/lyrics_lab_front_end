@@ -2,12 +2,12 @@
 
 import { TSong } from '@/models'
 import { del } from '@/services/axios'
-import { CaretDownOutlined, DeleteFilled } from '@ant-design/icons'
-import { Button } from 'antd'
+import { CaretDownOutlined } from '@ant-design/icons'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { useState } from 'react'
+import { ConfirmModal } from '../confirmModal'
 
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
@@ -23,8 +23,6 @@ export const SongsTable = ({ isAlbumView, songs, onSuccess }: Props) => {
     key: string
     direction: string
   }>({ key: '', direction: 'asc' })
-
-  const [loading, setLoading] = useState(false)
 
   const dataSource = songs.map((song) => ({
     key: song.id,
@@ -59,8 +57,6 @@ export const SongsTable = ({ isAlbumView, songs, onSuccess }: Props) => {
   }
 
   const onRemove = async (id: number) => {
-    setLoading(true)
-
     if (!isAlbumView) {
       try {
         await del<TSong>('/song', id).then(() => {
@@ -68,56 +64,53 @@ export const SongsTable = ({ isAlbumView, songs, onSuccess }: Props) => {
         })
       } catch (error) {
         console.error('Error deleting songs:', error)
-      } finally {
-        setLoading(false)
       }
     } // else { remove from album }
   }
 
   return (
-    <div className="w-full">
-      <div className="flex items-center justify-between p-4">
-        <div
-          onClick={() => handleSort('name')}
-          className="flex-1 cursor-pointer"
-        >
-          Título <CaretDownOutlined />
-        </div>
-        <div className="flex-1">Álbum</div>
-        <div
-          onClick={() => handleSort('createdAt')}
-          className="flex-1 cursor-pointer"
-        >
-          Adicionado <CaretDownOutlined />
-        </div>
-        <div className="w-24"></div>
-      </div>
-
-      {sortedData.map((item, index) => (
-        <div
-          key={item.key}
-          className={`flex items-center justify-between p-4  text-white ${
-            index % 2 === 0 ? 'bg-secundaria' : 'bg-gray-400'
-          } mb-2 rounded-md`}
-        >
-          <div className="flex-1">{item.name}</div>
-          <div className="flex-1">{item.album}</div>
-          <div className="flex-1">{dayjs(item.createdAt).fromNow()}</div>
-          <div className="w-24">
-            <Button
-              icon={
-                <DeleteFilled style={{ fontSize: '20px', color: 'white' }} />
-              }
-              disabled={loading}
-              onClick={() => onRemove(item.key)}
-              style={{
-                background: 'transparent',
-                border: 'none',
-              }}
-            />
+    <div className="flex w-full justify-center">
+      <div className="w-full dark:text-white">
+        <div className="flex items-center justify-between p-4">
+          <div
+            onClick={() => handleSort('name')}
+            className="flex-1 cursor-pointer text-left"
+          >
+            Título <CaretDownOutlined />
           </div>
+          <div className="flex-1 text-left">Álbum</div>
+          <div
+            onClick={() => handleSort('createdAt')}
+            className="flex-1 cursor-pointer text-left"
+          >
+            Adicionado <CaretDownOutlined />
+          </div>
+          <div className="w-10"></div>
         </div>
-      ))}
+
+        {sortedData.map((item, index) => (
+          <div key={item.key} className="mb-2 flex w-full items-center gap-2">
+            <div
+              className={`flex flex-1 items-center p-4 text-white ${
+                index % 2 === 0 ? 'bg-secundaria' : 'bg-gray-400'
+              } rounded-md`}
+            >
+              <div className="flex-1 text-left">{item.name}</div>
+              <div className="flex-1 text-left">{item.album}</div>
+              <div className="flex-1 text-left">
+                {dayjs(item.createdAt).fromNow()}
+              </div>
+            </div>
+            <div className="flex w-8 justify-center">
+              <ConfirmModal
+                title={'Tem certeza de que deseja excluir essa música?'}
+                description={'Essa ação não pode ser desfeita.'}
+                onConfirm={() => onRemove(item.key)}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

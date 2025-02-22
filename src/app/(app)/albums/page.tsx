@@ -6,7 +6,7 @@ export default function Albums() {
     <div>
       <section className="flex items-center justify-between">
         <h1>Álbuns</h1>
-        <GenericCreate title={'Álbum'} type="album" />
+        <GenericCreate title={'álbum'} type="album" />
       </section>
       <section>
         <AlbumList />

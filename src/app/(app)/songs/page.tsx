@@ -6,7 +6,7 @@ export default function Songs() {
     <>
       <section className="flex items-center justify-between">
         <h1>Músicas</h1>
-        <GenericCreate title={'Música'} type="song" />
+        <GenericCreate title={'música'} type="song" />
       </section>
       <SongsData />
     </>

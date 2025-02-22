@@ -16,7 +16,7 @@ export default async function Home() {
             style={{ objectFit: 'cover' }}
           />
           <div className="absolute bottom-[40px] left-[40px] px-4 py-2">
-            <GenericCreate title={'Música'} type={'song'} />
+            <GenericCreate title={'música'} type={'song'} />
           </div>
         </section>
 
