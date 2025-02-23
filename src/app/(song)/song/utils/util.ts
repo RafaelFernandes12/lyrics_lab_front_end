@@ -8,13 +8,9 @@ export function analyzeLine(line: string) {
     (word) => regex.chordRegex.test(word) || word === '',
   )
 
-  const isInsideStars = regex.insideStarsRegex.test(safeLine)
-  const isInsideUndersafeLine = regex.insideUnderlineRegex.test(safeLine)
-
   const isLineEmpty = words.every((word) => word === '')
   const lenMatchAorE = safeLine.match(regex.AorERegex)
   const lenMatchNoChord = safeLine.match(regex.noChordRegex)
-
   const matchChordRegex = safeLine.match(regex.chordRegex)
 
   const isThereAnAorAnEinTheLine = !!(
@@ -22,6 +18,14 @@ export function analyzeLine(line: string) {
     (matchChordRegex ? matchChordRegex.length < 2 : false) &&
     regex.noChordRegex.test(safeLine)
   )
+
+  const bold = /\*((?:[^*]|\*{2})*?)\*(?!\*)/g.test(safeLine)
+  const italic = /_((?:[^_]|__)*?)_(?!_)/g.test(safeLine)
+  const underline = /~((?:[^~]|~~)*?)~(?!~)/g.test(safeLine)
+
+  const boldMatch = safeLine.match(/\*((?:[^*]|\*{2})*?)\*(?!\*)/g)
+  const italicMatch = safeLine.match(/_((?:[^_]|__)*?)_(?!_)/g)
+  const underlineMatch = safeLine.match(/~((?:[^~]|~~)*?)~(?!~)/g)
 
   const isLineInsideStars = /\*.*\*/gm.test(safeLine)
   const isLineInsideUndersafeLine = /_.*_/gm.test(safeLine)
@@ -31,10 +35,14 @@ export function analyzeLine(line: string) {
     isThereAnAorAnEinTheLine,
     isLineAChordLine,
     isLineEmpty,
-    isInsideStars,
-    isInsideUndersafeLine,
     isLineInsideStars,
     isLineInsideUndersafeLine,
+    bold,
+    italic,
+    underline,
+    boldMatch,
+    italicMatch,
+    underlineMatch,
   }
 }
 
@@ -74,16 +82,4 @@ export function replaceChordsInLine(
     }
     return updatedChord
   })
-}
-
-export function modifyLines(part: string) {
-  const bold = /(?<=[\*_~]*\*)\b([^*]+)\b(?=\*[\*_~]*)/g.test(part)
-  const italic = /(?<=[\*_~]*_)\b([^_]+)\b(?=_[\*_~]*)/g.test(part)
-  const underline = /(?<=[\*_~]*~)\b([^~]+)\b(?=~[\*_~]*)/g.test(part)
-
-  return {
-    bold,
-    italic,
-    underline,
-  }
 }
