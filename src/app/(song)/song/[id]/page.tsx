@@ -13,7 +13,6 @@ import { RenderText } from '../components/RenderText'
 import { regex } from '../utils/regex'
 import { replaceChordsInLine } from '../utils/util'
 
-
 export default function Song() {
   const { id } = useParams<{ id: string }>()
   const {
@@ -64,7 +63,6 @@ export default function Song() {
     }
   }, [song, songLyric])
 
-
   useEffect(() => {
     if (containerRef.current) {
       const observer = new ResizeObserver((entries) => {
@@ -80,11 +78,9 @@ export default function Song() {
     }
   }, [])
 
-
   const handlePrint = useReactToPrint({
     content: () => containerRef.current,
   })
-
 
   async function handleToneChange(direction: 'up' | 'down') {
     const shift = direction === 'up' ? 1 : -1
@@ -161,12 +157,14 @@ export default function Song() {
               <b className="text-blue-700 dark:text-blue-500">{song?.tone}</b>
             </h3>
             {song?.compass && (
-              <span className="whitespace-pre-wrap">
+              <span className="whitespace-pre-wrap dark:text-white">
                 Compasso: {song?.compass}
               </span>
             )}
             {song?.bpm && (
-              <span className="whitespace-pre-wrap">Bpm: {song?.bpm}</span>
+              <span className="whitespace-pre-wrap dark:text-white">
+                Bpm: {song?.bpm}
+              </span>
             )}
           </div>
           <div className="mt-10">

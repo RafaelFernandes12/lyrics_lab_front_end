@@ -109,7 +109,7 @@ export function DrawerComponent({
         <IconButton
           id="long-button"
           onClick={handleClick}
-          className="m-0 p-0 text-base"
+          className="m-0 p-0 text-base dark:text-white"
         >
           {isSharpOrFlat === sharpChords ? <span>A#</span> : <span>Ab</span>}
         </IconButton>

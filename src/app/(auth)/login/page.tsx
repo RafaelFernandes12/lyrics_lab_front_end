@@ -29,7 +29,7 @@ export default function Login() {
 
   return (
     <>
-      <h1 className="my-16 w-full text-center">Acesse sua conta</h1>
+      <h1 className="my-16 w-full text-center ">Acesse sua conta</h1>
       <section className="m-auto w-[400px] max-sm:w-full">
         <form className="flex flex-col gap-3" onSubmit={handleLogin}>
           <div className="flex w-full flex-col">
@@ -55,7 +55,7 @@ export default function Login() {
             />
           </div>
           <button
-            className="bg-primaria mt-3 w-full"
+            className="mt-3 w-full bg-primaria"
             type="submit"
             disabled={loading}
           >
@@ -66,7 +66,7 @@ export default function Login() {
             )}
           </button>
         </form>
-        <p className="text-primaria mt-3 text-center">Esqueci minha senha</p>
+        <p className="mt-3 text-center text-primaria">Esqueci minha senha</p>
         <p className="mt-3 text-center">
           Não tem uma conta?{' '}
           <Link className="text-primaria" href="/register">

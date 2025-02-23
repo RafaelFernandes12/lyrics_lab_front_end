@@ -22,7 +22,8 @@ export default function CreateButton({ title, type }: Props) {
       message.success(
         `Criou ${type === 'album' ? 'álbum' : 'música'} com sucesso!`,
       )
-      router.push(`/${type}/${response.id.toString()}`)
+      if (type === 'song') router.push(`/song/${response.id.toString()}/edit`)
+      else router.push(`/album/${response.id.toString()}`)
     } catch (error) {
       message.error(`Erro ao criar ${type === 'album' ? 'álbum' : 'música'}.`)
     }
