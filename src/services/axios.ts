@@ -133,13 +133,13 @@ export async function changePassword(
   try {
     const token = (await getToken()) || ''
     const response = await axiosInstance.post('auth/login', { email, password })
-    const data = response.data
+    const data = response.data.value
 
     if (data.jwt === token) {
       const password = newPass
       await axiosInstance
         .put(
-          `/album/user/${data.user.id}`,
+          `/user/${data.user.id}`,
           { password },
           {
             headers: {

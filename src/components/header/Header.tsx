@@ -1,6 +1,7 @@
-import PersonRoundedIcon from '@mui/icons-material/PersonRounded'
+import { UserOutlined } from '@ant-design/icons'
+import { Avatar } from 'antd'
 import Link from 'next/link'
-import { SearchBarComponent } from './SearchBarComponent'
+import { SearchInput } from './SearchInput'
 import { SwitchTheme } from './SwitchTheme'
 
 export function Header() {
@@ -37,30 +38,31 @@ export function Header() {
             className="fill-black dark:fill-white"
           />
         </svg>
-        <h1 className="italic">Lyrics Lab</h1>
+        <h2 className="font-semibold italic">Lyrics Lab</h2>
       </Link>
-      <div className="flex w-fit justify-end">
+      <div className="flex w-fit justify-end gap-10">
         <ul className="flex items-center gap-16 text-xl max-md:hidden">
           <li>
             <Link href="/songs">
-              <p>Músicas</p>
+              <p className="hover:text-primaria">Músicas</p>
             </Link>
           </li>
           <li>
             <Link href="/albums">
-              <p>Álbuns</p>
+              <p className="hover:text-primaria">Álbuns</p>
             </Link>
           </li>
           <li>
-            <SearchBarComponent />
+            <SearchInput />
           </li>
         </ul>
         <div className="flex items-center gap-6">
           <SwitchTheme />
           <Link href="/user">
-            <PersonRoundedIcon
-              sx={{ width: 40, height: 40 }}
-              className="dark:text-white max-md:hidden"
+            <Avatar
+              className="bg-black dark:bg-white dark:text-black max-md:hidden"
+              size={36}
+              icon={<UserOutlined />}
             />
           </Link>
         </div>

@@ -1,38 +1,30 @@
 import { TAlbum, TSong } from '@/models'
-import LibraryBooksOutlinedIcon from '@mui/icons-material/LibraryBooksOutlined'
-import LibraryMusicOutlinedIcon from '@mui/icons-material/LibraryMusicOutlined'
 
-interface albumItemsProps {
-  album: TAlbum
+interface MediaItemProps {
+  item: TSong | TAlbum
   search: string
+  icon: React.ReactNode
 }
 
-interface songItemsProps {
-  song: TSong
-  album?: TAlbum[]
-  search: string
+interface TitleProps {
+  title: string
 }
 
 const highlightText = (text: string, highlight: string) => {
-  if (!highlight.trim()) {
-    return text
-  }
-
+  if (!highlight.trim()) return text
   const regex = new RegExp(`(${highlight})`, 'gi')
-  const parts = text.split(regex)
-
-  return parts.map((part, index) =>
+  return text.split(regex).map((part, i) =>
     part.toLowerCase() === highlight.toLowerCase() ? (
-      <p key={index} className="font-semibold text-blue-500 dark:text-blue-500">
+      <span key={i} className="font-semibold text-blue-500">
         {part}
-      </p>
+      </span>
     ) : (
       part
     ),
   )
 }
 
-export function Title({ title }: { title: string }) {
+export function Title({ title }: TitleProps) {
   return (
     <li>
       <p className="p-2 text-sm font-semibold text-gray-700">{title}</p>
@@ -40,36 +32,14 @@ export function Title({ title }: { title: string }) {
   )
 }
 
-export function SongItem({ song, album, search }: songItemsProps) {
-  function displayAlbum(albums: TAlbum[]) {
-    return albums
-      .filter((album) => !album.isDefault)
-      .map((album, index, filteredAlbums) => (
-        <p key={album.id}>
-          {highlightText(album.name, search)}
-          {index < filteredAlbums.length - 1 ? ', ' : ''}
-        </p>
-      ))
-  }
+export function MediaItem({ item, search, icon }: MediaItemProps) {
   return (
     <li
-      key={song.id}
+      key={item.id}
       className="mx-4 mb-1 flex w-[calc(100%-24px)] items-center gap-2 truncate rounded-md border-slate-500 p-1 hover:border-[1px] hover:bg-slate-200 hover:p-1.5 dark:hover:bg-slate-900"
     >
-      <LibraryMusicOutlinedIcon className="mr-2 dark:text-white" />
-      <p>{highlightText(song.name, search)}</p>
-      {album && album.length > 1 && (
-        <p className="ml-1">[{album && displayAlbum(album)}]</p>
-      )}
-    </li>
-  )
-}
-
-export function AlbumItem({ search, album }: albumItemsProps) {
-  return (
-    <li className="mx-4 mb-1 flex w-[calc(100%-24px)] items-center gap-2 truncate rounded-md border-slate-500 p-1 hover:border-[1px] hover:bg-slate-200 hover:p-1.5 dark:hover:bg-slate-900">
-      <LibraryBooksOutlinedIcon className="mr-2 dark:text-white" />
-      <p className="p-2">{highlightText(album.name, search)}</p>
+      {icon}
+      <p>{highlightText(item.name, search)}</p>
     </li>
   )
 }

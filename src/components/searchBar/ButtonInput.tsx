@@ -1,4 +1,4 @@
-import SearchIcon from '@mui/icons-material/Search'
+import { SearchOutlined } from '@ant-design/icons'
 import { ClassNameValue, twMerge } from 'tailwind-merge'
 
 interface buttonInputProps {
@@ -12,8 +12,8 @@ export function ButtonInput({ className, title }: buttonInputProps) {
       data-testid="searchButton"
       className={twMerge('flex w-56 items-center gap-2', className)}
     >
-      <SearchIcon />
-      <p className="w-44 bg-transparent text-start text-black dark:text-gray-400">
+      <SearchOutlined />
+      <p className="w-44 bg-transparent text-start text-black dark:text-white">
         {title}
       </p>
     </button>

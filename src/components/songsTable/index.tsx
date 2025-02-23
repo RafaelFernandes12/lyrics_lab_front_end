@@ -85,7 +85,7 @@ export const SongsTable = ({ isAlbumView, songs, onSuccess }: Props) => {
             onClick={() => handleSort('createdAt')}
             className={`${!isAlbumView ? 'mr-10' : ''} w-full cursor-pointer text-right`}
           >
-            Adicionado <CaretDownOutlined />
+            Criada <CaretDownOutlined />
           </div>
         </div>
 

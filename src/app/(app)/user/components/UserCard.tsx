@@ -32,13 +32,17 @@ export const UserCard = () => {
 
   const actions: React.ReactNode[] = [
     <EditModal key="edit" id={user.id} email={user.email} onSuccess={refetch}>
-      <div className="flex justify-center gap-2 hover:text-primaria">
+      <div className="flex w-full justify-center gap-2 hover:text-primaria">
         <EditOutlined />
         Edição
       </div>
     </EditModal>,
-    <div key="logout" className="flex justify-center gap-2 hover:text-red-500">
-      <LogoutOutlined onClick={() => signOut()} />
+    <div
+      key="logout"
+      className="flex justify-center gap-2 hover:text-red-500"
+      onClick={signOut}
+    >
+      <LogoutOutlined />
       Logout
     </div>,
   ]
@@ -54,7 +58,7 @@ export const UserCard = () => {
           description={
             <div className="flex items-center gap-2">
               <MailOutlined />
-              <p className="text-cyan-600">{user?.email}</p>
+              <p className="text-primaria dark:text-primaria">{user?.email}</p>
             </div>
           }
         />

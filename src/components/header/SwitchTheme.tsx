@@ -1,53 +1,53 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 
-import DarkModeIcon from '@mui/icons-material/DarkMode'
-import MenuIcon from '@mui/icons-material/Menu'
-import WbSunnyIcon from '@mui/icons-material/WbSunny'
+import { MenuOutlined, MoonFilled, SunFilled } from '@ant-design/icons'
 import { useEffect, useState } from 'react'
 
 export function SwitchTheme() {
-  const [theme, setTheme] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('theme') || 'light'
-    }
-    return 'light'
-  })
+  const [theme, setTheme] = useState<'light' | 'dark'>('light')
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    if (theme === 'dark') {
-      localStorage.setItem('theme', 'dark')
-      document.documentElement.classList.add('dark')
-    } else {
-      localStorage.setItem('theme', 'light')
-      document.documentElement.classList.remove('dark')
-    }
-  }, [theme])
+    const savedTheme =
+      (localStorage.getItem('theme') as 'light' | 'dark') || 'light'
+    setTheme(savedTheme)
+    setMounted(true)
+  }, [])
 
-  function handleThemeSwitch() {
-    setTheme(theme === 'dark' ? 'light' : 'dark')
+  useEffect(() => {
+    if (!mounted) return
+
+    document.documentElement.classList.toggle('dark', theme === 'dark')
+
+    localStorage.setItem('theme', theme)
+  }, [theme, mounted])
+
+  const handleThemeSwitch = () => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))
   }
+
+  if (!mounted) return null
 
   return (
     <div>
-      {theme === 'dark' && (
-        <WbSunnyIcon
-          sx={{ width: 24, height: 24 }}
+      {theme === 'dark' ? (
+        <SunFilled
+          className="flex cursor-pointer justify-center max-md:hidden"
+          style={{ width: 20, height: 20, fontSize: 20, color: 'white' }}
           onClick={handleThemeSwitch}
-          className="cursor-pointer text-white max-md:hidden"
+          data-testid="theme-toggle"
         />
-      )}
-
-      {theme === 'light' && (
-        <DarkModeIcon
-          sx={{ width: 24, height: 24 }}
+      ) : (
+        <MoonFilled
+          className="flex cursor-pointer justify-center max-md:hidden"
+          style={{ width: 20, height: 20, fontSize: 20, color: 'black' }}
           onClick={handleThemeSwitch}
-          className="cursor-pointer max-md:hidden"
+          data-testid="theme-toggle"
         />
       )}
 
       <button className="dark:bg-transparent dark:text-white md:hidden">
-        <MenuIcon sx={{ width: 40, height: 40 }} />
+        <MenuOutlined />
       </button>
     </div>
   )

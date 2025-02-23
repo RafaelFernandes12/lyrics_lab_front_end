@@ -2,6 +2,7 @@
 
 import { changeName, changePassword } from '@/services/axios'
 import { Card, Form, Input, message, Modal } from 'antd'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 interface Props {
@@ -17,6 +18,7 @@ export const EditModal = ({ id, email, children, onSuccess }: Props) => {
   const [loading, setLoading] = useState(false)
   const [activeTabKey, setActiveTabKey] = useState<string>('name')
   const rules = [{ required: true, message: 'Preencha este campo!' }]
+  const router = useRouter()
 
   const onTabChange = (key: string) => {
     setActiveTabKey(key)
@@ -63,6 +65,7 @@ export const EditModal = ({ id, email, children, onSuccess }: Props) => {
       message.success('Senha alterada com sucesso!')
       setLoading(false)
       resetData()
+      router.push('/')
     } catch (error) {
       message.error('Erro ao alterar senha.')
       setLoading(false)
@@ -140,7 +143,9 @@ export const EditModal = ({ id, email, children, onSuccess }: Props) => {
 
   return (
     <div>
-      <button onClick={() => setOpen(true)}>{children}</button>
+      <button className="w-full" onClick={() => setOpen(true)}>
+        {children}
+      </button>
 
       <Modal
         open={open}
