@@ -1,5 +1,5 @@
 import dashSection from '@/assets/section.svg'
-import GenericCreate from '@/components/genericCreate'
+import CreateButton from '@/components/createButton'
 import Image from 'next/image'
 import { AlbumList } from './components/AlbumList'
 import { SongList } from './components/SongList'
@@ -16,7 +16,7 @@ export default async function Home() {
             style={{ objectFit: 'cover' }}
           />
           <div className="absolute bottom-[40px] left-[40px] px-4 py-2">
-            <GenericCreate title={'música'} type={'song'} />
+            <CreateButton title={'música'} type={'song'} />
           </div>
         </section>
 

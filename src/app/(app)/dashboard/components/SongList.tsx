@@ -12,6 +12,7 @@ export function SongList() {
       return await get<TSong[]>('song')
     },
   })
+
   return (
     <div>
       {songs.length === 0 ? (

@@ -11,7 +11,7 @@ interface Props {
   type: 'song' | 'album'
 }
 
-export default function GenericCreate({ title, type }: Props) {
+export default function CreateButton({ title, type }: Props) {
   const router = useRouter()
 
   async function handleCreate() {
@@ -35,7 +35,7 @@ export default function GenericCreate({ title, type }: Props) {
         onClick={handleCreate}
       >
         <PlusOutlined style={{ color: 'white' }} />
-        <p className="!font-semibold !text-white ">{`Criar ${title}`}</p>
+        <p className="font-semibold text-white ">{`Criar ${title}`}</p>
       </button>
     </div>
   )

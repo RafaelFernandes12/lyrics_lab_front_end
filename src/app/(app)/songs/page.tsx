@@ -1,4 +1,4 @@
-import GenericCreate from '@/components/genericCreate'
+import CreateButton from '@/components/createButton'
 import { SongsData } from './components/SongsData'
 
 export default function Songs() {
@@ -6,7 +6,7 @@ export default function Songs() {
     <>
       <section className="flex items-center justify-between">
         <h1>Músicas</h1>
-        <GenericCreate title={'música'} type="song" />
+        <CreateButton title={'música'} type="song" />
       </section>
       <SongsData />
     </>

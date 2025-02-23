@@ -14,16 +14,21 @@ import {
 } from 'firebase/storage'
 import { useEffect, useState } from 'react'
 
-interface Data {
-  name: string
-  description: string
-}
-
 interface Props {
   album: TAlbum
   children: React.ReactNode
   onSuccess: () => void
 }
+
+interface Data {
+  name: string
+  description: string
+}
+
+type Payload = {
+  songIds?: number[]
+  image?: string
+} & Data
 
 export function AlbumForm({ children, album, onSuccess }: Props) {
   const [form] = Form.useForm()
@@ -55,7 +60,7 @@ export function AlbumForm({ children, album, onSuccess }: Props) {
     form.resetFields()
   }
 
-  const handleUpload = async (): Promise<string> => {
+  const handleUploadImage = async (): Promise<string> => {
     if (!file || !user) throw new Error('Arquivo ou usuário não encontrado')
 
     const storageRef = ref(storage, `users/${user.id}/${album.id}`)
@@ -78,37 +83,44 @@ export function AlbumForm({ children, album, onSuccess }: Props) {
       const decodedPath = decodeURIComponent(
         album.image.split('/o/')[1].split('?')[0],
       )
+
       await deleteObject(ref(storage, decodedPath))
 
-      await put(`/album/${album.id}`, { ...album, image: '' })
+      const payload: Payload = {
+        name: album.name,
+        description: album.description,
+        songIds: album.songs.map((song) => song.id),
+        image: '',
+      }
+
+      await put(`/album/${album.id}`, payload)
+
+      message.success('Imagem removida com sucesso!')
       onSuccess()
       resetData()
-      message.success('Imagem removida com sucesso!')
     } catch (error) {
+      resetData()
       message.error('Erro ao remover imagem!')
     }
   }
 
-  const onSubmit = async (data: Data) => {
+  const handleUpdateAlbum = async (data: Data) => {
     try {
       setLoading(true)
-      let imageUrl = album.image || ''
-
-      if (file) {
-        imageUrl = await handleUpload()
+      const payload: Payload = {
+        name: data.name,
+        description: data.description,
+        songIds: album.songs.map((song) => song.id),
+        image: file ? await handleUploadImage() : album.image,
       }
 
-      await put(`/album/${album.id}`, {
-        ...data,
-        image: imageUrl,
-      })
+      await put(`/album/${album.id}`, payload)
 
       message.success('Álbum atualizado com sucesso!')
       onSuccess()
       resetData()
     } catch (error) {
-      setFile(null)
-      form.resetFields()
+      resetData()
       message.error('Erro ao atualizar álbum!')
     } finally {
       setLoading(false)
@@ -130,7 +142,7 @@ export function AlbumForm({ children, album, onSuccess }: Props) {
         }}
         onOk={form.submit}
       >
-        <Form form={form} layout="vertical" onFinish={onSubmit}>
+        <Form form={form} layout="vertical" onFinish={handleUpdateAlbum}>
           <Form.Item name="name" label="Nome" rules={rules}>
             <Input />
           </Form.Item>

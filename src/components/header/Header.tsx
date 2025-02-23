@@ -43,12 +43,12 @@ export function Header() {
         <ul className="flex items-center gap-16 text-xl max-md:hidden">
           <li>
             <Link href="/songs">
-              <span>Músicas</span>
+              <p>Músicas</p>
             </Link>
           </li>
           <li>
             <Link href="/albums">
-              <span>Álbuns</span>
+              <p>Álbuns</p>
             </Link>
           </li>
           <li>

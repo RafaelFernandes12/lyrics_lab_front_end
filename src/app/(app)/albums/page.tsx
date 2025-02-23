@@ -1,4 +1,4 @@
-import GenericCreate from '@/components/genericCreate'
+import CreateButton from '@/components/createButton'
 import { AlbumList } from './components/AlbumList'
 
 export default function Albums() {
@@ -6,7 +6,7 @@ export default function Albums() {
     <div>
       <section className="flex items-center justify-between">
         <h1>Álbuns</h1>
-        <GenericCreate title={'álbum'} type="album" />
+        <CreateButton title={'álbum'} type="album" />
       </section>
       <section>
         <AlbumList />

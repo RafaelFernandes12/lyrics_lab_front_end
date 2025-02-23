@@ -23,12 +23,9 @@ const highlightText = (text: string, highlight: string) => {
 
   return parts.map((part, index) =>
     part.toLowerCase() === highlight.toLowerCase() ? (
-      <span
-        key={index}
-        className="font-semibold text-blue-500 dark:text-blue-500"
-      >
+      <p key={index} className="font-semibold text-blue-500 dark:text-blue-500">
         {part}
-      </span>
+      </p>
     ) : (
       part
     ),
@@ -38,29 +35,31 @@ const highlightText = (text: string, highlight: string) => {
 export function Title({ title }: { title: string }) {
   return (
     <li>
-      <span className="p-2 text-sm font-semibold text-gray-700">{title}</span>
+      <p className="p-2 text-sm font-semibold text-gray-700">{title}</p>
     </li>
   )
 }
 
 export function SongItem({ song, album, search }: songItemsProps) {
   function displayAlbum(albums: TAlbum[]) {
-    return albums.map((album: TAlbum) => {
-      if (album.isDefault) return
-      if (albums.at(-1) !== album)
-        return <span key={album.id}>{highlightText(album.name, search)}, </span>
-      return <span key={album.id}>{highlightText(album.name, search)}</span>
-    })
+    return albums
+      .filter((album) => !album.isDefault)
+      .map((album, index, filteredAlbums) => (
+        <p key={album.id}>
+          {highlightText(album.name, search)}
+          {index < filteredAlbums.length - 1 ? ', ' : ''}
+        </p>
+      ))
   }
   return (
     <li
       key={song.id}
-      className="mx-4 mb-1 w-[calc(100%-24px)] truncate rounded-md border-slate-500 p-1 hover:border-[1px] hover:bg-slate-200 hover:p-1.5 dark:hover:bg-slate-900"
+      className="mx-4 mb-1 flex w-[calc(100%-24px)] items-center gap-2 truncate rounded-md border-slate-500 p-1 hover:border-[1px] hover:bg-slate-200 hover:p-1.5 dark:hover:bg-slate-900"
     >
       <LibraryMusicOutlinedIcon className="mr-2 dark:text-white" />
-      <span>{highlightText(song.name, search)}</span>
+      <p>{highlightText(song.name, search)}</p>
       {album && album.length > 1 && (
-        <span className="ml-1">[{album && displayAlbum(album)}]</span>
+        <p className="ml-1">[{album && displayAlbum(album)}]</p>
       )}
     </li>
   )
@@ -68,9 +67,9 @@ export function SongItem({ song, album, search }: songItemsProps) {
 
 export function AlbumItem({ search, album }: albumItemsProps) {
   return (
-    <li className="mx-4 mb-1 w-[calc(100%-24px)] truncate rounded-md border-slate-500 p-1 hover:border-[1px] hover:bg-slate-200 hover:p-1.5 dark:hover:bg-slate-900">
+    <li className="mx-4 mb-1 flex w-[calc(100%-24px)] items-center gap-2 truncate rounded-md border-slate-500 p-1 hover:border-[1px] hover:bg-slate-200 hover:p-1.5 dark:hover:bg-slate-900">
       <LibraryBooksOutlinedIcon className="mr-2 dark:text-white" />
-      <span className="p-2">{highlightText(album.name, search)}</span>
+      <p className="p-2">{highlightText(album.name, search)}</p>
     </li>
   )
 }

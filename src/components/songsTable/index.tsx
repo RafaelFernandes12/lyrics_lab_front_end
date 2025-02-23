@@ -9,7 +9,7 @@ import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import Link from 'next/link'
 import { useState } from 'react'
-import { ConfirmModal } from '../confirmModal'
+import { DeleteModal } from '../deleteModal'
 
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
@@ -30,10 +30,12 @@ export const SongsTable = ({ isAlbumView, songs, onSuccess }: Props) => {
     key: song.id,
     name: song.name,
     tone: song.tone,
-    album: song.albums
-      .filter((album) => !album.isDefault)
-      .map((album) => album.name)
-      .join(', '),
+    album: isAlbumView
+      ? []
+      : song.albums
+          .filter((album) => !album.isDefault)
+          .map((album) => album.name)
+          .join(', '),
     createdAt: new Date(song.createdAt),
   }))
 
@@ -58,16 +60,14 @@ export const SongsTable = ({ isAlbumView, songs, onSuccess }: Props) => {
     }))
   }
 
-  const onRemove = async (id: number) => {
-    if (!isAlbumView) {
-      try {
-        await del<TSong>('/song', id)
-        onSuccess()
-        message.success('Música removida com sucesso!')
-      } catch (error) {
-        message.error('Erro ao remover música.')
-      }
-    } // else { remove from album }
+  const onDeleteSong = async (id: number) => {
+    try {
+      await del<TSong>('/song', id)
+      onSuccess()
+      message.success('Música excluida com sucesso!')
+    } catch (error) {
+      message.error('Erro ao excluir música.')
+    }
   }
 
   return (
@@ -80,10 +80,10 @@ export const SongsTable = ({ isAlbumView, songs, onSuccess }: Props) => {
           >
             Título <CaretDownOutlined />
           </div>
-          <div className="w-full text-center">Álbum</div>
+          {!isAlbumView && <div className="w-full text-center">Álbum</div>}
           <div
             onClick={() => handleSort('createdAt')}
-            className="mr-10 w-full cursor-pointer text-right"
+            className={`${!isAlbumView ? 'mr-10' : ''} w-full cursor-pointer text-right`}
           >
             Adicionado <CaretDownOutlined />
           </div>
@@ -100,18 +100,22 @@ export const SongsTable = ({ isAlbumView, songs, onSuccess }: Props) => {
               } rounded-md`}
             >
               <div className="w-full text-left font-semibold">{item.name}</div>
-              <div className="w-full text-center">{item.album}</div>
+              {!isAlbumView && (
+                <div className="w-full text-center">{item.album}</div>
+              )}
               <div className="w-full text-right">
                 {dayjs(item.createdAt).fromNow()}
               </div>
             </Link>
-            <div className="flex w-9 justify-center">
-              <ConfirmModal
-                title={'Tem certeza de que deseja excluir essa música?'}
-                description={'Essa ação não pode ser desfeita.'}
-                onConfirm={() => onRemove(item.key)}
-              />
-            </div>
+            {!isAlbumView && (
+              <div className="flex w-9 justify-center">
+                <DeleteModal
+                  title={'Tem certeza de que deseja excluir essa música?'}
+                  description={'Essa ação não pode ser desfeita.'}
+                  onConfirm={() => onDeleteSong(item.key)}
+                />
+              </div>
+            )}
           </div>
         ))}
       </div>

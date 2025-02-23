@@ -17,7 +17,7 @@ type InputProps = {
 function Input({ text, className, ...rest }: InputProps) {
   return (
     <div>
-      {text && <span>{text}</span>}
+      {text && <p>{text}</p>}
       <input
         className={twMerge('bg-slate-200 p-2 text-3xl', className)}
         {...rest}

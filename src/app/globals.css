@@ -16,12 +16,15 @@
     @apply mb-16;
   }
 
-  span,
   p,
   h1,
   h2,
   h3 {
     @apply text-black dark:text-white
+  }
+
+  p {
+    @apply text-sm
   }
 
   h1 {
@@ -34,9 +37,5 @@
 
   h3 {
     @apply text-lg max-md:text-base
-  }
-
-  p {
-    @apply text-sm
   }
 }
