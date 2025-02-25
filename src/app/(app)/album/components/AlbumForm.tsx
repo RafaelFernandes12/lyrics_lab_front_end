@@ -1,17 +1,8 @@
 'use client'
 
-import { TAlbum, TUser } from '@/models'
-import { get, put } from '@/services/axios'
-import { storage } from '@/services/firebase'
-import { DeleteOutlined, UploadOutlined } from '@ant-design/icons'
-import { useQuery } from '@tanstack/react-query'
-import { Button, Form, Input, message, Modal, Upload } from 'antd'
-import {
-  deleteObject,
-  getDownloadURL,
-  ref,
-  uploadBytesResumable,
-} from 'firebase/storage'
+import { TAlbum } from '@/models'
+import { put } from '@/services/axios'
+import { Form, Input, message, Modal } from 'antd'
 import { useEffect, useState } from 'react'
 
 interface Props {
@@ -33,17 +24,17 @@ type Payload = {
 export function AlbumForm({ children, album, onSuccess }: Props) {
   const [form] = Form.useForm()
   const [open, setOpen] = useState(false)
-  const [file, setFile] = useState<File | null>(null)
+  // const [file, setFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
   const rules = [{ required: true, message: 'Preencha este campo!' }]
 
-  const { data: user } = useQuery({
-    queryKey: ['user'],
-    queryFn: async () => {
-      const response = await get<{ user: TUser }>('/auth/user')
-      return response.user
-    },
-  })
+  // const { data: user } = useQuery({
+  //   queryKey: ['user'],
+  //   queryFn: async () => {
+  //     const response = await get<{ user: TUser }>('/auth/user')
+  //     return response.user
+  //   },
+  // })
 
   useEffect(() => {
     if (open && album) {
@@ -56,53 +47,53 @@ export function AlbumForm({ children, album, onSuccess }: Props) {
 
   const resetData = () => {
     setOpen(false)
-    setFile(null)
+    // setFile(null)
     form.resetFields()
   }
 
-  const handleUploadImage = async (): Promise<string> => {
-    if (!file || !user) throw new Error('Arquivo ou usuário não encontrado')
+  // const handleUploadImage = async (): Promise<string> => {
+  //   if (!file || !user) throw new Error('Arquivo ou usuário não encontrado')
 
-    const storageRef = ref(storage, `users/${user.id}/${album.id}`)
-    const uploadTask = uploadBytesResumable(storageRef, file)
+  //   const storageRef = ref(storage, `users/${user.id}/${album.id}`)
+  //   const uploadTask = uploadBytesResumable(storageRef, file)
 
-    return new Promise<string>((resolve, reject) => {
-      uploadTask.on(
-        'state_changed',
-        null,
-        (error) => reject(error),
-        async () => resolve(await getDownloadURL(uploadTask.snapshot.ref)),
-      )
-    })
-  }
+  //   return new Promise<string>((resolve, reject) => {
+  //     uploadTask.on(
+  //       'state_changed',
+  //       null,
+  //       (error) => reject(error),
+  //       async () => resolve(await getDownloadURL(uploadTask.snapshot.ref)),
+  //     )
+  //   })
+  // }
 
-  const handleDeleteImage = async () => {
-    try {
-      if (!album.image) return
+  // const handleDeleteImage = async () => {
+  //   try {
+  //     if (!album.image) return
 
-      const decodedPath = decodeURIComponent(
-        album.image.split('/o/')[1].split('?')[0],
-      )
+  //     const decodedPath = decodeURIComponent(
+  //       album.image.split('/o/')[1].split('?')[0],
+  //     )
 
-      await deleteObject(ref(storage, decodedPath))
+  //     await deleteObject(ref(storage, decodedPath))
 
-      const payload: Payload = {
-        name: album.name,
-        description: album.description,
-        songIds: album.songs.map((song) => song.id),
-        image: '',
-      }
+  //     const payload: Payload = {
+  //       name: album.name,
+  //       description: album.description,
+  //       songIds: album.songs.map((song) => song.id),
+  //       image: '',
+  //     }
 
-      await put(`/album/${album.id}`, payload)
+  //     await put(`/album/${album.id}`, payload)
 
-      message.success('Imagem removida com sucesso!')
-      onSuccess()
-      resetData()
-    } catch (error) {
-      resetData()
-      message.error('Erro ao remover imagem!')
-    }
-  }
+  //     message.success('Imagem removida com sucesso!')
+  //     onSuccess()
+  //     resetData()
+  //   } catch (error) {
+  //     resetData()
+  //     message.error('Erro ao remover imagem!')
+  //   }
+  // }
 
   const handleUpdateAlbum = async (data: Data) => {
     try {
@@ -111,7 +102,8 @@ export function AlbumForm({ children, album, onSuccess }: Props) {
         name: data.name,
         description: data.description,
         songIds: album.songs.map((song) => song.id),
-        image: file ? await handleUploadImage() : album.image,
+        image: album.image,
+        // image: file ? await handleUploadImage() : album.image,
       }
 
       await put(`/album/${album.id}`, payload)
@@ -151,7 +143,7 @@ export function AlbumForm({ children, album, onSuccess }: Props) {
             <Input.TextArea />
           </Form.Item>
 
-          <Form.Item label="Imagem do álbum">
+          {/* <Form.Item label="Imagem do álbum">
             <Upload
               accept="image/*"
               beforeUpload={(file) => {
@@ -180,7 +172,7 @@ export function AlbumForm({ children, album, onSuccess }: Props) {
                 </Button>
               </div>
             )}
-          </Form.Item>
+          </Form.Item> */}
         </Form>
       </Modal>
     </>

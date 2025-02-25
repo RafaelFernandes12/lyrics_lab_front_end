@@ -1,4 +1,4 @@
-import dashSection from '@/assets/section.svg'
+import sectionImage from '@/assets/section.svg'
 import CreateButton from '@/components/createButton'
 import Image from 'next/image'
 import { AlbumList } from './components/AlbumList'
@@ -10,7 +10,7 @@ export default async function Home() {
       <section>
         <section className="relative">
           <Image
-            src={dashSection}
+            src={sectionImage}
             alt="dash-section"
             className="w-full object-contain"
             style={{ objectFit: 'cover' }}
