@@ -1,6 +1,6 @@
 'use client'
 
-import { changeName, changePassword } from '@/services/axios'
+import { changeName, changePassword, logout } from '@/services/axios'
 import { Card, Form, Input, message, Modal } from 'antd'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -65,7 +65,7 @@ export const EditModal = ({ id, email, children, onSuccess }: Props) => {
       message.success('Senha alterada com sucesso!')
       setLoading(false)
       resetData()
-      router.push('/')
+      logout().then(() => router.push('/'))
     } catch (error) {
       message.error('Erro ao alterar senha.')
       setLoading(false)
@@ -149,7 +149,7 @@ export const EditModal = ({ id, email, children, onSuccess }: Props) => {
 
       <Modal
         open={open}
-        title="Editar informaçõe de usuário"
+        title="Editar informações de usuário (uma por vez)"
         okText="Salvar"
         cancelText="Cancelar"
         confirmLoading={loading}

@@ -36,4 +36,3 @@ Caso não tenha o dotnet, visite este site: https://learn.microsoft.com/pt-br/do
 * Tailwind css
 * Material UI
 * Axios
-* Firebase

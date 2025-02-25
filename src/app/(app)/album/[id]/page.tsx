@@ -5,10 +5,8 @@ import { DeleteModal } from '@/components/deleteModal'
 import { SongsTable } from '@/components/songsTable'
 import { TAlbum } from '@/models'
 import { del, get } from '@/services/axios'
-import { storage } from '@/services/firebase'
 import { useQuery } from '@tanstack/react-query'
 import { message } from 'antd'
-import { deleteObject, ref } from 'firebase/storage'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import { AlbumForm } from '../components/AlbumForm'
@@ -35,14 +33,14 @@ export default function Album() {
 
   async function handleDeleteAlbum() {
     try {
-      const deletedAlbum = await del<TAlbum>(`/album`, parseInt(id))
+      await del<TAlbum>(`/album`, parseInt(id))
 
-      if (deletedAlbum && album?.image) {
-        const decodedPath = decodeURIComponent(
-          album.image.split('/o/')[1].split('?')[0],
-        )
-        await deleteObject(ref(storage, decodedPath))
-      }
+      // if (deletedAlbum && album?.image) {
+      //   const decodedPath = decodeURIComponent(
+      //     album.image.split('/o/')[1].split('?')[0],
+      //   )
+      //   await deleteObject(ref(storage, decodedPath))
+      // }
 
       message.success('Álbum removido com sucesso!')
       router.push('/dashboard')
