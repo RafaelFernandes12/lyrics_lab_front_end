@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <body className="m-0 bg-slate-100 dark:bg-black">
       <AuthHeader />
-      <main className="mt-16 text-left m-[6%] my-10 h-fit rounded-md">
+      <main className="m-[6%] my-10 mt-16 h-fit rounded-md text-left">
         <h1 className="text-4xl font-bold text-gray-900">
           Componha sem limites.
         </h1>
