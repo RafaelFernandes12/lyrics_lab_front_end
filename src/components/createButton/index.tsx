@@ -15,6 +15,7 @@ export default function CreateButton({ title, type }: Props) {
   const router = useRouter()
 
   console.log('aqui')
+  console.log('aqui')
   async function handleCreate() {
     try {
       const response = await post<TAlbum | TSong>(`/${type}`, {
