@@ -11,6 +11,8 @@ export function analyzeLine(line: string) {
   const isLineEmpty = words.every((word) => word === '')
   const lenMatchAorE = safeLine.match(regex.AorERegex)
   const lenMatchNoChord = safeLine.match(regex.noChordRegex)
+  console.log(lenMatchNoChord)
+  console.log(lenMatchAorE)
   const matchChordRegex = safeLine.match(regex.chordRegex)
 
   const isThereAnAorAnEinTheLine = !!(
