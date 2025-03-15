@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from 'axios'
 import { getToken } from './getToken'
 
 const detectBaseUrl = (): string => {
-  return process.env.BASE_URL_API || 'http://localhost:5214/api'
+  return process.env.NEXT_PUBLIC_BASE_URL_API || 'http://localhost:5214/api'
 }
 
 export const axiosInstance = axios.create({
