@@ -84,17 +84,15 @@ export async function login(email: string, password: string) {
       email,
       password,
     })
-    //const data = response.data
-    //return data
+    // const data = response.data
+    // return data
 
-    const { user, jwt } = response.data.value;
+    const { user, jwt } = response.data.value
 
     if (jwt) {
-      localStorage.setItem('jwt', jwt);
+      localStorage.setItem('jwt', jwt)
     }
-    
-    return { user, token: jwt };
-
+    return { user, token: jwt }
   } catch (error: any) {
     throw new Error(error || 'Erro na requisição.')
   }
