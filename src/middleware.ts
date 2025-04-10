@@ -2,7 +2,8 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
 export function middleware(request: NextRequest) {
-  const token = request.cookies.get('jwt')?.value || null
+  const token =
+    request.cookies.get('.AspNetCore.Identity.Application')?.value || null
   const url = request.nextUrl.clone()
   const publicRoutes = ['/', '/login', '/register']
 
