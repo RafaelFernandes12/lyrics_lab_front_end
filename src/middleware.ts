@@ -1,23 +1,23 @@
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
+import { verifySession } from './services/axios'
 
-export function middleware(request: NextRequest) {
-  const token =
-    request.cookies.get('.AspNetCore.Identity.Application')?.value || null
-  const url = request.nextUrl.clone()
+export async function middleware(request: NextRequest) {
   const publicRoutes = ['/', '/login', '/register']
+  const url = request.nextUrl.clone()
 
-  if (token && publicRoutes.includes(url.pathname)) {
-    url.pathname = '/dashboard'
-    return NextResponse.redirect(url)
+  if (publicRoutes.includes(url.pathname)) {
+    return NextResponse.next()
   }
 
-  if (!token && !publicRoutes.includes(url.pathname)) {
-    url.pathname = '/'
-    return NextResponse.redirect(url)
+  const isAuthenticated = await verifySession()
+
+  if (isAuthenticated) {
+    return NextResponse.next()
   }
 
-  return NextResponse.next()
+  url.pathname = '/login'
+  return NextResponse.redirect(url)
 }
 
 export const config = {

@@ -103,6 +103,15 @@ export async function register(name: string, email: string, password: string) {
   }
 }
 
+export async function verifySession() {
+  try {
+    await axiosInstance.get('/auth/verify-session')
+    return true
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export async function changeName(id: number, name: string) {
   try {
     const token = (await getToken()) || ''
