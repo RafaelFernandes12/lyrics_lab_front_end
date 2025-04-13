@@ -1,23 +1,22 @@
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
-import { verifySession } from './services/axios'
 
-export async function middleware(request: NextRequest) {
-  const publicRoutes = ['/', '/login', '/register']
+export function middleware(request: NextRequest) {
+  const token = request.cookies.get('jwt')?.value || null
   const url = request.nextUrl.clone()
+  const publicRoutes = ['/', '/login', '/register']
 
-  if (publicRoutes.includes(url.pathname)) {
-    return NextResponse.next()
+  if (token && publicRoutes.includes(url.pathname)) {
+    url.pathname = '/dashboard'
+    return NextResponse.redirect(url)
   }
 
-  const isAuthenticated = await verifySession()
-
-  if (isAuthenticated) {
-    return NextResponse.next()
+  if (!token && !publicRoutes.includes(url.pathname)) {
+    url.pathname = '/'
+    return NextResponse.redirect(url)
   }
 
-  url.pathname = '/login'
-  return NextResponse.redirect(url)
+  return NextResponse.next()
 }
 
 export const config = {
