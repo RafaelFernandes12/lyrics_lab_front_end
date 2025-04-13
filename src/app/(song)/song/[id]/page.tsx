@@ -143,7 +143,7 @@ export default function Song() {
       ) : (
         <div
           ref={containerRef}
-          className="m-auto bg-white p-6 dark:bg-headerDark max-lg:w-full md:min-w-[800px]"
+          className="m-auto bg-white p-6 max-lg:w-full md:min-w-[800px]"
         >
           <div className="mb-2 flex flex-col gap-2">
             <div className="flex justify-between">
@@ -153,18 +153,15 @@ export default function Song() {
               </Link>
             </div>
             <h3 className="text-base">
-              Tom:{' '}
-              <b className="text-blue-700 dark:text-blue-500">{song?.tone}</b>
+              Tom: <b className="text-blue-700">{song?.tone}</b>
             </h3>
             {song?.compass && (
-              <span className="whitespace-pre-wrap dark:text-white">
+              <span className="whitespace-pre-wrap">
                 Compasso: {song?.compass}
               </span>
             )}
             {song?.bpm && (
-              <span className="whitespace-pre-wrap dark:text-white">
-                Bpm: {song?.bpm}
-              </span>
+              <span className="whitespace-pre-wrap">Bpm: {song?.bpm}</span>
             )}
           </div>
           <div className="mt-10">

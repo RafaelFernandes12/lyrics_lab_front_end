@@ -42,12 +42,7 @@ export function SearchInput() {
     <SearchBar.Root
       setSearch={(e) => setSearch(e.target.value)}
       searchValue={search}
-      header={
-        <SearchBar.ButtonInput
-          className="max-w-36 dark:text-white dark:placeholder:text-white"
-          title="Pesquisar"
-        />
-      }
+      header={<SearchBar.ButtonInput className="max-w-36" title="Pesquisar" />}
       body={
         <>
           {filteredSongs.length > 0 && (
@@ -62,9 +57,7 @@ export function SearchInput() {
                   <MediaItem
                     item={song}
                     search={search}
-                    icon={
-                      <FileSearchOutlined className="mr-2 dark:text-white" />
-                    }
+                    icon={<FileSearchOutlined className="mr-2" />}
                   />
                 </Link>
               ))}
@@ -82,9 +75,7 @@ export function SearchInput() {
                   <MediaItem
                     item={album}
                     search={search}
-                    icon={
-                      <FileSearchOutlined className="mr-2 dark:text-white" />
-                    }
+                    icon={<FileSearchOutlined className="mr-2" />}
                   />
                 </Link>
               ))}

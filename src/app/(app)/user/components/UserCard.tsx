@@ -58,7 +58,7 @@ export const UserCard = () => {
           description={
             <div className="flex items-center gap-2">
               <MailOutlined />
-              <p className="text-primaria dark:text-primaria">{user?.email}</p>
+              <p className="text-primaria">{user?.email}</p>
             </div>
           }
         />

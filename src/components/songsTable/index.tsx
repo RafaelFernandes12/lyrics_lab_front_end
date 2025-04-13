@@ -72,7 +72,7 @@ export const SongsTable = ({ isAlbumView, songs, onSuccess }: Props) => {
 
   return (
     <div className="flex w-full justify-center">
-      <div className="w-full dark:text-white">
+      <div className="w-full">
         <div className="mb-2 flex items-center justify-between px-4">
           <div
             onClick={() => handleSort('name')}

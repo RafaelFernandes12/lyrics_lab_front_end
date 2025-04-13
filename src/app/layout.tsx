@@ -18,9 +18,25 @@ export default function RootLayout({
       <html
         lang="pt-br"
         className={poppins.variable}
-        style={{ overflow: 'auto' }}
+        style={{
+          height: '100%',
+          minHeight: '100vh',
+          margin: 0,
+          padding: 0,
+        }}
       >
-        {children}
+        <body
+          style={{
+            height: '100%',
+            minHeight: '100%',
+            margin: 0,
+            padding: 0,
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          {children}
+        </body>
       </html>
     </QueryProvider>
   )

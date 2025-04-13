@@ -2,7 +2,7 @@ import { AuthHeader } from '@/components/header/AuthHeader'
 
 export default function NotFound() {
   return (
-    <body>
+    <div>
       <AuthHeader />
       <div className="mt-56 flex flex-col items-center justify-center text-center">
         <h1 className="text-4xl font-bold">Página não encontrada</h1>
@@ -10,6 +10,6 @@ export default function NotFound() {
           A página que você procura não existe.
         </p>
       </div>
-    </body>
+    </div>
   )
 }

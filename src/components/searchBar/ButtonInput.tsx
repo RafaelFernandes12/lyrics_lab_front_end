@@ -13,9 +13,7 @@ export function ButtonInput({ className, title }: buttonInputProps) {
       className={twMerge('flex w-56 items-center gap-2', className)}
     >
       <SearchOutlined />
-      <p className="w-44 bg-transparent text-start text-black dark:text-white">
-        {title}
-      </p>
+      <p className="w-44 bg-transparent text-start text-black">{title}</p>
     </button>
   )
 }

@@ -2,36 +2,18 @@
 
 import { TSong } from '@/models'
 import { get, put } from '@/services/axios'
+import { SaveFilled } from '@ant-design/icons'
 import EditIcon from '@mui/icons-material/Edit'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { Input, InputNumber, message } from 'antd'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import 'react-quill/dist/quill.snow.css'
-import { ClassNameValue, twMerge } from 'tailwind-merge'
-
-type InputProps = {
-  text?: string
-  className?: ClassNameValue
-} & React.InputHTMLAttributes<HTMLInputElement>
-
-function Input({ text, className, ...rest }: InputProps) {
-  return (
-    <div>
-      {text && <p>{text}</p>}
-      <input
-        className={twMerge('bg-slate-200 p-2 text-3xl', className)}
-        {...rest}
-      />
-    </div>
-  )
-}
-
-type data = Omit<TSong, 'id' | 'createdAt' | 'albums'>
 
 export default function EditSong() {
   const { id } = useParams<{ id: string }>()
   const { push } = useRouter()
-  const [text, setText] = useState<data>({
+  const [text, setText] = useState<Omit<TSong, 'id' | 'createdAt' | 'albums'>>({
     name: '',
     tone: '',
     lyric: '',
@@ -54,7 +36,7 @@ export default function EditSong() {
       push(`/song/${id}`)
     },
     onError: () => {
-      console.log('Erro')
+      message.error('Um erro ocorreu, tente novamente mais tarde!')
     },
   })
 
@@ -68,56 +50,65 @@ export default function EditSong() {
 
   return (
     <div className="flex justify-between max-lg:flex-col">
-      <div className="m-auto bg-white p-6 dark:bg-headerDark max-lg:w-full md:min-w-[800px]">
-        <div className="flex flex-col gap-2">
-          <div className="flex justify-between">
+      <div className="m-auto bg-white p-6 max-lg:w-full md:min-w-[800px]">
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center justify-between gap-4">
             <Input
               value={text.name}
               onChange={(e) =>
                 setText((prev) => ({ ...prev, name: e.target.value }))
               }
+              size="large"
+              className="text-3xl"
             />
-            <button onClick={() => mutate()}>
-              <EditIcon />
+            <button onClick={() => mutate()} className="flex items-center">
+              <SaveFilled />
             </button>
           </div>
-          <Input
-            text="Tom: "
-            className="p-1 text-xl"
-            value={text.tone}
-            onChange={(e) =>
-              setText((prev) => ({ ...prev, tone: e.target.value }))
-            }
-          />
-          <div className="flex gap-2">
-            <Input
-              type="number"
-              className="w-20 p-1 text-xl"
-              text="Bpm: "
-              value={text?.bpm?.toString() || ''}
-              onChange={(e) =>
-                setText((prev) => ({ ...prev, bpm: parseInt(e.target.value) }))
-              }
-            />
-            <Input
-              className="w-20 p-1 text-xl"
-              text="Compasso: "
-              value={text.compass || ''}
-              onChange={(e) =>
-                setText((prev) => ({ ...prev, compass: e.target.value }))
-              }
-            />
+
+          <div className="flex gap-4">
+            <div>
+              <span className="text-sm text-gray-500">Tom: </span>
+              <Input
+                value={text.tone}
+                onChange={(e) =>
+                  setText((prev) => ({ ...prev, tone: e.target.value }))
+                }
+                className="w-20 text-xl"
+              />
+            </div>
+
+            <div>
+              <span className="text-sm text-gray-500">Bpm: </span>
+              <InputNumber
+                value={text.bpm}
+                onChange={(value) =>
+                  setText((prev) => ({ ...prev, bpm: value || 0 }))
+                }
+                min={0}
+                className="w-20"
+              />
+            </div>
+            <div>
+              <span className="text-sm text-gray-500">Compasso: </span>
+              <Input
+                value={text.compass}
+                onChange={(e) =>
+                  setText((prev) => ({ ...prev, compass: e.target.value }))
+                }
+                className="w-20"
+              />
+            </div>
           </div>
         </div>
-        <textarea
-          onChange={(e) => {
-            setText((prev) => ({
-              ...prev,
-              lyric: e.target.value,
-            }))
-          }}
-          value={text.lyric || ''}
-          className="mt-10 h-[1200px] w-full resize-none rounded-sm bg-slate-100 p-1 font-mono text-sm outline-none max-sm:w-full"
+
+        <Input.TextArea
+          value={text.lyric}
+          onChange={(e) =>
+            setText((prev) => ({ ...prev, lyric: e.target.value }))
+          }
+          style={{ height: '1200px', marginTop: '40px' }}
+          // className="mt-10 h-[1200px] w-full resize-none font-mono text-sm"
           placeholder="Comece aqui"
           spellCheck={false}
         />

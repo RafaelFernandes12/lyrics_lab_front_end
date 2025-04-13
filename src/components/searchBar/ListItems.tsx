@@ -36,7 +36,7 @@ export function MediaItem({ item, search, icon }: MediaItemProps) {
   return (
     <li
       key={item.id}
-      className="mx-4 mb-1 flex w-[calc(100%-24px)] items-center gap-2 truncate rounded-md border-slate-500 p-1 hover:border-[1px] hover:bg-slate-200 hover:p-1.5 dark:hover:bg-slate-900"
+      className="mx-4 mb-1 flex w-[calc(100%-24px)] items-center gap-2 truncate rounded-md border-slate-500 p-1 hover:border-[1px] hover:bg-slate-200 hover:p-1.5"
     >
       {icon}
       <p>{highlightText(item.name, search)}</p>

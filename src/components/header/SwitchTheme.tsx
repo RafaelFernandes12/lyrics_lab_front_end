@@ -46,7 +46,7 @@ export function SwitchTheme() {
         />
       )}
 
-      <button className="dark:bg-transparent dark:text-white md:hidden">
+      <button>
         <MenuOutlined />
       </button>
     </div>

@@ -11,6 +11,7 @@ import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import { AlbumForm } from '../components/AlbumForm'
 import { SongsSelect } from '../components/SongsSelect'
+import { EditOutlined } from '@ant-design/icons'
 
 export default function Album() {
   const { id } = useParams<{ id: string }>()
@@ -57,14 +58,24 @@ export default function Album() {
     <>
       <section className="flex items-start justify-between">
         <section className="flex w-full gap-7 max-sm:flex-col max-sm:text-center">
-          <Image
-            src={album?.image || logo}
-            alt="album-image"
-            width={200}
-            height={200}
-            style={{ objectFit: album?.image ? 'cover' : 'contain' }}
-            className={`h-52 w-52 rounded-xl bg-slate-200 ${album?.image ? 'object-cover' : 'object-contain'}`}
-          />
+          <AlbumForm album={album} onSuccess={() => handleUpdate()}>
+            <div className="group relative">
+              <Image
+                src={album?.image || logo}
+                alt="album-image"
+                width={200}
+                height={200}
+                style={{ objectFit: album?.image ? 'cover' : 'contain' }}
+                className="h-52 w-72 rounded-xl bg-slate-200 transition-opacity group-hover:opacity-40"
+              />
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100">
+                <div className="flex items-center gap-1 rounded-lg bg-black bg-opacity-50 p-2 text-white">
+                  <EditOutlined /> <span>Mudar foto</span>
+                </div>
+              </div>
+            </div>
+          </AlbumForm>
+
           <div className="flex w-full flex-col items-start gap-4 p-2">
             <AlbumForm album={album} onSuccess={() => handleUpdate()}>
               <h1>{album?.name}</h1>

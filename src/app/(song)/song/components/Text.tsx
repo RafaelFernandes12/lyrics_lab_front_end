@@ -25,10 +25,7 @@ export function Words({ line, className }: wordsProps) {
           return (
             <b
               key={index}
-              className={twMerge(
-                'font-semibold text-blue-700 dark:text-blue-500',
-                className,
-              )}
+              className={twMerge('font-semibold text-blue-700', className)}
             >
               {word}{' '}
             </b>

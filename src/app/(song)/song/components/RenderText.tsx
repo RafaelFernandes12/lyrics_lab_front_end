@@ -114,8 +114,7 @@ export function RenderText({
     )
     newLine = newLine.replace(regex.chordRegex, (t) => {
       const isChord = t.match(regex.chordRegex) && !isThereAnAorAnEinTheLine
-      if (isChord)
-        return `<b class="font-semibold text-blue-700 dark:text-blue-500">${t}</b>`
+      if (isChord) return `<b class="font-semibold text-blue-700">${t}</b>`
       return t
     })
 

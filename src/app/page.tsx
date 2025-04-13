@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 export default function Home() {
   return (
-    <body className="m-0 bg-slate-100 dark:bg-black">
+    <div className="m-0 bg-slate-100">
       <AuthHeader />
       <main className="m-[6%] my-10 mt-16 h-fit rounded-md text-left">
         <section className="relative">
@@ -30,6 +30,6 @@ export default function Home() {
         </section>
         <div className="mt-8 flex gap-4"></div>
       </main>
-    </body>
+    </div>
   )
 }

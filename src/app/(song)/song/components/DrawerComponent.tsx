@@ -85,9 +85,9 @@ export function DrawerComponent({
 
   const isSharpOrFlat = chordType === sharpChords ? sharpChords : flatChords
   const liStyle =
-    'flex items-center justify-center gap-3 border-b-[1px] border-gray-400 px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-600'
+    'flex items-center justify-center gap-3 border-b-[1px] border-gray-400 px-6 py-4 hover:bg-slate-200'
   const drawer = (
-    <ul className="flex flex-col dark:bg-black dark:text-white">
+    <ul className="flex flex-col">
       <li className={liStyle}>
         <ListItem
           action={pdfGenerator}
@@ -105,11 +105,11 @@ export function DrawerComponent({
         <span className="p-0 text-sm">Texto</span>
         <ListItem action={textUp} icon={<TextIncreaseIcon />} />
       </li>
-      <li className="flex items-center justify-center gap-3 px-6 py-4 hover:bg-slate-300 dark:hover:bg-slate-600">
+      <li className="flex items-center justify-center gap-3 px-6 py-4 hover:bg-slate-300">
         <IconButton
           id="long-button"
           onClick={handleClick}
-          className="m-0 p-0 text-base dark:text-white"
+          className="m-0 p-0 text-base"
         >
           {isSharpOrFlat === sharpChords ? <span>A#</span> : <span>Ab</span>}
         </IconButton>
@@ -136,13 +136,13 @@ export function DrawerComponent({
   )
   return (
     <>
-      <div className="dark:text-black">
+      <div>
         <div className="bg-white max-lg:hidden">{drawer}</div>
         <div>
           <button
             color="inherit"
             onClick={handleDrawerToggle}
-            className="p-0 dark:text-white lg:hidden"
+            className="p-0 lg:hidden"
           >
             <MenuIcon />
           </button>
