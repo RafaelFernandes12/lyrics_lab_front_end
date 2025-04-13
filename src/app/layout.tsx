@@ -34,6 +34,7 @@ export default function RootLayout({
             display: 'flex',
             flexDirection: 'column',
           }}
+          className="bg-slate-100"
         >
           {children}
         </body>
