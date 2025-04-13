@@ -1,5 +1,3 @@
-import { SwitchTheme } from './SwitchTheme'
-
 export function AuthHeader() {
   return (
     <header className="flex h-[80px] items-center justify-between bg-white px-[4%] ">
@@ -30,7 +28,6 @@ export function AuthHeader() {
         </svg>
         <h1 className="italic text-black">Lyrics Lab</h1>
       </div>
-      <SwitchTheme />
     </header>
   )
 }
