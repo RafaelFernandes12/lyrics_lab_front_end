@@ -13,12 +13,7 @@ export const axiosInstance = axios.create({
 
 export async function get<T>(endPoint: string): Promise<T> {
   try {
-    const token = (await getToken()) || ''
-    const response: AxiosResponse<T> = await axiosInstance.get<T>(endPoint, {
-      headers: {
-        Authorization: token ? `${token}` : undefined,
-      },
-    })
+    const response: AxiosResponse<T> = await axiosInstance.get<T>(endPoint)
     return response.data
   } catch (error: any) {
     throw new Error(error || 'Erro na requisição.')
@@ -27,15 +22,9 @@ export async function get<T>(endPoint: string): Promise<T> {
 
 export async function post<T>(endPoint: string, body: object): Promise<T> {
   try {
-    const token = (await getToken()) || ''
     const response: AxiosResponse<T> = await axiosInstance.post<T>(
       endPoint,
       body,
-      {
-        headers: {
-          Authorization: token ? `${token}` : undefined,
-        },
-      },
     )
     return response.data
   } catch (error: any) {
@@ -45,15 +34,9 @@ export async function post<T>(endPoint: string, body: object): Promise<T> {
 
 export async function put<T>(endPoint: string, body: object): Promise<T> {
   try {
-    const token = (await getToken()) || ''
     const response: AxiosResponse<T> = await axiosInstance.put<T>(
       endPoint,
       body,
-      {
-        headers: {
-          Authorization: token ? `${token}` : undefined,
-        },
-      },
     )
     return response.data
   } catch (error: any) {
@@ -63,14 +46,8 @@ export async function put<T>(endPoint: string, body: object): Promise<T> {
 
 export async function del<T>(endPoint: string, id: number): Promise<T> {
   try {
-    const token = (await getToken()) || ''
     const response: AxiosResponse<T> = await axiosInstance.delete<T>(
       `${endPoint}/${id}`,
-      {
-        headers: {
-          Authorization: token ? `${token}` : undefined,
-        },
-      },
     )
     return response.data
   } catch (error: any) {
@@ -110,20 +87,9 @@ export async function verifySession() {
 
 export async function changeName(id: number, name: string) {
   try {
-    const token = (await getToken()) || ''
-    await axiosInstance
-      .put(
-        `/user/${id}`,
-        { name },
-        {
-          headers: {
-            Authorization: token ? `${token}` : undefined,
-          },
-        },
-      )
-      .then((r) => {
-        return r
-      })
+    await axiosInstance.put(`/user/${id}`, { name }).then((r) => {
+      return r
+    })
   } catch (error: any) {
     throw new Error(error || 'Erro na requisição.')
   }
@@ -143,15 +109,7 @@ export async function changePassword(
     if (data.jwt === token) {
       const password = newPass
       await axiosInstance
-        .put(
-          `/user/${data.user.id}`,
-          { password },
-          {
-            headers: {
-              Authorization: token ? `${token}` : undefined,
-            },
-          },
-        )
+        .put(`/user/${data.user.id}`, { password })
         .then(() => {
           logout()
         })
