@@ -1,11 +1,14 @@
 'use client'
-
-import { DeleteFilled, ExclamationCircleFilled } from '@ant-design/icons'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { ExclamationCircleFilled } from '@ant-design/icons'
 import { Modal } from 'antd'
+import { ClassNameValue, twMerge } from 'tailwind-merge'
 
 const { confirm } = Modal
 
 interface Props {
+  classNameButton?: ClassNameValue
+  classNameIcon?: ClassNameValue
   title: string
   description: string
   onConfirm: () => void
@@ -30,11 +33,20 @@ const showPromiseConfirm = ({ title, description, onConfirm }: Props) => {
   })
 }
 
-export const DeleteModal = ({ title, description, onConfirm }: Props) => (
+export const DeleteModal = ({
+  title,
+  description,
+  onConfirm,
+  classNameButton,
+  classNameIcon,
+}: Props) => (
   <button
     onClick={() => showPromiseConfirm({ title, description, onConfirm })}
-    className="flex items-center rounded-md bg-gray-200 p-2 text-black hover:bg-gray-300"
+    className={twMerge(
+      'flex items-center    rounded p-2 text-black',
+      classNameButton,
+    )}
   >
-    <DeleteFilled style={{ fontSize: '20px' }} />{' '}
+    <DeleteIcon className={twMerge('text-xl', classNameIcon)} />
   </button>
 )

@@ -1,7 +1,7 @@
 'use client'
 
 import AddIcon from '@mui/icons-material/Add'
-import MenuIcon from '@mui/icons-material/Menu'
+import SettingsIcon from '@mui/icons-material/Settings'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
 import RemoveIcon from '@mui/icons-material/Remove'
 import TextDecreaseIcon from '@mui/icons-material/TextDecrease'
@@ -137,14 +137,14 @@ export function DrawerComponent({
   return (
     <>
       <div>
-        <div className="bg-white max-lg:hidden">{drawer}</div>
-        <div>
+        <div className="bg-white max-xl:hidden">{drawer}</div>
+        <div className="fixed bottom-4 right-4 z-50 xl:hidden">
           <button
-            color="inherit"
             onClick={handleDrawerToggle}
-            className="p-0 lg:hidden"
+            className="rounded-full bg-blue-900 p-3 text-white shadow-lg transition-all hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
+            aria-label="Settings"
           >
-            <MenuIcon />
+            <SettingsIcon fontSize="medium" />
           </button>
         </div>
       </div>

@@ -6,7 +6,7 @@ import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react'
 interface searchBarProps {
   searchValue: string
   setSearch: (e: ChangeEvent<HTMLInputElement>) => void
-  body: React.ReactNode
+  body: (handleClick: () => void) => React.ReactNode
   header: React.ReactNode
 }
 
@@ -40,7 +40,10 @@ export function Root({ setSearch, body, searchValue, header }: searchBarProps) {
       <div onClick={handleClick}>{header}</div>
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-20">
-          <div className="mt-2 w-2/3 rounded-lg bg-gray-100" ref={searchRef}>
+          <div
+            className="mt-2 w-2/3 rounded-lg bg-gray-100 max-md:w-full"
+            ref={searchRef}
+          >
             <div className="mb-4 flex items-center gap-4 rounded-t-md border-b-2 border-gray-200 px-2">
               <SearchOutlined data-testid="searchIconId" />
               <input
@@ -55,7 +58,9 @@ export function Root({ setSearch, body, searchValue, header }: searchBarProps) {
                 <CloseOutlined />
               </button>
             </div>
-            <ul className="h-96 overflow-y-auto">{body}</ul>
+            <ul className="h-96 overflow-y-auto">
+              {typeof body === 'function' ? body(handleClick) : body}
+            </ul>
           </div>
         </div>
       )}

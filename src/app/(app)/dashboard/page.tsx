@@ -8,26 +8,28 @@ export default async function Home() {
   return (
     <div>
       <section>
-        <section className="relative">
+        <section className="relative max-md:mb-[2rem]">
           <Image
             src={sectionImage}
             alt="dash-section"
-            className="w-full object-contain"
+            className="w-full object-contain max-md:hidden"
             style={{ objectFit: 'cover' }}
           />
-          <div className="absolute bottom-[40px] left-[40px] px-4 py-2">
+          <div className="md:relative md:bottom-[70px] md:left-[40px] lg:bottom-[90px]">
             <CreateButton title="música" type="song" />
           </div>
         </section>
 
         <div className="mb-6 flex items-center justify-between font-semibold">
-          <h1>Músicas criadas recentemente</h1>
+          <p className="text-2xl max-sm:text-xl">
+            Músicas criadas recentemente
+          </p>
         </div>
         <SongList />
       </section>
       <section>
         <div className="mb-6 flex items-center justify-between font-semibold">
-          <h1>Álbuns criados recentemente</h1>
+          <p className="text-2xl max-sm:text-xl">Álbuns criados recentemente</p>
         </div>
         <AlbumList />
       </section>

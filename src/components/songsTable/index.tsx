@@ -80,10 +80,12 @@ export const SongsTable = ({ isAlbumView, songs, onSuccess }: Props) => {
           >
             Título <CaretDownOutlined />
           </div>
-          {!isAlbumView && <div className="w-full text-center">Álbum</div>}
+          {!isAlbumView && (
+            <div className="w-full text-center max-md:hidden">Álbum</div>
+          )}
           <div
             onClick={() => handleSort('createdAt')}
-            className={`${!isAlbumView ? 'mr-10' : ''} w-full cursor-pointer text-right`}
+            className={`${!isAlbumView ? 'mr-10' : ''} w-full cursor-pointer text-right max-sm:hidden`}
           >
             Criada <CaretDownOutlined />
           </div>
@@ -91,26 +93,42 @@ export const SongsTable = ({ isAlbumView, songs, onSuccess }: Props) => {
 
         {sortedData.map((item, index) => (
           <div key={item.key} className="mb-2 flex w-full items-center gap-2">
-            <Link
-              href={`/song/${item.key}`}
+            <div
               className={`flex w-full items-center p-4 text-white ${
                 index % 2 === 0
                   ? 'bg-secundaria hover:bg-primariaHover'
                   : 'bg-gray-400 hover:bg-gray-500'
               } rounded-md`}
             >
-              <div className="w-full text-left font-semibold">{item.name}</div>
+              <Link href={`/song/${item.key}`} className="w-full">
+                <div className="w-full text-left font-semibold">
+                  {item.name}
+                </div>
+              </Link>
               {!isAlbumView && (
-                <div className="w-full text-center">{item.album}</div>
+                <div className="w-full text-center max-md:hidden">
+                  {item.album}
+                </div>
               )}
-              <div className="w-full text-right">
-                {dayjs(item.createdAt).fromNow()}
+              <div className="flex w-full items-center justify-end gap-2">
+                <span className="max-sm:hidden">
+                  {dayjs(item.createdAt).fromNow()}
+                </span>
+                <div className="flex w-9 justify-center md:hidden">
+                  <DeleteModal
+                    title={'Tem certeza de que deseja excluir essa música?'}
+                    description={'Essa ação não pode ser desfeita.'}
+                    classNameIcon="max-md:text-white"
+                    onConfirm={() => onDeleteSong(item.key)}
+                  />
+                </div>
               </div>
-            </Link>
+            </div>
             {!isAlbumView && (
-              <div className="flex w-9 justify-center">
+              <div className="flex w-9 justify-center max-md:hidden">
                 <DeleteModal
                   title={'Tem certeza de que deseja excluir essa música?'}
+                  classNameButton="rounded bg-gray-300 hover:bg-gray-400"
                   description={'Essa ação não pode ser desfeita.'}
                   onConfirm={() => onDeleteSong(item.key)}
                 />

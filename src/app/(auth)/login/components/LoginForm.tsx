@@ -2,6 +2,7 @@
 
 import { login } from '@/services/axios'
 import { LockOutlined, MailOutlined } from '@ant-design/icons'
+import { useMutation } from '@tanstack/react-query'
 import { Button, Form, Input, message } from 'antd'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -12,25 +13,22 @@ export const LoginForm = () => {
   const rules = [{ required: true, message: 'Preencha este campo!' }]
   const router = useRouter()
 
-  async function handleLogin(values: { email: string; password: string }) {
-    setLoading(true)
-
-    try {
-      await login(values.email, values.password)
-      router.push('/dashboard')
-    } catch (error) {
-      message.error('Erro ao fazer login')
-    } finally {
-      setLoading(false)
-    }
-  }
+  const { mutate } = useMutation({
+    mutationFn: async (data: { email: string; password: string }) => {
+      setLoading(true)
+      return await login(data.email, data.password)
+    },
+    onSuccess: () => router.push('/dashboard'),
+    onError: () => message.error('Email ou Senha incorretos'),
+    onSettled: () => setLoading(false),
+  })
 
   return (
     <Form
       name="login"
       initialValues={{ remember: true }}
       style={{ width: '100%' }}
-      onFinish={handleLogin}
+      onFinish={mutate}
     >
       <Form.Item name="email" rules={rules}>
         <Input

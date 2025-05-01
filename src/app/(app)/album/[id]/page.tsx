@@ -6,7 +6,7 @@ import { SongsTable } from '@/components/songsTable'
 import { TAlbum } from '@/models'
 import { del, get } from '@/services/axios'
 import { useQuery } from '@tanstack/react-query'
-import { message } from 'antd'
+import { message, Result } from 'antd'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import { AlbumForm } from '../components/AlbumForm'
@@ -56,15 +56,13 @@ export default function Album() {
 
   return (
     <>
-      <section className="flex items-start justify-between">
-        <section className="flex w-full gap-7 max-sm:flex-col max-sm:text-center">
+      <section className="flex items-start justify-between max-md:flex-col">
+        <section className="flex w-full gap-7 max-md:items-center max-sm:flex-col max-sm:items-center">
           <AlbumForm album={album} onSuccess={() => handleUpdate()}>
             <div className="group relative">
               <Image
                 src={album?.image || logo}
                 alt="album-image"
-                width={200}
-                height={200}
                 style={{ objectFit: album?.image ? 'cover' : 'contain' }}
                 className="h-52 w-72 rounded-xl bg-slate-200 transition-opacity group-hover:opacity-40"
               />
@@ -76,22 +74,39 @@ export default function Album() {
             </div>
           </AlbumForm>
 
-          <div className="flex w-full flex-col items-start gap-4 p-2">
+          <div className="flex w-full flex-col items-start gap-4 p-2 max-sm:items-center">
             <AlbumForm album={album} onSuccess={() => handleUpdate()}>
-              <h1>{album?.name}</h1>
+              <p className="text-start text-2xl font-semibold">{album?.name}</p>
             </AlbumForm>
-            <p>{album?.songs.length} músicas</p>
-            <p className="w-10/12">{album?.description}</p>
-            <DeleteModal
-              title={'Tem certeza de que deseja excluir esse álbum?'}
-              description={'Essa ação não pode ser desfeita.'}
-              onConfirm={() => handleDeleteAlbum()}
-            />
+            <p className="flex items-center justify-between gap-2">
+              {album?.songs.length} músicas
+              <DeleteModal
+                title={'Tem certeza de que deseja excluir esse álbum?'}
+                description={'Essa ação não pode ser desfeita.'}
+                classNameButton="rounded bg-gray-300 hover:bg-gray-400 p-1"
+                onConfirm={() => handleDeleteAlbum()}
+              />
+            </p>
+            <p className="w-10/12 text-start max-sm:text-center">
+              {album?.description}
+            </p>
           </div>
         </section>
-        <SongsSelect album={album} onSuccess={() => handleUpdate()} />
+        <div className="flex w-full justify-end">
+          <SongsSelect album={album} onSuccess={() => handleUpdate()} />
+        </div>
       </section>
-      {album?.songs?.length !== 0 && (
+      {album?.songs?.length === 0 ? (
+        <Result
+          status="warning"
+          title="Ainda não há músicas nessa playlist, Escolha uma!"
+          extra={
+            <div className="flex w-full justify-center">
+              <SongsSelect album={album} onSuccess={() => handleUpdate()} />
+            </div>
+          }
+        />
+      ) : (
         <SongsTable
           isAlbumView={true}
           songs={album.songs}

@@ -15,11 +15,13 @@ export const RegisterForm = ({ onFinish }: Props) => {
       onFinish={onFinish}
       layout="vertical"
       requiredMark={false}
+      className="max-sm:flex max-sm:flex-col max-sm:items-center"
     >
       <Form.Item
         name="name"
         label="Nome de usuário"
         rules={[{ required: true, message: 'Digite seu nome' }]}
+        className="max-sm:w-full"
       >
         <Input />
       </Form.Item>
@@ -31,6 +33,7 @@ export const RegisterForm = ({ onFinish }: Props) => {
           { required: true, message: 'Digite seu email' },
           { type: 'email', message: 'Email inválido' },
         ]}
+        className="max-sm:w-full"
       >
         <Input />
       </Form.Item>
@@ -38,12 +41,13 @@ export const RegisterForm = ({ onFinish }: Props) => {
       <Form.Item
         name="password"
         label="Senha"
+        className="max-sm:w-full"
         rules={[
           { required: true, message: 'Digite sua senha' },
           {
-            pattern: /^[a-zA-Z0-9]{8,}$/,
+            pattern: /^[\w!@#$%^&*()_+=\-[\]{};':"\\|,.<>/?]{8,}$/,
             message:
-              'Deve conter no mínimo 8 caracteres entre letras e números',
+              'Deve conter no mínimo 8 caracteres entre letras, números e símbolos',
           },
         ]}
       >
@@ -53,6 +57,7 @@ export const RegisterForm = ({ onFinish }: Props) => {
       <Form.Item
         name="confirm"
         label="Confirmar Senha"
+        className="max-sm:w-full"
         dependencies={['password']}
         rules={[
           { required: true, message: 'Confirme sua senha' },

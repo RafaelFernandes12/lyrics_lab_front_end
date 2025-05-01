@@ -14,7 +14,7 @@ export interface Data {
   verificationCode: number
 }
 
-const steps = [{ title: 'Dados gerais' }, { title: 'Verificação' }]
+const steps = ['Dados gerais', 'Verificação']
 
 export default function Register() {
   const { token } = theme.useToken()
@@ -76,10 +76,13 @@ export default function Register() {
   return (
     <div className="flex min-h-screen flex-col items-center">
       <h1 className="my-16 w-full text-center text-2xl">Registrar</h1>
-      <div className="w-[400px]">
+      <div className="w-[400px] max-sm:w-full max-sm:max-w-[400px]">
         <Steps
           current={current}
-          items={steps.map((s) => ({ title: s.title }))}
+          responsive
+          items={steps.map((item) => ({
+            title: item,
+          }))}
         />
 
         <div style={contentStyle}>
@@ -93,7 +96,7 @@ export default function Register() {
           )}
         </div>
 
-        <div style={{ marginTop: 24, display: 'flex', gap: 8 }}>
+        <div className="mt-6 flex gap-2 max-sm:justify-center">
           {current > 0 && <Button onClick={prev}>Voltar</Button>}
 
           {current < steps.length - 1 ? (

@@ -57,7 +57,7 @@ export const SongsSelect = ({ album, onSuccess }: Props) => {
   }
 
   return (
-    <div className="flex w-full justify-end">
+    <div>
       <button
         className="rounded-md bg-primaria p-3 font-semibold text-white hover:bg-primariaHover"
         onClick={() => setOpen(true)}

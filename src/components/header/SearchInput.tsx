@@ -2,14 +2,15 @@
 
 import { TAlbum, TSong } from '@/models'
 import { get } from '@/services/axios'
-import { FileSearchOutlined } from '@ant-design/icons'
+import AudioFileOutlinedIcon from '@mui/icons-material/AudioFileOutlined'
+import QueueMusicIcon from '@mui/icons-material/QueueMusic'
 import { useQueries } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import { SearchBar } from '../searchBar'
 import { MediaItem, Title } from '../searchBar/ListItems'
 
-export function SearchInput() {
+export function SearchInput({ onClose }: { onClose?: () => void }) {
   const [search, setSearch] = useState('')
 
   const results = useQueries({
@@ -43,7 +44,7 @@ export function SearchInput() {
       setSearch={(e) => setSearch(e.target.value)}
       searchValue={search}
       header={<SearchBar.ButtonInput className="max-w-36" title="Pesquisar" />}
-      body={
+      body={(handleClick) => (
         <>
           {filteredSongs.length > 0 && (
             <>
@@ -53,11 +54,17 @@ export function SearchInput() {
                   href={`/song/${song.id}`}
                   key={song.id}
                   data-testid="songLink"
+                  onClick={() => {
+                    handleClick()
+                    if (onClose) {
+                      onClose()
+                    }
+                  }}
                 >
                   <MediaItem
                     item={song}
                     search={search}
-                    icon={<FileSearchOutlined className="mr-2" />}
+                    icon={<AudioFileOutlinedIcon className="mr-2" />}
                   />
                 </Link>
               ))}
@@ -71,18 +78,24 @@ export function SearchInput() {
                   href={`/album/${album.id}`}
                   key={album.id}
                   data-testid="albumLink"
+                  onClick={() => {
+                    handleClick()
+                    if (onClose) {
+                      onClose()
+                    }
+                  }}
                 >
                   <MediaItem
                     item={album}
                     search={search}
-                    icon={<FileSearchOutlined className="mr-2" />}
+                    icon={<QueueMusicIcon className="mr-2" />}
                   />
                 </Link>
               ))}
             </>
           )}
         </>
-      }
+      )}
     />
   )
 }

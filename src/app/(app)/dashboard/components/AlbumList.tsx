@@ -20,7 +20,7 @@ export function AlbumList() {
       {albums.length === 0 || isLoading ? (
         <p className="text-gray-500">Você ainda não criou nenhum álbum.</p>
       ) : (
-        <div className="grid w-full grid-cols-5 gap-4 max-2xl:grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:flex max-sm:flex-col max-sm:items-center">
+        <div className="grid w-full grid-cols-5 gap-4 max-2xl:grid-cols-4 max-xl:grid-cols-3 max-md:grid-cols-2 max-sm:flex max-sm:flex-col max-sm:items-center">
           {albums.slice(0, 5).map((album) => {
             if (album.isDefault) return null
             return (
