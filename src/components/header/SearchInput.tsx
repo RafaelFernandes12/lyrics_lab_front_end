@@ -21,7 +21,10 @@ export function SearchInput({ onClose }: { onClose?: () => void }) {
   })
 
   const songs = useMemo(() => results[0].data || [], [results])
-  const albums = useMemo(() => results[1].data || [], [results])
+  const albums = useMemo(
+    () => results[1].data?.filter((res) => !res.isDefault) || [],
+    [results],
+  )
 
   const filteredSongs = useMemo(
     () =>
